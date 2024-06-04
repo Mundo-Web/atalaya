@@ -1,0 +1,22 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "axios": "^1.6.4",
+        "vite": "^5.0.0"
+    },
+    "dependencies": {
+        "@inertiajs/react": "^1.1.0",
+        "@tippyjs/react": "^4.2.6",
+        "jsencrypt": "^3.3.2",
+        "laravel-mix": "^6.0.49",
+        "laravel-vite-plugin": "^1.0.4",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "sode-extend-react": "^1.1.111"
+    }
+}
