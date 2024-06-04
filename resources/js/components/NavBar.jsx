@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Fetch, Notify } from "sode-extend-react"
 import Logout from "../actions/Logout"
 
 const NavBar = ({ session = {}, title = '' }) => {
-
+  useEffect(() => {
+    document.title = `${title} | Atalaya`
+  }, [null])
   return (
     <div className="navbar-custom">
       <ul className="list-unstyled topnav-menu float-end mb-0">

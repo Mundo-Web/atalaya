@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react'
 import { Fetch } from 'sode-extend-react'
+import UsersRest from '../actions/UsersRest'
 
-const DataGrid = ({ gridRef: dataGridRef, api, columns, toolBar }) => {
+const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar }) => {
   useEffect(() => {
     const dataGrid = $(dataGridRef.current).dxDataGrid({
+      language: "es",
       dataSource: {
         load: async (params) => {
-          const { result } = await Fetch(`/api/${api}`, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params)
-          })
-          return result
+          const data = await rest.paginate(params)
+          return data
         },
       },
       onToolbarPreparing: (e) => {

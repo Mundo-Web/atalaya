@@ -4,7 +4,7 @@ import NavBar from './NavBar'
 import Menu from './Menu'
 import Footer from './Footer'
 
-const Adminto = ({ session, children, title }) => {
+const Adminto = ({ session, children, title , permissions}) => {
   return (<>
     <div id="wrapper">
       <NavBar session={session} title={title} />

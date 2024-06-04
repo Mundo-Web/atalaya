@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\User;
+use App\Models\Client;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -12,20 +12,18 @@ use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
-class UsersController extends Controller
+class ClientController extends Controller
 {
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = User::select([
-                'id', 'name', 'lastname', 'email', 'status'
-            ]);
+            $instance = Client::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = User::select([
+                $instance = Client::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
@@ -64,8 +62,6 @@ class UsersController extends Controller
 
             foreach ($jpas as $jpa) {
                 $result = JSON::unflatten($jpa->toArray(), '__');
-                // unset($result['_business']);
-                // $result['default'] = isset($result['id']) && $result['id'] == $session['setting']['status'];
                 $results[] = $result;
             }
 
@@ -88,31 +84,18 @@ class UsersController extends Controller
     {
         $response = new Response();
         try {
-            $jpa = null;
-            if ($request->id) {
-                $jpa = User::find($request->id);
-            }
+
+            $body = $request->all();
+
+            $jpa = Client::find($request->id);
             if (!$jpa) {
-                if (!isset($request->password) || !isset($request->confirm)) throw new Exception('Debes ingresar una contraseña para el nuevo usuario');
-                $jpa = new User();
+                Client::create($body);
+            } else {
+                $jpa->update($body);
             }
-            $jpa->name = $request->name;
-            $jpa->lastname = $request->lastname;
-            $jpa->email = $request->email;
-
-            if (
-                isset($request->password) && isset($request->confirm)
-            ) {
-                if (Controller::decode($request->password) == Controller::decode($request->confirm)) {
-                    $jpa->password = password_hash(Controller::decode($request->password), PASSWORD_DEFAULT);
-                } else throw new Exception('Las contraseñas deben ser iguales');
-            }
-
-            $jpa->save();
 
             $response->status = 200;
             $response->message = 'Operacion correcta';
-            $response->data = $jpa->toArray();
         } catch (\Throwable $th) {
             $response->status = 400;
             $response->message = $th->getMessage();
@@ -128,7 +111,7 @@ class UsersController extends Controller
     {
         $response = new Response();
         try {
-            User::where('id', $request->id)
+            Client::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
                 ]);
@@ -150,7 +133,7 @@ class UsersController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = User::where('id', $id)
+            $deleted = Client::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

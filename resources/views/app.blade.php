@@ -5,13 +5,13 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Gestion de clientes | SoDe World</title>
-  <link rel="shortcut icon" href="assets/img/favicon/favicon.svg" type="image/png">
+  <title>Gestion de clientes | Atalaya</title>
+  <link rel="shortcut icon" href="assets/img/icon.svg" type="image/png">
 
   @if ($admintoInstance)
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
@@ -51,6 +51,7 @@
     <script src="/lte/assets/js/app.min.js"></script>
 
     <script src="/lte/assets/libs/dxdatagrid/js/dx.all.js"></script>
+    <script src="/lte/assets/libs/dxdatagrid/js/localization/dx.messages.es.js"></script>
   @endif
 </body>
 

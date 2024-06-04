@@ -43,7 +43,8 @@ Route::middleware('auth')->group(function () {
                 return Inertia::render($page['component'], [
                     'PUBLIC_RSA_KEY' => Controller::$PUBLIC_RSA_KEY,
                     'token' => csrf_token(),
-                    'session' => auth()->user()
+                    'session' => auth()->user(),
+                    'permissions' => auth()->user()->getAllPermissions()
                 ]);
             })->name($path);
         }

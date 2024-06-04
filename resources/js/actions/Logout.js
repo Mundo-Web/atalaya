@@ -1,4 +1,4 @@
-import { Fetch } from "sode-extend-react"
+import { Fetch, Notify } from "sode-extend-react"
 
 const Logout = async () => {
   try {

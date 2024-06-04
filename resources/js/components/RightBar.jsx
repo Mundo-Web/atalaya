@@ -107,7 +107,7 @@ const RigthBar = () => {
 
             <div className="form-check form-switch mb-1">
               <input type="checkbox" className="form-check-input" name="leftsidebar-size" value="default"
-                id="default-size-check" checked />
+                id="default-size-check" defaultChecked />
               <label className="form-check-label" htmlFor="default-size-check">Default</label>
             </div>
 

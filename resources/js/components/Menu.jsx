@@ -1,6 +1,7 @@
 import React from 'react'
 import Logout from '../actions/Logout'
 import MenuItem from './MenuItem'
+import MenuItemContainer from './MenuItemContainer'
 
 const Menu = ({ session }) => {
   return (<div className="left-side-menu">
@@ -11,7 +12,7 @@ const Menu = ({ session }) => {
       <div className="user-box text-center">
 
         <img src="/assets/img/user-404.svg" alt={session.name} title={session.name}
-          className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad'}}/>
+          className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad' }} />
         <div className="dropdown">
           <a href="#" className="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"
             aria-expanded="false">{session.name} {session.lastname}</a>
@@ -64,10 +65,13 @@ const Menu = ({ session }) => {
         <ul id="side-menu">
 
           <li className="menu-title">Panel de navegacion</li>
-
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
-
-          <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
+          <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
+          <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
+            <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
+            <MenuItem href="/roles" icon='mdi mdi-account'>Roles</MenuItem>
+            <MenuItem href="/permissions" icon='mdi mdi-account'>Permisos</MenuItem>
+          </MenuItemContainer>
         </ul>
 
       </div>

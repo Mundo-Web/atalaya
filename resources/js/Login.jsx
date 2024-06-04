@@ -1,7 +1,6 @@
-import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import React, { useRef, useState } from 'react'
-import { Notify, Fetch, Cookies, FetchParams } from 'sode-extend-react'
+import { Notify, Fetch } from 'sode-extend-react'
 import JSEncrypt from 'jsencrypt'
 import '../css/login.css'
 import CreateReactScript from './Utils/CreateReactScript'
