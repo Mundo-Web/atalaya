@@ -1,0 +1,84 @@
+import React from 'react'
+import Logout from '../actions/Logout'
+import MenuItem from './MenuItem'
+
+const Menu = ({ session }) => {
+  return (<div className="left-side-menu">
+
+    <div className="h-100" data-simplebar>
+
+
+      <div className="user-box text-center">
+
+        <img src="/assets/img/user-404.svg" alt={session.name} title={session.name}
+          className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad'}}/>
+        <div className="dropdown">
+          <a href="#" className="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"
+            aria-expanded="false">{session.name} {session.lastname}</a>
+          <div className="dropdown-menu user-pro-dropdown">
+
+
+            <a href="#" className="dropdown-item notify-item">
+              <i className="fe-user me-1"></i>
+              <span>Mi cuenta</span>
+            </a>
+
+            <a href="#" className="dropdown-item notify-item right-bar-toggle">
+              <i className="fe-settings me-1"></i>
+              <span>Configuracion</span>
+            </a>
+
+            {/* <a href="#" className="dropdown-item notify-item">
+              <i className="fe-lock me-1"></i>
+              <span>Lock Screen</span>
+            </a> */}
+
+            <a href="#" className="dropdown-item notify-item" onClick={Logout}>
+              <i className="fe-log-out me-1"></i>
+              <span>Cerrar sesion</span>
+            </a>
+
+          </div>
+        </div>
+
+        <p className="text-muted left-user-info">@{session.username}</p>
+
+        <ul className="list-inline">
+          <li className="list-inline-item">
+            <a href="#" className="text-muted left-user-info">
+              <i className="mdi mdi-cog"></i>
+            </a>
+          </li>
+
+          <li className="list-inline-item">
+            <a href="#">
+              <i className="mdi mdi-power"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+      <div id="sidebar-menu">
+
+        <ul id="side-menu">
+
+          <li className="menu-title">Panel de navegacion</li>
+
+          <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
+
+          <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
+        </ul>
+
+      </div>
+
+
+      <div className="clearfix"></div>
+
+    </div>
+
+
+  </div>)
+}
+
+export default Menu

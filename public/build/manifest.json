@@ -1,0 +1,48 @@
+{
+  "_Adminto-CJe9loCy.js": {
+    "file": "assets/Adminto-CJe9loCy.js",
+    "name": "Adminto",
+    "imports": [
+      "_main-Bn4LBWlQ.js"
+    ]
+  },
+  "_main-Bn4LBWlQ.js": {
+    "file": "assets/main-Bn4LBWlQ.js",
+    "name": "main"
+  },
+  "resources/js/Home.jsx": {
+    "file": "assets/Home-tUzHxndm.js",
+    "name": "Home",
+    "src": "resources/js/Home.jsx",
+    "isEntry": true,
+    "imports": [
+      "_main-Bn4LBWlQ.js",
+      "_Adminto-CJe9loCy.js"
+    ]
+  },
+  "resources/js/Login.jsx": {
+    "file": "assets/Login-BoPwO8yF.js",
+    "name": "Login",
+    "src": "resources/js/Login.jsx",
+    "isEntry": true,
+    "imports": [
+      "_main-Bn4LBWlQ.js"
+    ],
+    "css": [
+      "assets/Login-p4BDoFZH.css"
+    ]
+  },
+  "resources/js/Users.jsx": {
+    "file": "assets/Users-CoRXe0q5.js",
+    "name": "Users",
+    "src": "resources/js/Users.jsx",
+    "isEntry": true,
+    "imports": [
+      "_main-Bn4LBWlQ.js",
+      "_Adminto-CJe9loCy.js"
+    ],
+    "css": [
+      "assets/Users-LriLsbSV.css"
+    ]
+  }
+}
