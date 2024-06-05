@@ -294,3 +294,7 @@ body {
 #copyright .world {
   color: rgb(26, 32, 44);
 }
+
+.grecaptcha-badge {
+  bottom: 55px !important
+}

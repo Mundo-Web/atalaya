@@ -26,6 +26,7 @@ Route::get(
         ? redirect('/home')
         : Inertia::render('Login', [
             'PUBLIC_RSA_KEY' => Controller::$PUBLIC_RSA_KEY,
+            'NOCAPTCHA_SITEKEY' => env('NOCAPTCHA_SITEKEY'),
             'token' => csrf_token()
         ])
 )->name('login');

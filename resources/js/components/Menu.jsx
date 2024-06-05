@@ -60,7 +60,7 @@ const Menu = ({ session }) => {
       </div>
 
 
-      <div id="sidebar-menu">
+      <div id="sidebar-menu" className='show'>
 
         <ul id="side-menu">
           <li className="menu-title">Panel de navegacion</li>

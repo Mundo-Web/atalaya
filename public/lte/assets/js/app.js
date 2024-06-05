@@ -69,7 +69,7 @@ File: Layout
         this._reset();
 
         // Left menu collapse
-        $('.button-menu-mobile').on('click', function (event) {
+        $(document).on('click', '.button-menu-mobile', function (event) {
             event.preventDefault();
             var sidebarSize = self.body.attr('data-sidebar-size');
             if (self.window.width() >= 993) {

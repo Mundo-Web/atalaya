@@ -4,8 +4,10 @@ import { Notify, Fetch } from 'sode-extend-react'
 import JSEncrypt from 'jsencrypt'
 import '../css/login.css'
 import CreateReactScript from './Utils/CreateReactScript'
+import ReCAPTCHA from 'react-google-recaptcha'
+import AuthRest from './actions/AuthRest'
 
-const Login = ({ PUBLIC_RSA_KEY, token }) => {
+const Login = ({ PUBLIC_RSA_KEY, NOCAPTCHA_SITEKEY, token }) => {
 
   document.title = 'Login | Gestion de clientes'
 
@@ -14,6 +16,7 @@ const Login = ({ PUBLIC_RSA_KEY, token }) => {
 
   // Estados
   const [loading, setLoading] = useState(true)
+  const [captchaValue, setCaptchaValue] = useState(null)
 
   const formRef = useRef()
   const emailRef = useRef()
@@ -29,39 +32,24 @@ const Login = ({ PUBLIC_RSA_KEY, token }) => {
   //   location.href = './forgot-password'
   // }
 
+  console.log(captchaValue)
+
   const onLoginSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    try {
-      const email = emailRef.current.value
-      const password = passwordRef.current.value
-      const { status, result } = await Fetch('./api/login', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: jsEncrypt.encrypt(email),
-          password: jsEncrypt.encrypt(password),
-          _token: token
-        })
-      })
-      if (!status) throw new Error(result?.message || 'Error al iniciar sesion')
 
-      Notify.add({
-        icon: '/assets/img/logo.svg',
-        title: 'Operacion correcta',
-        body: 'Se inicio sesion correctamente'
-      })
+    const email = emailRef.current.value
+    const password = passwordRef.current.value
 
-      location.href = './home';
-    } catch (error) {
-      Notify.add({
-        icon: '/assets/img/logo.svg',
-        title: 'Error',
-        body: error.message,
-        type: 'danger'
-      })
-    } finally {
-      setLoading(false)
+    const request = {
+      email: jsEncrypt.encrypt(email),
+      password: jsEncrypt.encrypt(password),
+      _token: token
     }
+    const result = await AuthRest.login(request)
+
+    if (result) location.href = './home';
+    setLoading(false)
   }
 
   return (
@@ -121,6 +109,7 @@ const Login = ({ PUBLIC_RSA_KEY, token }) => {
                         </button>
                     </div> */}
         </form>
+        <ReCAPTCHA sitekey={NOCAPTCHA_SITEKEY} onChange={setCaptchaValue} size='invisible' />
         <a id="copyright" href="//mundoweb.pe" target="_blank">
           Propiedad de Mundo Web
         </a>

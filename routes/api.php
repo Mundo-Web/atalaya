@@ -34,4 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/clients/paginate', [ClientController::class, 'paginate']);
     Route::patch('/clients/status', [ClientController::class, 'status']);
     Route::delete('/clients/{id}', [ClientController::class, 'delete']);
+
+    // Projects routes
+    Route::post('/projects', [ClientController::class, 'save']);
+    Route::post('/projects/paginate', [ClientController::class, 'paginate']);
+    Route::patch('/projects/status', [ClientController::class, 'status']);
+    Route::delete('/projects/{id}', [ClientController::class, 'delete']);
 });

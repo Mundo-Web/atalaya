@@ -16,7 +16,7 @@
   @if ($admintoInstance)
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
       id="bs-default-stylesheet" />
-      <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
+    <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
     <link href="/lte/assets/css/config/default/app.min.css" rel="stylesheet" type="text/css"
       id="app-default-stylesheet" />
 
@@ -29,8 +29,7 @@
     <link href="/lte/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
     {{-- DxDataGrid Styles --}}
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.css" rel="stylesheet"
-    type="text/css">
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.css" rel="stylesheet" type="text/css">
   @endif
 
   @vite('resources/js/' . $component['component'])
@@ -48,7 +47,7 @@
     <script src="/lte/assets/js/vendor.min.js"></script>
 
     <!-- App js -->
-    <script src="/lte/assets/js/app.min.js"></script>
+    <script src="/lte/assets/js/app.js?v={{uniqid()}}"></script>
 
     <script src="/lte/assets/libs/dxdatagrid/js/dx.all.js"></script>
     <script src="/lte/assets/libs/dxdatagrid/js/localization/dx.messages.es.js"></script>
