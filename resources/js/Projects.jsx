@@ -13,6 +13,7 @@ import TippyButton from './components/form/TippyButton.jsx'
 import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import moment from 'moment-timezone'
 import SetSelectValue from './Utils/SetSelectValue.jsx'
+import { GET } from 'sode-extend-react'
 
 const Projects = () => {
   const gridRef = useRef()
@@ -111,7 +112,8 @@ const Projects = () => {
         },
         {
           dataField: 'client.name',
-          caption: 'Cliente'
+          caption: 'Cliente',
+          filterValue: GET.client || undefined
         },
         {
           dataField: 'type.name',
