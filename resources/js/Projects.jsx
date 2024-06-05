@@ -1,15 +1,16 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
+import SelectFormGroup from './components/form/SelectFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
 
 const Projects = () => {
   const gridRef = useRef()
@@ -17,10 +18,9 @@ const Projects = () => {
 
   // Form elements ref
   const idRef = useRef()
-  const rucRef = useRef()
+  const clientRef = useRef()
   const nameRef = useRef()
   const descriptionRef = useRef()
-  const contactRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -29,10 +29,8 @@ const Projects = () => {
     else setIsEditing(false)
 
     idRef.current.value = user?.id || null
-    rucRef.current.value = user?.ruc || null
     nameRef.current.value = user?.name || null
     descriptionRef.current.value = user?.description || null
-    contactRef.current.value = user?.contact || null
 
     $(modalRef.current).modal('show')
   }
@@ -42,10 +40,8 @@ const Projects = () => {
 
     const request = {
       id: idRef.current.value || undefined,
-      ruc: rucRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
-      contact: contactRef.current.value
     }
 
     const result = await ProjectsRest.save(request)
@@ -95,16 +91,16 @@ const Projects = () => {
           sortOrder: 'asc'
         },
         {
+          dataField: 'client.name',
+          caption: 'Cliente'
+        },
+        {
           dataField: 'name',
-          caption: 'Razon social'
+          caption: 'Proyecto'
         },
         {
           dataField: 'description',
           caption: 'Descripcion'
-        },
-        {
-          dataField: 'contact',
-          caption: 'Contacto'
         },
         {
           dataField: 'status',
@@ -151,13 +147,17 @@ const Projects = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='sm'>
-      <div className='row'>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit}>
+      <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={rucRef} label='RUC' col='col-12' required />
-        <InputFormGroup eRef={nameRef} label='Razon social' col='col-12' required />
+        <SelectFormGroup eRef={clientRef} label='Cliente' col='col-md-5' dropdownParent='#client-crud-container' required >
+          <option value="Hola">Hola</option>
+        </SelectFormGroup>
+        <InputFormGroup eRef={nameRef} label='Proyecto' col='col-md-7' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
-        <InputFormGroup eRef={contactRef} label='Celular de contacto' col='col-12' />
+        <InputFormGroup label='Fecha firma' col='col-md-4' type='date' />
+        <InputFormGroup label='Fecha inicio' col='col-md-4' type='date' />
+        <InputFormGroup label='Fecha fin' col='col-md-4' type='date' />
       </div>
     </Modal>
   </>

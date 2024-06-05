@@ -14,6 +14,7 @@
   <link rel="shortcut icon" href="assets/img/icon.svg" type="image/png">
 
   @if ($admintoInstance)
+    <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
       id="bs-default-stylesheet" />
     <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
@@ -46,8 +47,10 @@
     <!-- Vendor js -->
     <script src="/lte/assets/js/vendor.min.js"></script>
 
+    <script src="/lte/assets/libs/select2/js/select2.full.min.js"></script>
+
     <!-- App js -->
-    <script src="/lte/assets/js/app.js?v={{uniqid()}}"></script>
+    <script src="/lte/assets/js/app.js?v={{ uniqid() }}"></script>
 
     <script src="/lte/assets/libs/dxdatagrid/js/dx.all.js"></script>
     <script src="/lte/assets/libs/dxdatagrid/js/localization/dx.messages.es.js"></script>

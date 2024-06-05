@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UsersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/clients/{id}', [ClientController::class, 'delete']);
 
     // Projects routes
-    Route::post('/projects', [ClientController::class, 'save']);
-    Route::post('/projects/paginate', [ClientController::class, 'paginate']);
-    Route::patch('/projects/status', [ClientController::class, 'status']);
-    Route::delete('/projects/{id}', [ClientController::class, 'delete']);
+    Route::post('/projects', [ProjectController::class, 'save']);
+    Route::post('/projects/paginate', [ProjectController::class, 'paginate']);
+    Route::patch('/projects/status', [ProjectController::class, 'status']);
+    Route::delete('/projects/{id}', [ProjectController::class, 'delete']);
 });

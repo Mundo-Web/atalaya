@@ -71,14 +71,14 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-Bt5YR-oy.js",
+    "file": "assets/Projects-DWRm_Cbt.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-DBaueM34.js",
-      "_Adminto-CZDetwSn.js",
       "_InputFormGroup-DNB22k_n.js",
+      "_Adminto-CZDetwSn.js",
       "_TextareaFormGroup-DOW6YXZI.js"
     ]
   },
