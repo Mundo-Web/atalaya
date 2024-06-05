@@ -265,7 +265,7 @@ function ($) {
      */
     Topbar.prototype.initMenu = function() {
         // Serach Toggle
-        $('#top-search').on('click', function (e) {
+        $(document).on('click', '#top-search', function (e) {
             $('#search-dropdown').addClass('d-block');
         });
 
