@@ -11,6 +11,8 @@ import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import moment from 'moment-timezone'
+import SetSelectValue from './Utils/SetSelectValue.jsx'
 
 const Projects = () => {
   const gridRef = useRef()
@@ -34,10 +36,14 @@ const Projects = () => {
     else setIsEditing(false)
 
     idRef.current.value = data?.id || null
-    clientRef.current.value = data?.client_id
-    typeRef.current.value = data?.type_id
+    SetSelectValue(clientRef.current, data?.client?.id, data?.client?.name)
+    SetSelectValue(typeRef.current, data?.type?.id, data?.type?.name)
     nameRef.current.value = data?.name || null
     descriptionRef.current.value = data?.description || null
+    costRef.current.value = data?.cost
+    signAtRef.current.value = data?.sign_at ? moment(data.sign_at).format('YYYY-MM-DD') : null
+    startsAtRef.current.value = data?.starts_at ? moment(data.starts_at).format('YYYY-MM-DD') : null
+    endsAtRef.current.value = data?.ends_at ? moment(data.ends_at).format('YYYY-MM-DD') : null
 
     $(modalRef.current).modal('show')
   }

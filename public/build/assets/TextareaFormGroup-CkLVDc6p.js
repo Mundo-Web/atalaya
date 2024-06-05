@@ -1,0 +1,1 @@
+import{R as e}from"./CreateReactScript-CMiyu2aM.js";const c=({col:t,label:r,eRef:m,placeholder:l,required:a=!1})=>e.createElement("div",{className:`form-group ${t} mb-2`},e.createElement("label",{htmlFor:""},r," ",a&&e.createElement("b",{className:"text-danger"},"*")),e.createElement("textarea",{ref:m,className:"form-control",placeholder:l,required:a}));export{c as T};

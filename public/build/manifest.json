@@ -1,24 +1,24 @@
 {
-  "_Adminto-CZDetwSn.js": {
-    "file": "assets/Adminto-CZDetwSn.js",
+  "_Adminto-BPeyNqsd.js": {
+    "file": "assets/Adminto-BPeyNqsd.js",
     "name": "Adminto",
     "imports": [
-      "_CreateReactScript-DBaueM34.js"
+      "_CreateReactScript-CMiyu2aM.js"
     ]
   },
-  "_CreateReactScript-DBaueM34.js": {
-    "file": "assets/CreateReactScript-DBaueM34.js",
+  "_CreateReactScript-CMiyu2aM.js": {
+    "file": "assets/CreateReactScript-CMiyu2aM.js",
     "name": "CreateReactScript"
   },
-  "_InputFormGroup-!~{008}~.js": {
+  "_InputFormGroup-!~{00a}~.js": {
     "file": "assets/InputFormGroup-LriLsbSV.css",
-    "src": "_InputFormGroup-!~{008}~.js"
+    "src": "_InputFormGroup-!~{00a}~.js"
   },
-  "_InputFormGroup-DNB22k_n.js": {
-    "file": "assets/InputFormGroup-DNB22k_n.js",
+  "_InputFormGroup-BMI1v1th.js": {
+    "file": "assets/InputFormGroup-BMI1v1th.js",
     "name": "InputFormGroup",
     "imports": [
-      "_CreateReactScript-DBaueM34.js"
+      "_CreateReactScript-CMiyu2aM.js"
     ],
     "css": [
       "assets/InputFormGroup-LriLsbSV.css"
@@ -28,42 +28,42 @@
     "file": "assets/JSEncrypt-D3I3x59l.js",
     "name": "JSEncrypt"
   },
-  "_TextareaFormGroup-DOW6YXZI.js": {
-    "file": "assets/TextareaFormGroup-DOW6YXZI.js",
+  "_TextareaFormGroup-CkLVDc6p.js": {
+    "file": "assets/TextareaFormGroup-CkLVDc6p.js",
     "name": "TextareaFormGroup",
     "imports": [
-      "_CreateReactScript-DBaueM34.js"
+      "_CreateReactScript-CMiyu2aM.js"
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-W_uB6joF.js",
+    "file": "assets/Clients-CFxZunCf.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
     "imports": [
-      "_CreateReactScript-DBaueM34.js",
-      "_Adminto-CZDetwSn.js",
-      "_InputFormGroup-DNB22k_n.js",
-      "_TextareaFormGroup-DOW6YXZI.js"
+      "_CreateReactScript-CMiyu2aM.js",
+      "_Adminto-BPeyNqsd.js",
+      "_InputFormGroup-BMI1v1th.js",
+      "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
   "resources/js/Home.jsx": {
-    "file": "assets/Home-CHdCk-7Z.js",
+    "file": "assets/Home-5pgjODW7.js",
     "name": "Home",
     "src": "resources/js/Home.jsx",
     "isEntry": true,
     "imports": [
-      "_CreateReactScript-DBaueM34.js",
-      "_Adminto-CZDetwSn.js"
+      "_CreateReactScript-CMiyu2aM.js",
+      "_Adminto-BPeyNqsd.js"
     ]
   },
   "resources/js/Login.jsx": {
-    "file": "assets/Login-Vi8sT-OG.js",
+    "file": "assets/Login-uuMmrmyk.js",
     "name": "Login",
     "src": "resources/js/Login.jsx",
     "isEntry": true,
     "imports": [
-      "_CreateReactScript-DBaueM34.js",
+      "_CreateReactScript-CMiyu2aM.js",
       "_JSEncrypt-D3I3x59l.js"
     ],
     "css": [
@@ -71,26 +71,50 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-DWRm_Cbt.js",
+    "file": "assets/Projects-C2XVKP5m.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
-      "_CreateReactScript-DBaueM34.js",
-      "_InputFormGroup-DNB22k_n.js",
-      "_Adminto-CZDetwSn.js",
-      "_TextareaFormGroup-DOW6YXZI.js"
+      "_CreateReactScript-CMiyu2aM.js",
+      "_InputFormGroup-BMI1v1th.js",
+      "_Adminto-BPeyNqsd.js",
+      "_TextareaFormGroup-CkLVDc6p.js"
+    ]
+  },
+  "resources/js/Statuses.jsx": {
+    "file": "assets/Statuses-Cq7iXBNS.js",
+    "name": "Statuses",
+    "src": "resources/js/Statuses.jsx",
+    "isEntry": true,
+    "imports": [
+      "_CreateReactScript-CMiyu2aM.js",
+      "_Adminto-BPeyNqsd.js",
+      "_InputFormGroup-BMI1v1th.js",
+      "_TextareaFormGroup-CkLVDc6p.js"
+    ]
+  },
+  "resources/js/Types.jsx": {
+    "file": "assets/Types-v9lPfXvn.js",
+    "name": "Types",
+    "src": "resources/js/Types.jsx",
+    "isEntry": true,
+    "imports": [
+      "_CreateReactScript-CMiyu2aM.js",
+      "_Adminto-BPeyNqsd.js",
+      "_InputFormGroup-BMI1v1th.js",
+      "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
   "resources/js/Users.jsx": {
-    "file": "assets/Users-DMfQU5LF.js",
+    "file": "assets/Users-CShT5pp7.js",
     "name": "Users",
     "src": "resources/js/Users.jsx",
     "isEntry": true,
     "imports": [
-      "_CreateReactScript-DBaueM34.js",
-      "_Adminto-CZDetwSn.js",
-      "_InputFormGroup-DNB22k_n.js",
+      "_CreateReactScript-CMiyu2aM.js",
+      "_Adminto-BPeyNqsd.js",
+      "_InputFormGroup-BMI1v1th.js",
       "_JSEncrypt-D3I3x59l.js"
     ]
   }

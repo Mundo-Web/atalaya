@@ -142,6 +142,10 @@ const Clients = () => {
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' >
+              <i className='fa '></i>
+            </TippyButton>)
+
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)

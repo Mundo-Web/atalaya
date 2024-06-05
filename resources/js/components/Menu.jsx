@@ -70,7 +70,7 @@ const Menu = ({ session }) => {
           <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
             <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
             <MenuItem href="/types" icon="mdi mdi-format-list-text">Tipos</MenuItem>
-            <MenuItem href="/statuses" icon="mdi mdi-format-list-text">Estados</MenuItem>
+            <MenuItem href="/statuses" icon="mdi mdi-timeline-check">Estados</MenuItem>
           </MenuItemContainer>
 
           <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
