@@ -86,8 +86,8 @@ class ClientController extends Controller
         try {
 
             $body = $request->all();
-
             $jpa = Client::find($request->id);
+
             if (!$jpa) {
                 Client::create($body);
             } else {

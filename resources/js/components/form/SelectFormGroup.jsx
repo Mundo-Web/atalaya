@@ -4,8 +4,6 @@ const SelectFormGroup = ({ col, label, eRef, required = false, children, dropdow
 
   if (!eRef) eRef = useRef()
 
-  console.log(dropdownParent)
-
   useEffect(() => {
     $(eRef.current).select2({
       dropdownParent

@@ -18,6 +18,14 @@ class Router
       'component' => 'Projects.jsx',
       'adminto-instance' => true
     ],
+    'types' => [
+      'component' => 'Types.jsx',
+      'adminto-instance' => true
+    ],
+    'statuses' => [
+      'component' => 'Statuses.jsx',
+      'adminto-instance' => true
+    ],
     'users' => [
       'component' => 'Users.jsx',
       'adminto-instance' => true

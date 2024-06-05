@@ -1,8 +1,8 @@
 import { Fetch, Notify } from "sode-extend-react"
 
-class ProjectsRest {
+class TypesRest {
   static paginate = async (params) => {
-    const { result } = await Fetch(`/api/projects/paginate`, {
+    const { result } = await Fetch(`/api/types/paginate`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -15,7 +15,7 @@ class ProjectsRest {
 
   static save = async (client) => {
     try {
-      const { status, result } = await Fetch('/api/projects', {
+      const { status, result } = await Fetch('/api/types', {
         method: 'POST',
         body: JSON.stringify(client)
       })
@@ -42,7 +42,7 @@ class ProjectsRest {
 
   static status = async ({ id, status }) => {
     try {
-      const { status: fetchStatus, result } = await Fetch('/api/projects/status', {
+      const { status: fetchStatus, result } = await Fetch('/api/types/status', {
         method: 'PATCH',
         body: JSON.stringify({ id, status })
       })
@@ -70,7 +70,7 @@ class ProjectsRest {
 
   static delete = async (id) => {
     try {
-      const { status: fetchStatus, result } = await Fetch(`/api/projects/${id}`, {
+      const { status: fetchStatus, result } = await Fetch(`/api/types/${id}`, {
         method: 'DELETE'
       })
       if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
@@ -96,4 +96,4 @@ class ProjectsRest {
   }
 }
 
-export default ProjectsRest
+export default TypesRest

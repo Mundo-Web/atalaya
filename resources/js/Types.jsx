@@ -1,32 +1,24 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Fetch, Notify } from 'sode-extend-react'
-import Adminto from './components/Adminto'
+import Adminto from './components/Adminto.jsx'
 import Table from './components/Table.jsx'
 import Modal from './components/Modal.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
-import PasswordFormGroup from './components/form/PasswordFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import JSEncrypt from 'jsencrypt'
-import UsersRest from './actions/UsersRest.js'
+import TypesRest from './actions/TypesRest.js'
+import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 
-const Users = ({ PUBLIC_RSA_KEY }) => {
+const Types = () => {
   const gridRef = useRef()
   const modalRef = useRef()
 
   // Form elements ref
   const idRef = useRef()
   const nameRef = useRef()
-  const lastnameRef = useRef()
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const confirmRef = useRef()
-
-  const jsEncrypt = new JSEncrypt()
-  jsEncrypt.setPublicKey(PUBLIC_RSA_KEY)
+  const descriptionRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -36,10 +28,7 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
 
     idRef.current.value = data?.id || null
     nameRef.current.value = data?.name || null
-    lastnameRef.current.value = data?.lastname || null
-    emailRef.current.value = data?.email || null
-    passwordRef.current.value = null
-    confirmRef.current.value = null
+    descriptionRef.current.value = data?.description || null
 
     $(modalRef.current).modal('show')
   }
@@ -50,33 +39,30 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
     const request = {
       id: idRef.current.value || undefined,
       name: nameRef.current.value,
-      lastname: lastnameRef.current.value,
-      email: emailRef.current.value,
-      password: jsEncrypt.encrypt(passwordRef.current.value) || undefined,
-      confirm: jsEncrypt.encrypt(confirmRef.current.value) || undefined
+      description: descriptionRef.current.value,
     }
 
-    const result = await UsersRest.save(request)
+    const result = await TypesRest.save(request)
     if (!result) return
-    
+
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
   }
 
   const onStatusChange = async ({ id, status }) => {
-    const result = await UsersRest.status({id, status})
+    const result = await TypesRest.status({ id, status })
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await UsersRest.delete(id)
+    const result = await TypesRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Usuarios' rest={UsersRest}
+    <Table gridRef={gridRef} title='Tipos' rest={TypesRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -104,11 +90,15 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
         },
         {
           dataField: 'name',
-          caption: 'Nombres'
+          caption: 'Tipo'
         },
         {
-          dataField: 'lastname',
-          caption: 'Apellidos'
+          dataField: 'description',
+          caption: 'Descripcion',
+          cellTemplate: (container, { value }) => {
+            if (!value) ReactAppend(container, <i className='text-muted'>- Sin descripcion -</i>)
+            else ReactAppend(container, value)
+          }
         },
         {
           dataField: 'status',
@@ -155,14 +145,11 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar usuario' : 'Agregar usuario'} onSubmit={onModalSubmit}>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='sm'>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={nameRef} label='Nombres' col='col-md-6' required />
-        <InputFormGroup eRef={lastnameRef} label='Apellidos' col='col-md-6' required />
-        <InputFormGroup eRef={emailRef} label='Correo' col='col-12' type='email' required />
-        <PasswordFormGroup eRef={passwordRef} label='Contraseña' col='col-md-6' required={!isEditing} />
-        <PasswordFormGroup eRef={confirmRef} label='Repetir contraseña' col='col-md-6' required={!isEditing} />
+        <InputFormGroup eRef={nameRef} label='Tipo' col='col-12' required />
+        <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>
   </>
@@ -171,8 +158,8 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Usuarios'>
-      <Users {...properties} />
+    <Adminto session={properties.session} title='Tipos'>
+      <Types {...properties} />
     </Adminto>
   );
 })

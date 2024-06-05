@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\Project;
-use App\Models\ProjectView;
+use App\Models\Type;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -13,18 +12,18 @@ use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
-class ProjectController extends Controller
+class TypeController extends Controller
 {
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = ProjectView::select();
+            $instance = Type::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = ProjectView::select([
+                $instance = Type::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
@@ -72,7 +71,7 @@ class ProjectController extends Controller
             $response->totalCount = $totalCount;
         } catch (\Throwable $th) {
             $response->status = 400;
-            $response->message = $th->getMessage() . " " . $th->getFile() . ' Ln.' . $th->getLine();
+            $response->message = $th->getMessage() . ' Ln.' . $th->getLine();
         } finally {
             return response(
                 $response->toArray(),
@@ -87,10 +86,10 @@ class ProjectController extends Controller
         try {
 
             $body = $request->all();
+            $jpa = Type::find($request->id);
 
-            $jpa = Project::find($request->id);
             if (!$jpa) {
-                Project::create($body);
+                Type::create($body);
             } else {
                 $jpa->update($body);
             }
@@ -112,7 +111,7 @@ class ProjectController extends Controller
     {
         $response = new Response();
         try {
-            Project::where('id', $request->id)
+            Type::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
                 ]);
@@ -134,7 +133,7 @@ class ProjectController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Project::where('id', $id)
+            $deleted = Type::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

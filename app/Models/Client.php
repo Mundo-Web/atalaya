@@ -18,6 +18,9 @@ class Client extends Model
         'ruc',
         'name',
         'description',
-        'contact'
+        'contact_name',
+        'contact_phone',
+        'contact_email',
+        'contact_address'
     ];
 }

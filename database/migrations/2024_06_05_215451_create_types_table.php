@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('types', function (Blueprint $table) {
             $table->id();
-            $table->string('ruc')->unique();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('contact_name')->nullable();
-            $table->string('contact_phone')->nullable();
-            $table->string('contact_email')->nullable();
-            $table->string('contact_address')->nullable();
             $table->boolean('status')->nullable()->default(true);
             $table->timestamps();
         });
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('types');
     }
 };

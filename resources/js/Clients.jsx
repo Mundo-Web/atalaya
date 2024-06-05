@@ -20,19 +20,25 @@ const Clients = () => {
   const rucRef = useRef()
   const nameRef = useRef()
   const descriptionRef = useRef()
-  const contactRef = useRef()
+  const contactNameRef = useRef()
+  const contactPhoneRef = useRef()
+  const contactEmailRef = useRef()
+  const contactAddressRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
 
-  const onModalOpen = (user) => {
-    if (user?.id) setIsEditing(true)
+  const onModalOpen = (data) => {
+    if (data?.id) setIsEditing(true)
     else setIsEditing(false)
 
-    idRef.current.value = user?.id || null
-    rucRef.current.value = user?.ruc || null
-    nameRef.current.value = user?.name || null
-    descriptionRef.current.value = user?.description || null
-    contactRef.current.value = user?.contact || null
+    idRef.current.value = data?.id || null
+    rucRef.current.value = data?.ruc || null
+    nameRef.current.value = data?.name || null
+    descriptionRef.current.value = data?.description || null
+    contactNameRef.current.value = data?.contact_name || null
+    contactPhoneRef.current.value = data?.contact_phone || null
+    contactEmailRef.current.value = data?.contact_email || null
+    contactAddressRef.current.value = data?.contact_address || null
 
     $(modalRef.current).modal('show')
   }
@@ -45,7 +51,10 @@ const Clients = () => {
       ruc: rucRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
-      contact: contactRef.current.value
+      contact_name: contactNameRef.current.value,
+      contact_phone: contactPhoneRef.current.value,
+      contact_email: contactEmailRef.current.value,
+      contact_address: contactAddressRef.current.value,
     }
 
     const result = await ClientsRest.save(request)
@@ -95,16 +104,20 @@ const Clients = () => {
           sortOrder: 'asc'
         },
         {
+          dataField: 'ruc',
+          caption: 'RUC'
+        },
+        {
           dataField: 'name',
           caption: 'Razon social'
         },
         {
-          dataField: 'description',
-          caption: 'Descripcion'
+          dataField: 'contact_phone',
+          caption: 'Telefono'
         },
         {
-          dataField: 'contact',
-          caption: 'Contacto'
+          dataField: 'contact_email',
+          caption: 'Correo'
         },
         {
           dataField: 'status',
@@ -151,13 +164,17 @@ const Clients = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='sm'>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='md'>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={rucRef} label='RUC' col='col-12' required />
-        <InputFormGroup eRef={nameRef} label='Razon social' col='col-12' required />
+        <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
+        <InputFormGroup eRef={nameRef} label='Razon social' col='col-8' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
-        <InputFormGroup eRef={contactRef} label='Celular de contacto' col='col-12' />
+        <div className="col-12"><hr className='my-1' /></div>
+        <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
+        <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' col='col-6' />
+        <InputFormGroup eRef={contactEmailRef} label='Email de contacto' col='col-12' type='email' />
+        <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
       </div>
     </Modal>
   </>

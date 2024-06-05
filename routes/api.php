@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +36,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/clients/paginate', [ClientController::class, 'paginate']);
     Route::patch('/clients/status', [ClientController::class, 'status']);
     Route::delete('/clients/{id}', [ClientController::class, 'delete']);
+
+    // Types routes
+    Route::post('/types', [TypeController::class, 'save']);
+    Route::post('/types/paginate', [TypeController::class, 'paginate']);
+    Route::patch('/types/status', [TypeController::class, 'status']);
+    Route::delete('/types/{id}', [TypeController::class, 'delete']);
+
+    // Statuses routes
+    Route::post('/statuses', [StatusController::class, 'save']);
+    Route::post('/statuses/paginate', [StatusController::class, 'paginate']);
+    Route::patch('/statuses/status', [StatusController::class, 'status']);
+    Route::delete('/statuses/{id}', [StatusController::class, 'delete']);
 
     // Projects routes
     Route::post('/projects', [ProjectController::class, 'save']);

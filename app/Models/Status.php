@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Status extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'type_id',
-        'client_id',
         'name',
-        'description',
-        'cost',
-        'signed_at',
-        'starts_at',
-        'ends_at',
+        'description'
     ];
 }

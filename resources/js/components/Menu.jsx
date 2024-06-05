@@ -66,7 +66,13 @@ const Menu = ({ session }) => {
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
-          <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
+
+          <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
+            <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
+            <MenuItem href="/types" icon="mdi mdi-format-list-text">Tipos</MenuItem>
+            <MenuItem href="/statuses" icon="mdi mdi-format-list-text">Estados</MenuItem>
+          </MenuItemContainer>
+
           <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
             <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
             <MenuItem href="/roles" icon='mdi mdi-account'>Roles</MenuItem>

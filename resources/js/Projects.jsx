@@ -8,9 +8,9 @@ import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
-import SelectFormGroup from './components/form/SelectFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 
 const Projects = () => {
   const gridRef = useRef()
@@ -19,18 +19,25 @@ const Projects = () => {
   // Form elements ref
   const idRef = useRef()
   const clientRef = useRef()
+  const typeRef = useRef()
   const nameRef = useRef()
   const descriptionRef = useRef()
+  const costRef = useRef()
+  const signAtRef = useRef()
+  const startsAtRef = useRef()
+  const endsAtRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
 
-  const onModalOpen = (user) => {
-    if (user?.id) setIsEditing(true)
+  const onModalOpen = (data) => {
+    if (data?.id) setIsEditing(true)
     else setIsEditing(false)
 
-    idRef.current.value = user?.id || null
-    nameRef.current.value = user?.name || null
-    descriptionRef.current.value = user?.description || null
+    idRef.current.value = data?.id || null
+    clientRef.current.value = data?.client_id
+    typeRef.current.value = data?.type_id
+    nameRef.current.value = data?.name || null
+    descriptionRef.current.value = data?.description || null
 
     $(modalRef.current).modal('show')
   }
@@ -40,8 +47,14 @@ const Projects = () => {
 
     const request = {
       id: idRef.current.value || undefined,
+      client_id: clientRef.current.value,
+      type_id: typeRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
+      cost: costRef.current.value ?? undefined,
+      sign_at: signAtRef.current.value ?? undefined,
+      starts_at: startsAtRef.current.value,
+      ends_at: endsAtRef.current.value,
     }
 
     const result = await ProjectsRest.save(request)
@@ -95,12 +108,20 @@ const Projects = () => {
           caption: 'Cliente'
         },
         {
+          dataField: 'type.name',
+          caption: 'Tipo'
+        },
+        {
           dataField: 'name',
           caption: 'Proyecto'
         },
         {
-          dataField: 'description',
-          caption: 'Descripcion'
+          dataField: 'cost',
+          caption: 'Costo'
+        },
+        {
+          dataField: 'project_status.name',
+          caption: 'Estado del proyecto'
         },
         {
           dataField: 'status',
@@ -150,14 +171,14 @@ const Projects = () => {
     <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit}>
       <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
-        <SelectFormGroup eRef={clientRef} label='Cliente' col='col-md-5' dropdownParent='#client-crud-container' required >
-          <option value="Hola">Hola</option>
-        </SelectFormGroup>
-        <InputFormGroup eRef={nameRef} label='Proyecto' col='col-md-7' required />
+        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-md-6' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
+        <SelectAPIFormGroup eRef={typeRef} label='Tipo' col='col-md-6' dropdownParent='#client-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
+        <InputFormGroup eRef={nameRef} label='Nombre' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
-        <InputFormGroup label='Fecha firma' col='col-md-4' type='date' />
-        <InputFormGroup label='Fecha inicio' col='col-md-4' type='date' />
-        <InputFormGroup label='Fecha fin' col='col-md-4' type='date' />
+        <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' required />
+        <InputFormGroup eRef={signAtRef} label='Fecha firma' col='col-md-6' type='date' />
+        <InputFormGroup eRef={startsAtRef} label='Fecha inicio' col='col-md-6' type='date' required />
+        <InputFormGroup eRef={endsAtRef} label='Fecha fin' col='col-md-6' type='date' required />
       </div>
     </Modal>
   </>

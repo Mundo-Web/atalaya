@@ -19,5 +19,11 @@ class UsersSeeder extends Seeder
             'email' => 'root@mundoweb.pe',
             'password' => 'r00tme'
         ])->assignRole('Root');
+        User::factory()->create([
+            'name' => 'Julio',
+            'lastname' => 'Izquierdo',
+            'email' => 'hola@mundoweb.pe',
+            'password' => '12345678'
+        ])->assignRole('Root');
     }
 }
