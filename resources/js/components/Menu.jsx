@@ -63,10 +63,10 @@ const Menu = ({ session }) => {
       <div id="sidebar-menu">
 
         <ul id="side-menu">
-
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
+          <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
           <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
             <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
             <MenuItem href="/roles" icon='mdi mdi-account'>Roles</MenuItem>
