@@ -134,7 +134,8 @@ const Projects = ({ statuses }) => {
         },
         {
           dataField: 'cost',
-          caption: 'Costo'
+          caption: 'Costo',
+          dataType: 'number'
         },
         {
           dataField: 'project_status.name',
