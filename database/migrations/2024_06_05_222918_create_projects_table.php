@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->decimal('cost')->default(0);
-            $table->timestamp('signed_at')->nullable();
+            $table->date('signed_at')->nullable();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
             $table->boolean('visible')->default(true);
