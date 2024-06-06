@@ -90,7 +90,7 @@ const Statuses = () => {
         },
         {
           dataField: 'name',
-          caption: 'Tipo'
+          caption: 'Estado'
         },
         {
           dataField: 'description',
