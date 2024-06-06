@@ -145,10 +145,10 @@ const Statuses = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='sm'>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar estado de proyecto' : 'Agregar estado de proyecto'} onSubmit={onModalSubmit} size='sm'>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={nameRef} label='Estado' col='col-12' required />
+        <InputFormGroup eRef={nameRef} label='Estado de proyecto' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>

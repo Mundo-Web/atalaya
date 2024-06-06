@@ -176,7 +176,7 @@ const Projects = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit}>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
       <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
         <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-md-6' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
