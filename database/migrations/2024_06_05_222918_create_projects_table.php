@@ -28,6 +28,7 @@ return new class extends Migration
 
             $table->foreign('type_id')->references('id')->on('types');
             $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 
