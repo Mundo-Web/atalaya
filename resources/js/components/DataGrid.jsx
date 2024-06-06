@@ -23,7 +23,7 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar }) => {
       scrollbars: 'auto',
       filterPanel: { visible: true },
       searchPanel: { visible: true },
-      headerFilter: { visible: true },
+      headerFilter: { visible: true, allowSearch: true },
       height: 'calc(100vh - 185px)',
       // export: {
       //   enabled: true

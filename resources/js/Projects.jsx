@@ -139,6 +139,7 @@ const Projects = ({ statuses }) => {
         {
           dataField: 'project_status.name',
           caption: 'Estado del proyecto',
+          dataType: 'string',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
             ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.project_status.name} tippy="Actualizar estado">
