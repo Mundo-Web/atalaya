@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('cost')->default(0);
             $table->date('signed_at')->nullable();
-            $table->timestamp('starts_at');
-            $table->timestamp('ends_at');
+            $table->date('starts_at');
+            $table->date('ends_at');
             $table->boolean('visible')->default(true);
             $table->boolean('status')->default(true)->nullable();
             $table->timestamps();
