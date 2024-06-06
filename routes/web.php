@@ -41,12 +41,18 @@ Route::middleware('auth')->group(function () {
     foreach (Router::components as $path => $page) {
         if (isset($page['adminto-instance']) && $page['adminto-instance']) {
             Route::get('/' . $path, function (Request $request) use ($page) {
-                return Inertia::render($page['component'], [
+                $properties = [
                     'PUBLIC_RSA_KEY' => Controller::$PUBLIC_RSA_KEY,
                     'token' => csrf_token(),
                     'session' => auth()->user(),
                     'permissions' => auth()->user()->getAllPermissions()
-                ]);
+                ];
+                if (isset($page['compact'])) {
+                    foreach ($page['compact'] as $key => $class) {
+                        $properties[$key] = $class::all();
+                    }
+                }
+                return Inertia::render($page['component'], $properties);
             })->name($path);
         }
     }

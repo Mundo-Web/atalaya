@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
@@ -14,8 +14,11 @@ import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import moment from 'moment-timezone'
 import SetSelectValue from './Utils/SetSelectValue.jsx'
 import { GET } from 'sode-extend-react'
+import Dropdown from './components/dropdown/DropDown.jsx'
+import DropdownItem from './components/dropdown/DropdownItem.jsx'
+import StatusesRest from './actions/StatusesRest.js'
 
-const Projects = () => {
+const Projects = ({ statuses }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -83,6 +86,12 @@ const Projects = () => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
+  const onProjectStatusClicked = async (project, status) => {
+    const result = await ProjectsRest.projectStatus(project, status)
+    if (!result) return
+    $(gridRef.current).dxDataGrid('instance').refresh()
+  }
+
   return (<>
     <Table gridRef={gridRef} title='Proyectos' rest={ProjectsRest}
       toolBar={(container) => {
@@ -129,7 +138,17 @@ const Projects = () => {
         },
         {
           dataField: 'project_status.name',
-          caption: 'Estado del proyecto'
+          caption: 'Estado del proyecto',
+          cellTemplate: (container, { data }) => {
+            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.project_status.name} tippy="Actualizar estado">
+              {statuses.map(({ id, name }) => {
+                return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
+                  {name}
+                </DropdownItem>
+              })}
+            </Dropdown>)
+          }
         },
         {
           dataField: 'status',
@@ -179,10 +198,10 @@ const Projects = () => {
     <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
       <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
-        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-md-6' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
-        <SelectAPIFormGroup eRef={typeRef} label='Tipo' col='col-md-6' dropdownParent='#client-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
-        <InputFormGroup eRef={nameRef} label='Nombre' col='col-12' required />
-        <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
+        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-12' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
+        <SelectAPIFormGroup eRef={typeRef} label='Tipo del proyecto' col='col-md-4' dropdownParent='#client-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
+        <InputFormGroup eRef={nameRef} label='Nombre del proyecto' col='col-md-8' required />
+        <TextareaFormGroup eRef={descriptionRef} label='Descripcion del proyecto' col='col-12' />
         <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' required />
         <InputFormGroup eRef={signAtRef} label='Fecha firma' col='col-md-6' type='date' />
         <InputFormGroup eRef={startsAtRef} label='Fecha inicio' col='col-md-6' type='date' required />

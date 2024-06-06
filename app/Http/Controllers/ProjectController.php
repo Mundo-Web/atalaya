@@ -130,6 +130,28 @@ class ProjectController extends Controller
         }
     }
 
+    static function projectStatus(Request $request)
+    {
+        $response = new Response();
+        try {
+            Project::where('id', $request->project)
+                ->update([
+                    'status_id' => $request->status
+                ]);
+
+            $response->status = 200;
+            $response->message = 'Operacion correcta';
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
     static function delete(Request $request, string $id)
     {
         $response = new Response();

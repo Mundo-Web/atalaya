@@ -68,6 +68,34 @@ class ProjectsRest {
     }
   }
 
+  static projectStatus = async (project, status) => {
+    try {
+      const { status: fetchStatus, result } = await Fetch('/api/projects/project-status', {
+        method: 'PATCH',
+        body: JSON.stringify({ project, status })
+      })
+      if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
+
+      Notify.add({
+        icon: '/assets/img/logo.svg',
+        title: 'Correcto',
+        body: result.message,
+        type: 'success'
+      })
+
+      return true
+    } catch (error) {
+      Notify.add({
+        icon: '/assets/img/logo.svg',
+        title: 'Error',
+        body: error.message,
+        type: 'danger'
+      })
+
+      return false
+    }
+  }
+
   static delete = async (id) => {
     try {
       const { status: fetchStatus, result } = await Fetch(`/api/projects/${id}`, {

@@ -14,8 +14,8 @@
     "file": "assets/InputFormGroup-LriLsbSV.css",
     "src": "_InputFormGroup-!~{00a}~.js"
   },
-  "_InputFormGroup-BMI1v1th.js": {
-    "file": "assets/InputFormGroup-BMI1v1th.js",
+  "_InputFormGroup-sGj9Rujl.js": {
+    "file": "assets/InputFormGroup-sGj9Rujl.js",
     "name": "InputFormGroup",
     "imports": [
       "_CreateReactScript-CMiyu2aM.js"
@@ -36,14 +36,14 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-CfWG0fjR.js",
+    "file": "assets/Clients-B44HJElP.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
       "_Adminto-BPeyNqsd.js",
-      "_InputFormGroup-BMI1v1th.js",
+      "_InputFormGroup-sGj9Rujl.js",
       "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
@@ -71,50 +71,50 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-CpI4bO4t.js",
+    "file": "assets/Projects-BrfEPCuf.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
-      "_InputFormGroup-BMI1v1th.js",
+      "_InputFormGroup-sGj9Rujl.js",
       "_Adminto-BPeyNqsd.js",
       "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
   "resources/js/Statuses.jsx": {
-    "file": "assets/Statuses-B7bR9Ef4.js",
+    "file": "assets/Statuses-BjOi6Evq.js",
     "name": "Statuses",
     "src": "resources/js/Statuses.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
       "_Adminto-BPeyNqsd.js",
-      "_InputFormGroup-BMI1v1th.js",
+      "_InputFormGroup-sGj9Rujl.js",
       "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
   "resources/js/Types.jsx": {
-    "file": "assets/Types-B_WFuQVi.js",
+    "file": "assets/Types-BbIbBH8X.js",
     "name": "Types",
     "src": "resources/js/Types.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
       "_Adminto-BPeyNqsd.js",
-      "_InputFormGroup-BMI1v1th.js",
+      "_InputFormGroup-sGj9Rujl.js",
       "_TextareaFormGroup-CkLVDc6p.js"
     ]
   },
   "resources/js/Users.jsx": {
-    "file": "assets/Users-CShT5pp7.js",
+    "file": "assets/Users-WF7BmdWj.js",
     "name": "Users",
     "src": "resources/js/Users.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
       "_Adminto-BPeyNqsd.js",
-      "_InputFormGroup-BMI1v1th.js",
+      "_InputFormGroup-sGj9Rujl.js",
       "_JSEncrypt-D3I3x59l.js"
     ]
   }

@@ -53,5 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects', [ProjectController::class, 'save']);
     Route::post('/projects/paginate', [ProjectController::class, 'paginate']);
     Route::patch('/projects/status', [ProjectController::class, 'status']);
+    Route::patch('/projects/project-status', [ProjectController::class, 'projectStatus']);
     Route::delete('/projects/{id}', [ProjectController::class, 'delete']);
 });

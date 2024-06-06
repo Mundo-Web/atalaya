@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Status;
+
 class Router
 {
   const components = [
@@ -16,7 +18,10 @@ class Router
     ],
     'projects' => [
       'component' => 'Projects.jsx',
-      'adminto-instance' => true
+      'adminto-instance' => true,
+      'compact' => [
+        'statuses' => Status::class
+      ]
     ],
     'types' => [
       'component' => 'Types.jsx',
