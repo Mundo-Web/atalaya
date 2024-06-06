@@ -22,7 +22,7 @@ class UsersSeeder extends Seeder
         User::factory()->create([
             'name' => 'Julio',
             'lastname' => 'Izquierdo',
-            'email' => 'hola@mundoweb.pe',
+            'email' => 'julio@mundoweb.pe',
             'password' => '12345678'
         ])->assignRole('Root');
     }
