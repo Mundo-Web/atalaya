@@ -103,7 +103,7 @@ const Clients = () => {
         //   }
         // });
       }}
-      filterValue={['status_id', 'eq', 12]}
+      filterValue={['status_id', '=', 12]}
       columns={[
         {
           dataField: 'id',
