@@ -55,7 +55,10 @@ const Leads = ({ statuses }) => {
       contact_phone: contactPhoneRef.current.value,
       name: nameRef.current.value,
       web_url: webUrlRef.current.value,
-      message: messageRef.current.value
+      message: messageRef.current.value,
+      client_width: window.screen.width,
+      client_height: window.screen.height,
+      client_system: navigator.platform ?? 'Linux'
     }
 
     const result = await ClientsRest.save(request)
