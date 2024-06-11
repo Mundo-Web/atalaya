@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
@@ -16,7 +16,6 @@ import SetSelectValue from './Utils/SetSelectValue.jsx'
 import { GET } from 'sode-extend-react'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
-import StatusesRest from './actions/StatusesRest.js'
 
 const Projects = ({ statuses }) => {
   const gridRef = useRef()
@@ -217,7 +216,7 @@ const Projects = ({ statuses }) => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Proyectos'>
+    <Adminto {...properties} title='Proyectos'>
       <Projects {...properties} />
     </Adminto>
   );

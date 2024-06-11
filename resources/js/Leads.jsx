@@ -59,6 +59,7 @@ const Leads = ({ statuses }) => {
       client_width: window.screen.width,
       client_height: window.screen.height,
       client_system: navigator.platform ?? 'Linux'
+      // TODO: Agregar latitud y longitud
     }
 
     const result = await ClientsRest.save(request)
@@ -185,7 +186,7 @@ const Leads = ({ statuses }) => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Leads'>
+    <Adminto {...properties} title='Leads'>
       <Leads {...properties} />
     </Adminto>
   );

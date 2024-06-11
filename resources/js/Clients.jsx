@@ -276,7 +276,7 @@ const Clients = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Clientes'>
+    <Adminto {...properties} title='Clientes'>
       <Clients {...properties} />
     </Adminto>
   );

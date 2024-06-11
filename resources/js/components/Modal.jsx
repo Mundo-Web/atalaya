@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', children, bodyClass = '', btnCancelText, btnSubmitText, hideFooter, onSubmit }) => {
+const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', children, bodyClass = '', btnCancelText, btnSubmitText, hideFooter, onSubmit = (e) => { e.preventDefault(); $(modalRef.current).modal('hide') } }) => {
 
   return (<form className='modal fade' ref={modalRef} tabIndex='-1' aria-hidden='true' dataa-bs-backdrop={isStatic ? 'static' : ''} onSubmit={onSubmit} autoComplete='off'>
     <div className={`modal-dialog modal-dialog-centered modal-${size ?? 'md'}`}>

@@ -8,12 +8,19 @@ import ReactAppend from './Utils/ReactAppend.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import TypesRest from './actions/TypesRest.js'
+import RolesRest from './actions/RolesRest.js'
+import moment from 'moment-timezone'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import PermissionsRest from './actions/PermissionsRest.js'
+import SetSelectValue from './Utils/SetSelectValue.jsx'
 
-const Types = () => {
+const Roles = () => {
   const gridRef = useRef()
   const modalRef = useRef()
+  const modalPermissionRef = useRef()
+  const permissionsRef = useRef()
+  const buttonPermissionsRef = useRef()
 
   // Form elements ref
   const idRef = useRef()
@@ -21,6 +28,7 @@ const Types = () => {
   const descriptionRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
+  const [rolActive, setRolActive] = useState({})
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -33,36 +41,57 @@ const Types = () => {
     $(modalRef.current).modal('show')
   }
 
+  const onPermissionsModalOpen = async (data) => {
+    buttonPermissionsRef.current.disabled = true
+    setRolActive(data)
+    const permissions = await PermissionsRest.byRole(data.id)
+    buttonPermissionsRef.current.disabled = false
+
+    SetSelectValue(permissionsRef.current, permissions, 'id', 'name')
+
+    $(modalPermissionRef.current).modal('show')
+  }
+
   const onModalSubmit = async (e) => {
     e.preventDefault()
 
     const request = {
       id: idRef.current.value || undefined,
       name: nameRef.current.value,
-      description: descriptionRef.current.value,
+      description: descriptionRef.current.value
     }
 
-    const result = await TypesRest.save(request)
+    const result = await RolesRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
   }
 
-  const onStatusChange = async ({ id, status }) => {
-    const result = await TypesRest.status({ id, status })
+  const onPermissionsModalSubmit = async (e) => {
+    e.preventDefault()
+    const permissions = $(permissionsRef.current).val()
+
+    const request = {
+      role_id: rolActive.id,
+      permissions: permissions
+    }
+
+    const result = await PermissionsRest.massiveByRole(request)
     if (!result) return
+
+    $(modalPermissionRef.current).modal('hide')
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await TypesRest.delete(id)
+    const result = await RolesRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Tipos' rest={TypesRest}
+    <Table gridRef={gridRef} title='Roles' rest={RolesRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -90,32 +119,26 @@ const Types = () => {
         },
         {
           dataField: 'name',
-          caption: 'Tipo'
+          caption: 'Rol'
         },
         {
           dataField: 'description',
-          caption: 'Descripcion',
-          cellTemplate: (container, { value }) => {
-            if (!value) ReactAppend(container, <i className='text-muted'>- Sin descripcion -</i>)
-            else ReactAppend(container, value)
+          caption: 'Descripcion'
+        },
+        {
+          dataField: 'created_at',
+          caption: 'Fecha creacion',
+          dataType: 'date',
+          cellTemplate: (container, { data }) => {
+            ReactAppend(container, <span>{moment(data.created_at).format('LL')}</span>)
           }
         },
         {
-          dataField: 'status',
-          caption: 'Estado',
-          dataType: 'boolean',
+          dataField: 'updated_at',
+          caption: 'Fecha actualizacion',
+          dataType: 'date',
           cellTemplate: (container, { data }) => {
-            switch (data.status) {
-              case 1:
-                ReactAppend(container, <span className='badge bg-success rounded-pill'>Activo</span>)
-                break
-              case 0:
-                ReactAppend(container, <span className='badge bg-danger rounded-pill'>Inactivo</span>)
-                break
-              default:
-                ReactAppend(container, <span className='badge bg-dark rounded-pill'>Eliminado</span>)
-                break
-            }
+            ReactAppend(container, <span>{moment(data.updated_at).format('LL')}</span>)
           }
         },
         {
@@ -127,14 +150,8 @@ const Types = () => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
-              {
-                data.status === 1
-                  ? <i className='fa fa-toggle-on text-success' />
-                  : data.status === 0 ?
-                    <i className='fa fa-toggle-off text-danger' />
-                    : <i className='fas fa-trash-restore' />
-              }
+            ReactAppend(container, <TippyButton eRef={buttonPermissionsRef} className='btn btn-xs btn-soft-dark' title='Modificar permisos' onClick={() => onPermissionsModalOpen(data)} data-loading-text='<i class="fa fa-spinner fa-spin"></i>'>
+              <i className='fas fa-th-list'></i>
             </TippyButton>)
 
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
@@ -145,11 +162,16 @@ const Types = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar tipo' : 'Agregar tipo'} onSubmit={onModalSubmit} size='sm'>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar rol' : 'Agregar rol'} onSubmit={onModalSubmit}>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={nameRef} label='Tipo' col='col-12' required />
+        <InputFormGroup eRef={nameRef} label='Rol' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
+      </div>
+    </Modal>
+    <Modal modalRef={modalPermissionRef} title={`Permisos para ${rolActive.name}`} btnSubmitText='Guardar' onSubmit={onPermissionsModalSubmit}>
+      <div id="permissions-container" className='row'>
+        <SelectAPIFormGroup eRef={permissionsRef} label='Permisos' col='col-12' dropdownParent='#permissions-container' searchAPI='/api/permissions/paginate' searchBy='name' required multiple />
       </div>
     </Modal>
   </>
@@ -158,8 +180,8 @@ const Types = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto {...properties} title='Tipos'>
-      <Types {...properties} />
+    <Adminto {...properties} title='Roles'>
+      <Roles {...properties} />
     </Adminto>
   );
 })

@@ -2,8 +2,6 @@
 
 use App\Models\Status;
 
-use function PHPSTORM_META\map;
-
 class Router
 {
   const components = [
@@ -58,6 +56,14 @@ class Router
     ],
     'users' => [
       'component' => 'Users.jsx',
+      'adminto-instance' => true
+    ],
+    'roles' => [
+      'component' => 'Roles.jsx',
+      'adminto-instance' => true
+    ],
+    'permissions' => [
+      'component' => 'Permissions.jsx',
       'adminto-instance' => true
     ]
   ];

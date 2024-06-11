@@ -158,7 +158,7 @@ const Tables = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Tablas'>
+    <Adminto {...properties} title='Tablas'>
       <Tables {...properties} />
     </Adminto>
   );

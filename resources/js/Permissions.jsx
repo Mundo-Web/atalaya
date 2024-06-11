@@ -8,10 +8,12 @@ import ReactAppend from './Utils/ReactAppend.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import TypesRest from './actions/TypesRest.js'
+import JSEncrypt from 'jsencrypt'
+import PermissionsRest from './actions/PermissionsRest.js'
+import moment from 'moment-timezone'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 
-const Types = () => {
+const Permissions = ({ PUBLIC_RSA_KEY }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -39,30 +41,24 @@ const Types = () => {
     const request = {
       id: idRef.current.value || undefined,
       name: nameRef.current.value,
-      description: descriptionRef.current.value,
+      description: descriptionRef.current.value
     }
 
-    const result = await TypesRest.save(request)
+    const result = await PermissionsRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
   }
 
-  const onStatusChange = async ({ id, status }) => {
-    const result = await TypesRest.status({ id, status })
-    if (!result) return
-    $(gridRef.current).dxDataGrid('instance').refresh()
-  }
-
   const onDeleteClicked = async (id) => {
-    const result = await TypesRest.delete(id)
+    const result = await PermissionsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Tipos' rest={TypesRest}
+    <Table gridRef={gridRef} title='Permisos' rest={PermissionsRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -90,32 +86,26 @@ const Types = () => {
         },
         {
           dataField: 'name',
-          caption: 'Tipo'
+          caption: 'Permiso'
         },
         {
           dataField: 'description',
-          caption: 'Descripcion',
-          cellTemplate: (container, { value }) => {
-            if (!value) ReactAppend(container, <i className='text-muted'>- Sin descripcion -</i>)
-            else ReactAppend(container, value)
+          caption: 'Descripcion'
+        },
+        {
+          dataField: 'created_at',
+          caption: 'Fecha creacion',
+          dataType: 'date',
+          cellTemplate: (container, { data }) => {
+            ReactAppend(container, <span>{moment(data.created_at).format('LL')}</span>)
           }
         },
         {
-          dataField: 'status',
-          caption: 'Estado',
-          dataType: 'boolean',
+          dataField: 'updated_at',
+          caption: 'Fecha actualizacion',
+          dataType: 'date',
           cellTemplate: (container, { data }) => {
-            switch (data.status) {
-              case 1:
-                ReactAppend(container, <span className='badge bg-success rounded-pill'>Activo</span>)
-                break
-              case 0:
-                ReactAppend(container, <span className='badge bg-danger rounded-pill'>Inactivo</span>)
-                break
-              default:
-                ReactAppend(container, <span className='badge bg-dark rounded-pill'>Eliminado</span>)
-                break
-            }
+            ReactAppend(container, <span>{moment(data.updated_at).format('LL')}</span>)
           }
         },
         {
@@ -127,16 +117,6 @@ const Types = () => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
-              {
-                data.status === 1
-                  ? <i className='fa fa-toggle-on text-success' />
-                  : data.status === 0 ?
-                    <i className='fa fa-toggle-off text-danger' />
-                    : <i className='fas fa-trash-restore' />
-              }
-            </TippyButton>)
-
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
             </TippyButton>)
@@ -145,10 +125,10 @@ const Types = () => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar tipo' : 'Agregar tipo'} onSubmit={onModalSubmit} size='sm'>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar rol' : 'Agregar rol'} onSubmit={onModalSubmit}>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={nameRef} label='Tipo' col='col-12' required />
+        <InputFormGroup eRef={nameRef} label='Permiso' col='col-12' required disabled={isEditing} />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>
@@ -158,8 +138,8 @@ const Types = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto {...properties} title='Tipos'>
-      <Types {...properties} />
+    <Adminto {...properties} title='Permisos'>
+      <Permissions {...properties} />
     </Adminto>
   );
 })

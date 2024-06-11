@@ -4,11 +4,11 @@ import NavBar from './NavBar'
 import Menu from './Menu'
 import Footer from './Footer'
 
-const Adminto = ({ session, children, title , permissions}) => {
+const Adminto = ({ session, children, title , can}) => {
   return (<>
     <div id="wrapper">
-      <NavBar session={session} title={title} />
-      <Menu session={session} />
+      <NavBar session={session} title={title} can={can} />
+      <Menu session={session} can={can} />
       <div className="content-page">
         <div className="content">
           <div className="container-fluid">

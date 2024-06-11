@@ -37,7 +37,7 @@ const Home = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Inicio'>
+    <Adminto {...properties} title='Inicio'>
       <Home {...properties} />
     </Adminto>
   );

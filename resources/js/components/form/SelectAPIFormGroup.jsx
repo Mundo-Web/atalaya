@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react"
-import { Cookies } from "sode-extend-react"
+import { Cookies, JSON } from "sode-extend-react"
 
-const SelectAPIFormGroup = ({ col, label, eRef, required = false, dropdownParent, searchAPI, searchBy }) => {
+const SelectAPIFormGroup = ({ col, label, eRef, required = false, dropdownParent, searchAPI, searchBy, multiple = false }) => {
   if (!eRef) eRef = useRef()
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const SelectAPIFormGroup = ({ col, label, eRef, required = false, dropdownParent
         },
         processResults: function (data, { page }) {
           return {
-            results: (data?.data ?? []).map(({ id, [searchBy]: text }) => {
+            results: (data?.data ?? []).map(x => JSON.flatten(x)).map(({ id, [searchBy]: text }) => {
               return {id, text}
             }),
             pagination: {
@@ -52,7 +52,7 @@ const SelectAPIFormGroup = ({ col, label, eRef, required = false, dropdownParent
     <label htmlFor=''>
       {label} {required && <b className="text-danger">*</b>}
     </label>
-    <select ref={eRef} required={required} className='form-control' style={{ width: '100%' }}></select>
+    <select ref={eRef} required={required} className='form-control' style={{ width: '100%' }} multiple={multiple}></select>
   </div>
 }
 

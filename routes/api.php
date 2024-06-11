@@ -4,10 +4,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LandingFormController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,10 +30,25 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     // Users routes
-    Route::post('/users', [UsersController::class, 'save']);
-    Route::post('/users/paginate', [UsersController::class, 'paginate']);
-    Route::patch('/users/status', [UsersController::class, 'status']);
-    Route::delete('/users/{id}', [UsersController::class, 'delete']);
+    Route::post('/users', [UserController::class, 'save']);
+    Route::post('/users/paginate', [UserController::class, 'paginate']);
+    Route::patch('/users/status', [UserController::class, 'status']);
+    Route::delete('/users/{id}', [UserController::class, 'delete']);
+
+    // Users routes
+    Route::get('/roles/user/{id}', [RoleController::class, 'byUser']);
+    Route::post('/roles', [RoleController::class, 'save']);
+    Route::post('/roles/paginate', [RoleController::class, 'paginate']);
+    Route::patch('/roles/status', [RoleController::class, 'status']);
+    Route::delete('/roles/{id}', [RoleController::class, 'delete']);
+
+    // Users routes
+    Route::post('/permissions', [PermissionController::class, 'save']);
+    Route::post('/permissions/paginate', [PermissionController::class, 'paginate']);
+    Route::get('/permissions/role/{id}', [PermissionController::class, 'byRole']);
+    Route::patch('/permissions/role', [PermissionController::class, 'massiveByRole']);
+    Route::patch('/permissions/status', [PermissionController::class, 'status']);
+    Route::delete('/permissions/{id}', [PermissionController::class, 'delete']);
 
     // Clients routes
     Route::post('/clients', [ClientController::class, 'save']);

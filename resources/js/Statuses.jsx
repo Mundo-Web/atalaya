@@ -169,7 +169,7 @@ const Statuses = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Estados'>
+    <Adminto {...properties} title='Estados'>
       <Statuses {...properties} />
     </Adminto>
   );

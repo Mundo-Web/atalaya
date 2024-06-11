@@ -4,28 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\User;
+use App\Models\PermissionsByRol;
+use App\Models\PermissionsByRole;
+use App\Models\RoleHasPermissions;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
+use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Permission;
 
-class UsersController extends Controller
+class PermissionController extends Controller
 {
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = User::select([
-                'id', 'name', 'lastname', 'email', 'status'
-            ]);
+            $instance = Permission::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = User::select([
+                $instance = Permission::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
@@ -84,35 +86,60 @@ class UsersController extends Controller
         }
     }
 
-    public function save(Request $request): HttpResponse|ResponseFactory
+    public function byRole(Request $request, $role): HttpResponse|ResponseFactory
+    {
+        $response =  new dxResponse();
+        try {
+            $permissions = PermissionsByRole::select([
+                'permission__id AS id',
+                'permission__name AS name',
+                'permission__description AS description',
+                'role__id',
+                'role__name',
+                'role__description'
+
+            ])
+                ->where('role__id', $role)
+                ->get();
+
+            $results = [];
+
+            foreach ($permissions as $permission) {
+                $results[] = JSON::unflatten($permission->toArray(), '__');
+            }
+
+            $response->status = 200;
+            $response->message = 'Operación correcta';
+            $response->data = $results;
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage() . ' Ln.' . $th->getLine();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
+    public function massiveByRole(Request $request): HttpResponse|ResponseFactory
     {
         $response = new Response();
         try {
-            $jpa = null;
-            if ($request->id) {
-                $jpa = User::find($request->id);
-            }
-            if (!$jpa) {
-                if (!isset($request->password) || !isset($request->confirm)) throw new Exception('Debes ingresar una contraseña para el nuevo usuario');
-                $jpa = new User();
-            }
-            $jpa->name = $request->name;
-            $jpa->lastname = $request->lastname;
-            $jpa->email = $request->email;
+            RoleHasPermissions::where('role_id', $request->role_id)
+                ->delete();
 
-            if (
-                isset($request->password) && isset($request->confirm)
-            ) {
-                if (Controller::decode($request->password) == Controller::decode($request->confirm)) {
-                    $jpa->password = password_hash(Controller::decode($request->password), PASSWORD_DEFAULT);
-                } else throw new Exception('Las contraseñas deben ser iguales');
-            }
+            $permissions = $request->permissions;
 
-            $jpa->save();
+            foreach ($permissions as $permission) {
+                RoleHasPermissions::create([
+                    'role_id' => $request->role_id,
+                    'permission_id' => $permission
+                ]);
+            }
 
             $response->status = 200;
-            $response->message = 'Operacion correcta';
-            $response->data = $jpa->toArray();
+            $response->message = 'Operación correcta';
         } catch (\Throwable $th) {
             $response->status = 400;
             $response->message = $th->getMessage();
@@ -124,11 +151,38 @@ class UsersController extends Controller
         }
     }
 
-    static function status(Request $request)
+    public function save(Request $request): HttpResponse|ResponseFactory
     {
         $response = new Response();
         try {
-            User::where('id', $request->id)
+
+            $body = $request->all();
+            $jpa = Permission::find($request->id);
+
+            if (!$jpa) {
+                Permission::create($body);
+            } else {
+                $jpa->update($body);
+            }
+
+            $response->status = 200;
+            $response->message = 'Operacion correcta';
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
+    public function status(Request $request)
+    {
+        $response = new Response();
+        try {
+            Permission::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
                 ]);
@@ -146,11 +200,11 @@ class UsersController extends Controller
         }
     }
 
-    static function delete(Request $request, string $id)
+    public function delete(Request $request, string $id)
     {
         $response = new Response();
         try {
-            $deleted = User::where('id', $id)
+            $deleted = Permission::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

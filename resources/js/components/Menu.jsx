@@ -3,7 +3,7 @@ import Logout from '../actions/Logout'
 import MenuItem from './MenuItem'
 import MenuItemContainer from './MenuItemContainer'
 
-const Menu = ({ session }) => {
+const Menu = ({ session, can }) => {
   return (<div className="left-side-menu">
 
     <div className="h-100" data-simplebar>
@@ -65,25 +65,59 @@ const Menu = ({ session }) => {
         <ul id="side-menu">
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
-          <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
-          <MenuItem href="/leads" icon='mdi mdi-page-next'>Leads</MenuItem>
+          {
+            can('clients.list', 'clients.all') &&
+            <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
+          }
+          {
+            can('leads.list', 'leads.all') &&
+            <MenuItem href="/leads" icon='mdi mdi-page-next'>Leads</MenuItem>
+          }
+          {
+            can('projects.list', 'projects.all', 'types.list', 'types.all') &&
+            <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
+              {
+                can('projects.list', 'projects.all') &&
+                <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
+              }
+              {
+                can('types.list', 'types.all') &&
+                <MenuItem href="/types" icon='mdi mdi-format-list-text'>Tipos</MenuItem>
+              }
+            </MenuItemContainer>
+          }
 
-          <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
-            <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
-            <MenuItem href="/types" icon="mdi mdi-format-list-text">Tipos</MenuItem>
-          </MenuItemContainer>
+          {
+            can('users.list', 'users.all', 'roles.list', 'roles.all', 'permissions.list', 'permissions.all') &&
+            <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
+              {
+                can('users.list', 'users.all') &&
+                <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
+              }
+              {
+                can('roles.list', 'roles.all') &&
+                <MenuItem href="/roles" icon='mdi mdi-account-convert'>Roles</MenuItem>
+              }
+              {
+                can('permissions.list', 'permissions.all') &&
+                <MenuItem href="/permissions" icon='mdi mdi-account-check'>Permisos</MenuItem>
+              }
+            </MenuItemContainer>
+          }
 
-          <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
-            <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
-            <MenuItem href="/roles" icon='mdi mdi-account'>Roles</MenuItem>
-            <MenuItem href="/permissions" icon='mdi mdi-account'>Permisos</MenuItem>
-          </MenuItemContainer>
-
-          <MenuItemContainer title='Mantenimiento' icon='mdi mdi-application-cog'>
-            <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
-            <MenuItem href="/statuses" icon="mdi mdi-timeline-check">Estados</MenuItem>
-          </MenuItemContainer>
-
+          {
+            can('tables.list', 'tables.all', 'statuses.list', 'statuses.all') &&
+            <MenuItemContainer title='Mantenimiento' icon='mdi mdi-application-cog'>
+              {
+                can('tables.list', 'tables.all') &&
+                <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
+              }
+              {
+                can('statuses.list', 'statuses.all') &&
+                <MenuItem href='/statuses' icon='mdi mdi-table'>Estados</MenuItem>
+              }
+            </MenuItemContainer>
+          }
         </ul>
 
       </div>

@@ -47,6 +47,7 @@
     <!-- Vendor js -->
     <script src="/lte/assets/js/vendor.min.js"></script>
 
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="/lte/assets/libs/select2/js/select2.full.min.js"></script>
 
     <!-- App js -->
