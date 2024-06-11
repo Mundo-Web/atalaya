@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\LandingController;
+use App\Http\Controllers\LandingFormController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TableController;
@@ -59,10 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/{id}', [ProjectController::class, 'delete']);
 
     // Statuses routes
-    Route::post('/landings', [LandingController::class, 'save']);
-    Route::post('/landings/paginate', [LandingController::class, 'paginate']);
-    Route::patch('/landings/status', [LandingController::class, 'status']);
-    Route::delete('/landings/{id}', [LandingController::class, 'delete']);
+    Route::post('/landing-forms', [LandingFormController::class, 'save']);
+    Route::post('/landing-forms/paginate', [LandingFormController::class, 'paginate']);
+    Route::patch('/landing-forms/status', [LandingFormController::class, 'status']);
+    Route::delete('/landing-forms/{id}', [LandingFormController::class, 'delete']);
 
     // Statuses routes
     Route::post('/tables', [TableController::class, 'save']);

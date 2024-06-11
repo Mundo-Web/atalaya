@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
-import LandingsRest from './actions/LandingsRest.js'
+import LandingFormsRest from './actions/LandingForms.js'
 import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
@@ -19,7 +19,7 @@ import DropdownItem from './components/dropdown/DropdownItem.jsx'
 
 moment.locale('es')
 
-const Landings = ({ statuses }) => {
+const LandingForms = ({ statuses }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -68,7 +68,7 @@ const Landings = ({ statuses }) => {
       ends_at: endsAtRef.current.value,
     }
 
-    const result = await LandingsRest.save(request)
+    const result = await LandingFormsRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
@@ -76,25 +76,25 @@ const Landings = ({ statuses }) => {
   }
 
   const onStatusChange = async ({ id, status }) => {
-    const result = await LandingsRest.status({ id, status })
+    const result = await LandingFormsRest.status({ id, status })
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await LandingsRest.delete(id)
+    const result = await LandingFormsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onProjectStatusClicked = async (project, status) => {
-    const result = await LandingsRest.projectStatus(project, status)
+    const result = await LandingFormsRest.projectStatus(project, status)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Landings' rest={LandingsRest}
+    <Table gridRef={gridRef} title='Formularios de landing' rest={LandingFormsRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -104,14 +104,14 @@ const Landings = ({ statuses }) => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        container.unshift({
-          widget: 'dxButton', location: 'after',
-          options: {
-            icon: 'plus',
-            hint: 'NUEVO REGISTRO',
-            onClick: () => onModalOpen()
-          }
-        });
+        // container.unshift({
+        //   widget: 'dxButton', location: 'after',
+        //   options: {
+        //     icon: 'plus',
+        //     hint: 'NUEVO REGISTRO',
+        //     onClick: () => onModalOpen()
+        //   }
+        // });
       }}
       columns={[
         {
@@ -141,7 +141,7 @@ const Landings = ({ statuses }) => {
           }
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
+    {/* <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
       <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
         <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-12' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
@@ -153,15 +153,15 @@ const Landings = ({ statuses }) => {
         <InputFormGroup eRef={startsAtRef} label='Fecha inicio' col='col-md-6' type='date' required />
         <InputFormGroup eRef={endsAtRef} label='Fecha fin' col='col-md-6' type='date' required />
       </div>
-    </Modal>
+    </Modal> */}
   </>
   )
 };
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Landings'>
-      <Landings {...properties} />
+    <Adminto session={properties.session} title='Formularios de landing'>
+      <LandingForms {...properties} />
     </Adminto>
   );
 })

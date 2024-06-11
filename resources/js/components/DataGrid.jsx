@@ -41,6 +41,8 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail }
       //     });
       //   });
       // },
+      rowAlternationEnabled: true,
+      showBorders: true,
       filterRow: {
         visible: true,
         applyFilter: "auto"

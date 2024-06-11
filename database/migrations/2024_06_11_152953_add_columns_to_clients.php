@@ -46,8 +46,6 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->dropForeign(['status_id']);
-            $table->dropColumn('ruc');
-            $table->dropColumn('name');
             $table->dropColumn('contact_position');
             $table->dropColumn('message');
             $table->dropColumn('web_url');

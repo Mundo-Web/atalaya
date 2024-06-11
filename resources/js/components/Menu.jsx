@@ -66,12 +66,11 @@ const Menu = ({ session }) => {
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
-          <MenuItem href="/landings" icon='mdi mdi-page-next'>Landings</MenuItem>
+          <MenuItem href="/landing-forms" icon='mdi mdi-page-next'>Formularios de landing</MenuItem>
 
           <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
             <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
             <MenuItem href="/types" icon="mdi mdi-format-list-text">Tipos</MenuItem>
-            <MenuItem href="/statuses" icon="mdi mdi-timeline-check">Estados</MenuItem>
           </MenuItemContainer>
 
           <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
@@ -80,7 +79,11 @@ const Menu = ({ session }) => {
             <MenuItem href="/permissions" icon='mdi mdi-account'>Permisos</MenuItem>
           </MenuItemContainer>
 
-          <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
+          <MenuItemContainer title='Mantenedores' icon='mdi mdi-application-cog'>
+            <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
+            <MenuItem href="/statuses" icon="mdi mdi-timeline-check">Estados</MenuItem>
+          </MenuItemContainer>
+
         </ul>
 
       </div>
