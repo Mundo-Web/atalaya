@@ -21,72 +21,13 @@ moment.locale('es')
 
 const Leads = ({ statuses }) => {
   const gridRef = useRef()
-  const modalRef = useRef()
+  const modalLeadRef = useRef()
+  const [lead, setLead] = useState({})
 
-  // Form elements ref
-  const idRef = useRef()
-  const clientRef = useRef()
-  const typeRef = useRef()
-  const nameRef = useRef()
-  const descriptionRef = useRef()
-  const costRef = useRef()
-  const signAtRef = useRef()
-  const startsAtRef = useRef()
-  const endsAtRef = useRef()
-
-  const [isEditing, setIsEditing] = useState(false)
-
-  const onModalOpen = (data) => {
-    if (data?.id) setIsEditing(true)
-    else setIsEditing(false)
-
-    idRef.current.value = data?.id || null
-    SetSelectValue(clientRef.current, data?.client?.id, data?.client?.name)
-    SetSelectValue(typeRef.current, data?.type?.id, data?.type?.name)
-    nameRef.current.value = data?.name || null
-    descriptionRef.current.value = data?.description || null
-    costRef.current.value = data?.cost
-    signAtRef.current.value = data?.sign_at ? moment(data.sign_at).format('YYYY-MM-DD') : null
-    startsAtRef.current.value = data?.starts_at ? moment(data.starts_at).format('YYYY-MM-DD') : null
-    endsAtRef.current.value = data?.ends_at ? moment(data.ends_at).format('YYYY-MM-DD') : null
-
-    $(modalRef.current).modal('show')
+  const onModalLeadOpen = (data) => {
+    setLead(data)
+    $(modalLeadRef.current).modal('show')
   }
-
-  const onModalSubmit = async (e) => {
-    e.preventDefault()
-
-    const request = {
-      id: idRef.current.value || undefined,
-      client_id: clientRef.current.value,
-      type_id: typeRef.current.value,
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      cost: costRef.current.value ?? undefined,
-      sign_at: signAtRef.current.value ?? undefined,
-      starts_at: startsAtRef.current.value,
-      ends_at: endsAtRef.current.value,
-    }
-
-    const result = await ClientsRest.save(request)
-    if (!result) return
-
-    $(gridRef.current).dxDataGrid('instance').refresh()
-    $(modalRef.current).modal('hide')
-  }
-
-  const onStatusChange = async ({ id, status }) => {
-    const result = await ClientsRest.status({ id, status })
-    if (!result) return
-    $(gridRef.current).dxDataGrid('instance').refresh()
-  }
-
-  const onDeleteClicked = async (id) => {
-    const result = await ClientsRest.delete(id)
-    if (!result) return
-    $(gridRef.current).dxDataGrid('instance').refresh()
-  }
-
   const onClientStatusClicked = async (client, status) => {
     const result = await ClientsRest.clientStatus(client, status)
     if (!result) return
@@ -115,12 +56,6 @@ const Leads = ({ statuses }) => {
       }}
       filterValue={['client_status.id', '<>', 12]}
       columns={[
-        {
-          dataField: 'id',
-          caption: 'ID',
-          dataType: 'number',
-          sortOrder: 'asc'
-        },
         {
           dataField: 'contact_name',
           caption: 'Cliente'
@@ -159,7 +94,8 @@ const Leads = ({ statuses }) => {
           dataType: 'datetime',
           cellTemplate: (container, { data }) => {
             container.text(moment(data.created_at).format('LL'))
-          }
+          },
+          sortOrder: 'desc',
         },
         {
           caption: 'Acciones',
@@ -168,24 +104,26 @@ const Leads = ({ statuses }) => {
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={() => onClientStatusClicked(data.id, 12)}>
               <i className='fa fa-user-plus'></i>
             </TippyButton>)
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
+              <i className='fa fa-comment'></i>
+            </TippyButton>)
           },
           allowFiltering: false,
           allowExporting: false
         }
       ]} />
-    {/* <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
-      <div className='row' id='client-crud-container'>
-        <input ref={idRef} type='hidden' />
-        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-12' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
-        <SelectAPIFormGroup eRef={typeRef} label='Tipo del proyecto' col='col-md-4' dropdownParent='#client-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
-        <InputFormGroup eRef={nameRef} label='Nombre del proyecto' col='col-md-8' required />
-        <TextareaFormGroup eRef={descriptionRef} label='Descripcion del proyecto' col='col-12' />
-        <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' required />
-        <InputFormGroup eRef={signAtRef} label='Fecha firma' col='col-md-6' type='date' />
-        <InputFormGroup eRef={startsAtRef} label='Fecha inicio' col='col-md-6' type='date' required />
-        <InputFormGroup eRef={endsAtRef} label='Fecha fin' col='col-md-6' type='date' required />
+    <Modal modalRef={modalLeadRef} title={`Lead de ${lead?.contact_name}`} onSubmit={(e) => { e.preventDefault(); $(modalRef.current).modal('hide') }}>
+      <div>
+        <p>
+          <b>Telefono</b>: {lead?.contact_phone}
+        </p>
+        <p className='my-2'>
+          <b>Correo</b>: {lead?.contact_email}
+        </p>
+        <b>Mensaje</b>:
+        <p>{lead?.message}</p>
       </div>
-    </Modal> */}
+    </Modal>
   </>
   )
 };

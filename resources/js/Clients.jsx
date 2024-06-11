@@ -137,7 +137,9 @@ const Clients = () => {
         },
         {
           dataField: 'status_id',
-          caption: 'ID estado cliente'
+          caption: 'ID estado cliente',
+          dataType: 'boolean',
+          visible: false
         },
         {
           dataField: 'status',
