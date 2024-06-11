@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -55,4 +57,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/projects/status', [ProjectController::class, 'status']);
     Route::patch('/projects/project-status', [ProjectController::class, 'projectStatus']);
     Route::delete('/projects/{id}', [ProjectController::class, 'delete']);
+
+    // Statuses routes
+    Route::post('/landings', [LandingController::class, 'save']);
+    Route::post('/landings/paginate', [LandingController::class, 'paginate']);
+    Route::patch('/landings/status', [LandingController::class, 'status']);
+    Route::delete('/landings/{id}', [LandingController::class, 'delete']);
+
+    // Statuses routes
+    Route::post('/tables', [TableController::class, 'save']);
+    Route::post('/tables/paginate', [TableController::class, 'paginate']);
+    Route::patch('/tables/status', [TableController::class, 'status']);
+    Route::delete('/tables/{id}', [TableController::class, 'delete']);
 });

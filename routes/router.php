@@ -2,6 +2,8 @@
 
 use App\Models\Status;
 
+use function PHPSTORM_META\map;
+
 class Router
 {
   const components = [
@@ -20,11 +22,25 @@ class Router
       'component' => 'Projects.jsx',
       'adminto-instance' => true,
       'compact' => [
-        'statuses' => Status::class
+        'statuses' => [
+          'class' => Status::class,
+          'filter' => [
+            'table_id' => 'projects',
+            'status' => true
+          ]
+        ]
       ]
+    ],
+    'landings' => [
+      'component' => 'Landings.jsx',
+      'adminto-instance' => true
     ],
     'types' => [
       'component' => 'Types.jsx',
+      'adminto-instance' => true
+    ],
+    'tables' => [
+      'component' => 'Tables.jsx',
       'adminto-instance' => true
     ],
     'statuses' => [

@@ -1,9 +1,9 @@
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
-import ProjectsRest from './actions/ProjectsRest.js'
+import LandingsRest from './actions/LandingsRest.js'
 import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
@@ -16,9 +16,10 @@ import SetSelectValue from './Utils/SetSelectValue.jsx'
 import { GET } from 'sode-extend-react'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
-import StatusesRest from './actions/StatusesRest.js'
 
-const Projects = ({ statuses }) => {
+moment.locale('es')
+
+const Landings = ({ statuses }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -67,7 +68,7 @@ const Projects = ({ statuses }) => {
       ends_at: endsAtRef.current.value,
     }
 
-    const result = await ProjectsRest.save(request)
+    const result = await LandingsRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
@@ -75,25 +76,25 @@ const Projects = ({ statuses }) => {
   }
 
   const onStatusChange = async ({ id, status }) => {
-    const result = await ProjectsRest.status({ id, status })
+    const result = await LandingsRest.status({ id, status })
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await ProjectsRest.delete(id)
+    const result = await LandingsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onProjectStatusClicked = async (project, status) => {
-    const result = await ProjectsRest.projectStatus(project, status)
+    const result = await LandingsRest.projectStatus(project, status)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Proyectos' rest={ProjectsRest}
+    <Table gridRef={gridRef} title='Landings' rest={LandingsRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -120,88 +121,31 @@ const Projects = ({ statuses }) => {
           sortOrder: 'asc'
         },
         {
-          dataField: 'client.name',
-          caption: 'Cliente',
-          filterValue: GET.client || undefined
+          dataField: 'nombre',
+          caption: 'Cliente'
         },
         {
-          dataField: 'type.name',
-          caption: 'Tipo'
+          dataField: 'email',
+          caption: 'Correo'
         },
         {
-          dataField: 'name',
-          caption: 'Proyecto'
+          dataField: 'telefono',
+          caption: 'Telefono'
         },
         {
-          dataField: 'cost',
-          caption: 'Costo',
-          dataType: 'number'
-        },
-        {
-          dataField: 'project_status.name',
-          caption: 'Estado del proyecto',
-          dataType: 'string',
+          dataField: 'created_at',
+          caption: 'Fecha creacion',
+          dataType: 'datetime',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.project_status.name} tippy="Actualizar estado">
-              {statuses.map(({ id, name }) => {
-                return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
-                  {name}
-                </DropdownItem>
-              })}
-            </Dropdown>)
+            container.text(moment(data.created_at).format('LL'))
           }
-        },
-        {
-          dataField: 'status',
-          caption: 'Estado',
-          dataType: 'boolean',
-          cellTemplate: (container, { data }) => {
-            switch (data.status) {
-              case 1:
-                ReactAppend(container, <span className='badge bg-success rounded-pill'>Activo</span>)
-                break
-              case 0:
-                ReactAppend(container, <span className='badge bg-danger rounded-pill'>Inactivo</span>)
-                break
-              default:
-                ReactAppend(container, <span className='badge bg-dark rounded-pill'>Eliminado</span>)
-                break
-            }
-          }
-        },
-        {
-          caption: 'Acciones',
-          cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
-              <i className='fa fa-pen'></i>
-            </TippyButton>)
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
-              {
-                data.status === 1
-                  ? <i className='fa fa-toggle-on text-success' />
-                  : data.status === 0 ?
-                    <i className='fa fa-toggle-off text-danger' />
-                    : <i className='fas fa-trash-restore' />
-              }
-            </TippyButton>)
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
-              <i className='fa fa-trash-alt'></i>
-            </TippyButton>)
-          },
-          allowFiltering: false,
-          allowExporting: false
         }
       ]} />
     <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
-      <div className='row' id='project-crud-container'>
+      <div className='row' id='client-crud-container'>
         <input ref={idRef} type='hidden' />
-        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-12' dropdownParent='#project-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
-        <SelectAPIFormGroup eRef={typeRef} label='Tipo del proyecto' col='col-md-4' dropdownParent='#project-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
+        <SelectAPIFormGroup eRef={clientRef} label='Cliente' col='col-12' dropdownParent='#client-crud-container' searchAPI='/api/clients/paginate' searchBy='name' required />
+        <SelectAPIFormGroup eRef={typeRef} label='Tipo del proyecto' col='col-md-4' dropdownParent='#client-crud-container' searchAPI='/api/types/paginate' searchBy='name' required />
         <InputFormGroup eRef={nameRef} label='Nombre del proyecto' col='col-md-8' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion del proyecto' col='col-12' />
         <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' required />
@@ -216,8 +160,8 @@ const Projects = ({ statuses }) => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Proyectos'>
-      <Projects {...properties} />
+    <Adminto session={properties.session} title='Landings'>
+      <Landings {...properties} />
     </Adminto>
   );
 })

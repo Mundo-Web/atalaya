@@ -6,8 +6,8 @@ const Footer = () => {
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-6">
-          {fullYear} &copy; Wallet | Propiedad de <a
-            href="//sode.me">SoDe World</a>
+          {fullYear} &copy; Atalaya | Propiedad de <a
+            href="//mundoweb.pe">Mundo Web</a>
         </div>
         <div className="col-md-6">
           <div className="text-md-end footer-links d-none d-sm-block">

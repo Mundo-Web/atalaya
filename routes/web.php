@@ -48,8 +48,12 @@ Route::middleware('auth')->group(function () {
                     'permissions' => auth()->user()->getAllPermissions()
                 ];
                 if (isset($page['compact'])) {
-                    foreach ($page['compact'] as $key => $class) {
-                        $properties[$key] = $class::all();
+                    foreach ($page['compact'] as $key => $compact) {
+                        if (isset($compact['filter'])) {
+                            $properties[$key] = $compact['class']::where($compact['filter'])->get();
+                        } else {
+                            $properties[$key] = $compact['class']::all();
+                        }
                     }
                 }
                 return Inertia::render($page['component'], $properties);

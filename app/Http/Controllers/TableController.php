@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\Status;
-use App\Models\StatusView;
+use App\Models\Table;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -13,18 +12,18 @@ use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
-class StatusController extends Controller
+class TableController extends Controller
 {
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = StatusView::select();
+            $instance = Table::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = StatusView::select([
+                $instance = Table::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
@@ -87,10 +86,10 @@ class StatusController extends Controller
         try {
 
             $body = $request->all();
-            $jpa = Status::find($request->id);
+            $jpa = Table::find($request->id);
 
             if (!$jpa) {
-                Status::create($body);
+                Table::create($body);
             } else {
                 $jpa->update($body);
             }
@@ -112,7 +111,7 @@ class StatusController extends Controller
     {
         $response = new Response();
         try {
-            Status::where('id', $request->id)
+            Table::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
                 ]);
@@ -134,7 +133,7 @@ class StatusController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Status::where('id', $id)
+            $deleted = Table::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

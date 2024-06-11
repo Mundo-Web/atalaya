@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
-import { Fetch } from 'sode-extend-react'
-import UsersRest from '../actions/UsersRest'
 
-const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar }) => {
+const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail }) => {
   useEffect(() => {
-    const dataGrid = $(dataGridRef.current).dxDataGrid({
+    $(dataGridRef.current).dxDataGrid({
       language: "es",
       dataSource: {
         load: async (params) => {
@@ -23,7 +21,7 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar }) => {
       scrollbars: 'auto',
       filterPanel: { visible: true },
       searchPanel: { visible: true },
-      headerFilter: { visible: true, allowSearch: true },
+      headerFilter: { visible: true, search: { enabled: true } },
       height: 'calc(100vh - 185px)',
       // export: {
       //   enabled: true
@@ -73,9 +71,11 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar }) => {
       columnChooser: {
         title: 'Mostrar/Ocultar columnas',
         enabled: true,
-        mode: 'select'
+        mode: 'select',
+        search: {enabled: true}
       },
-      columns
+      columns,
+      masterDetail
     }).dxDataGrid('instance')
   }, [null])
 

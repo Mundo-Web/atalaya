@@ -10,6 +10,8 @@ import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import StatusesRest from './actions/StatusesRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import SetSelectValue from './Utils/SetSelectValue.jsx'
 
 const Statuses = () => {
   const gridRef = useRef()
@@ -17,6 +19,7 @@ const Statuses = () => {
 
   // Form elements ref
   const idRef = useRef()
+  const tableRef = useRef()
   const nameRef = useRef()
   const descriptionRef = useRef()
 
@@ -27,6 +30,7 @@ const Statuses = () => {
     else setIsEditing(false)
 
     idRef.current.value = data?.id || null
+    SetSelectValue(tableRef.current, data?.table?.id, data?.table?.name)
     nameRef.current.value = data?.name || null
     descriptionRef.current.value = data?.description || null
 
@@ -38,6 +42,7 @@ const Statuses = () => {
 
     const request = {
       id: idRef.current.value || undefined,
+      table_id: tableRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
     }
@@ -87,6 +92,11 @@ const Statuses = () => {
           caption: 'ID',
           dataType: 'number',
           sortOrder: 'asc'
+        },
+        {
+          dataField: 'table.name',
+          caption: 'Tabla',
+          dataType: 'string'
         },
         {
           dataField: 'name',
@@ -146,9 +156,10 @@ const Statuses = () => {
         }
       ]} />
     <Modal modalRef={modalRef} title={isEditing ? 'Editar estado de proyecto' : 'Agregar estado de proyecto'} onSubmit={onModalSubmit} size='sm'>
-      <div className='row'>
+      <div className='row' id='status-crud-container'>
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={nameRef} label='Estado de proyecto' col='col-12' required />
+        <SelectAPIFormGroup eRef={tableRef} label='Tabla' col='col-12' dropdownParent='#status-crud-container' searchAPI='/api/tables/paginate' searchBy='name' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>

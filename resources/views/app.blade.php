@@ -30,7 +30,7 @@
     <link href="/lte/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
     {{-- DxDataGrid Styles --}}
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.css" rel="stylesheet" type="text/css">
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css" rel="stylesheet" type="text/css">
   @endif
 
   @vite('resources/js/' . $component['component'])

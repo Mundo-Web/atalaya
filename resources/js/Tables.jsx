@@ -8,23 +8,17 @@ import ReactAppend from './Utils/ReactAppend.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import ClientsRest from './actions/ClientsRest.js'
+import TablesRest from './actions/TablesRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
-import ProjectsRest from './actions/ProjectsRest.js'
 
-const Clients = () => {
+const Tables = () => {
   const gridRef = useRef()
   const modalRef = useRef()
 
   // Form elements ref
   const idRef = useRef()
-  const rucRef = useRef()
   const nameRef = useRef()
   const descriptionRef = useRef()
-  const contactNameRef = useRef()
-  const contactPhoneRef = useRef()
-  const contactEmailRef = useRef()
-  const contactAddressRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -33,13 +27,8 @@ const Clients = () => {
     else setIsEditing(false)
 
     idRef.current.value = data?.id || null
-    rucRef.current.value = data?.ruc || null
     nameRef.current.value = data?.name || null
     descriptionRef.current.value = data?.description || null
-    contactNameRef.current.value = data?.contact_name || null
-    contactPhoneRef.current.value = data?.contact_phone || null
-    contactEmailRef.current.value = data?.contact_email || null
-    contactAddressRef.current.value = data?.contact_address || null
 
     $(modalRef.current).modal('show')
   }
@@ -49,16 +38,11 @@ const Clients = () => {
 
     const request = {
       id: idRef.current.value || undefined,
-      ruc: rucRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
-      contact_name: contactNameRef.current.value,
-      contact_phone: contactPhoneRef.current.value,
-      contact_email: contactEmailRef.current.value,
-      contact_address: contactAddressRef.current.value,
     }
 
-    const result = await ClientsRest.save(request)
+    const result = await TablesRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
@@ -66,19 +50,19 @@ const Clients = () => {
   }
 
   const onStatusChange = async ({ id, status }) => {
-    const result = await ClientsRest.status({ id, status })
+    const result = await TablesRest.status({ id, status })
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await ClientsRest.delete(id)
+    const result = await TablesRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Clientes' rest={ClientsRest}
+    <Table gridRef={gridRef} title='Tablas' rest={TablesRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -102,31 +86,19 @@ const Clients = () => {
           dataField: 'id',
           caption: 'ID',
           dataType: 'number',
-          cellTemplate: (container, { data, value, ...otherParams }) => {
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-white' title="Ver proyectos" onClick={() => {
-              otherParams.component.collapseAll(-1);
-              otherParams.component.expandRow(otherParams.row.data)
-            }}>
-              <i className='fas fa-shapes'></i>
-            </TippyButton>)
-          }
-        },
-        {
-          dataField: 'ruc',
-          caption: 'RUC',
-          sortOrder: 'asc',
+          sortOrder: 'asc'
         },
         {
           dataField: 'name',
-          caption: 'Razon social'
+          caption: 'Tipo'
         },
         {
-          dataField: 'contact_phone',
-          caption: 'Telefono'
-        },
-        {
-          dataField: 'contact_email',
-          caption: 'Correo'
+          dataField: 'description',
+          caption: 'Descripcion',
+          cellTemplate: (container, { value }) => {
+            if (!value) ReactAppend(container, <i className='text-muted'>- Sin descripcion -</i>)
+            else ReactAppend(container, value)
+          }
         },
         {
           dataField: 'status',
@@ -151,10 +123,6 @@ const Clients = () => {
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
-              <i className='mdi mdi-page-next'></i>
-            </TippyButton>)
-
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
@@ -176,61 +144,12 @@ const Clients = () => {
           allowFiltering: false,
           allowExporting: false
         }
-      ]}
-      masterDetail={{
-        enabled: false,
-        template: async (container, { data, component }) => {
-          container.css('padding', '10px')
-
-          let { data: dataSource } = await ProjectsRest.paginate({
-            filter: ['client_id', '=', data.id],
-            isLoadingAll: true
-          })
-
-          $('<div>').appendTo(container).dxDataGrid({
-            dataSource,
-            onToolbarPreparing: (e) => {
-              const toolbarItems = e.toolbarOptions.items;
-              toolbarItems.unshift({
-                widget: 'dxButton',
-                location: 'after',
-                options: {
-                  icon: 'fa fa-times',
-                  hint: 'CERRAR TABLA',
-                  onClick: (e) => {
-                    component.collapseAll(-1);
-                  }
-                }
-              });
-            },
-            columns: [
-              
-            ],
-            allowColumnResizing: true,
-            columnResizingMode: "widget",
-            columnAutoWidth: true,
-            showBorders: true,
-            columnChooser: {
-              title: 'Mostrar/Ocultar columnas',
-              enabled: true,
-              mode: 'select',
-              search: { enabled: true }
-            },
-          })
-        }
-      }}
-    />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='md'>
+      ]} />
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar tabla' : 'Agregar tabla'} onSubmit={onModalSubmit} size='sm'>
       <div className='row'>
         <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
-        <InputFormGroup eRef={nameRef} label='Razon social' col='col-8' required />
+        <InputFormGroup eRef={nameRef} label='Tabla' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
-        <div className="col-12"><hr className='my-1' /></div>
-        <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
-        <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' col='col-6' />
-        <InputFormGroup eRef={contactEmailRef} label='Email de contacto' col='col-12' type='email' />
-        <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
       </div>
     </Modal>
   </>
@@ -239,8 +158,8 @@ const Clients = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Clientes'>
-      <Clients {...properties} />
+    <Adminto session={properties.session} title='Tablas'>
+      <Tables {...properties} />
     </Adminto>
   );
 })
