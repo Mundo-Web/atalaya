@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('message'); // mensaje
             $table->string('web_url'); // urlweb
             $table->string('source'); // source
-            $table->string('fecha'); // fecha
-            $table->string('hora'); // hora
+            $table->string('date'); // fecha
+            $table->string('time'); // hora
             $table->string('ip'); // ip
             $table->string('origin'); // llegade
             $table->string('client_width')->nullable(); // ancho
@@ -45,7 +45,23 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('clients', function (Blueprint $table) {
-            //
+            $table->dropForeign(['status_id']);
+            $table->dropColumn('ruc');
+            $table->dropColumn('name');
+            $table->dropColumn('contact_position');
+            $table->dropColumn('message');
+            $table->dropColumn('web_url');
+            $table->dropColumn('source');
+            $table->dropColumn('date');
+            $table->dropColumn('time');
+            $table->dropColumn('ip');
+            $table->dropColumn('origin');
+            $table->dropColumn('client_width');
+            $table->dropColumn('client_height');
+            $table->dropColumn('client_latitude');
+            $table->dropColumn('client_longitude');
+            $table->dropColumn('client_system');
+            $table->dropColumn('status_id');
         });
     }
 };
