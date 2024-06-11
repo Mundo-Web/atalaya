@@ -25,7 +25,7 @@ class Router
         'statuses' => [
           'class' => Status::class,
           'filter' => [
-            'table_id' => 'projects',
+            'table_id' => 1, // Projects
             'status' => true
           ]
         ]
@@ -33,7 +33,16 @@ class Router
     ],
     'leads' => [
       'component' => 'Leads.jsx',
-      'adminto-instance' => true
+      'adminto-instance' => true,
+      'compact' => [
+        'statuses' => [
+          'class' => Status::class,
+          'filter' => [
+            'table_id' => 2, // Leads
+            'status' => true
+          ]
+        ]
+      ]
     ],
     'types' => [
       'component' => 'Types.jsx',

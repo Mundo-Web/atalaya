@@ -139,6 +139,21 @@ const Leads = ({ statuses }) => {
           visible: false
         },
         {
+          dataField: 'client_status.name',
+          caption: 'Estado del cliente',
+          dataType: 'string',
+          cellTemplate: (container, { data }) => {
+            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} tippy="Actualizar estado">
+              {statuses.map(({ id, name }) => {
+                return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
+                  {name}
+                </DropdownItem>
+              })}
+            </Dropdown>)
+          }
+        },
+        {
           dataField: 'created_at',
           caption: 'Fecha creacion',
           dataType: 'datetime',

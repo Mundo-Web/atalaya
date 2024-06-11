@@ -103,7 +103,7 @@ const Clients = () => {
         //   }
         // });
       }}
-      filterValue={['client_status.id', 'eq', 1]}
+      filterValue={['status_id', 'eq', 12]}
       columns={[
         {
           dataField: 'id',
@@ -136,8 +136,8 @@ const Clients = () => {
           caption: 'Correo'
         },
         {
-          dataField: 'status_client.name',
-          caption: 'Estado del cliente'
+          dataField: 'status_id',
+          caption: 'ID estado cliente'
         },
         {
           dataField: 'status',
