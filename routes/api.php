@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/clients', [ClientController::class, 'save']);
     Route::post('/clients/paginate', [ClientController::class, 'paginate']);
     Route::patch('/clients/status', [ClientController::class, 'status']);
+    Route::patch('/clients/client-status', [ClientController::class, 'clientStatus']);
     Route::delete('/clients/{id}', [ClientController::class, 'delete']);
 
     // Types routes

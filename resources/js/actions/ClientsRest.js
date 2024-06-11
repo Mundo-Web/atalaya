@@ -68,6 +68,34 @@ class ClientsRest {
     }
   }
 
+  static clientStatus = async (client, status) => {
+    try {
+      const { status: fetchStatus, result } = await Fetch('/api/clients/client-status', {
+        method: 'PATCH',
+        body: JSON.stringify({ client, status })
+      })
+      if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
+
+      Notify.add({
+        icon: '/assets/img/logo.svg',
+        title: 'Correcto',
+        body: result.message,
+        type: 'success'
+      })
+
+      return true
+    } catch (error) {
+      Notify.add({
+        icon: '/assets/img/logo.svg',
+        title: 'Error',
+        body: error.message,
+        type: 'danger'
+      })
+
+      return false
+    }
+  }
+
   static delete = async (id) => {
     try {
       const { status: fetchStatus, result } = await Fetch(`/api/clients/${id}`, {

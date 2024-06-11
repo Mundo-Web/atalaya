@@ -87,8 +87,8 @@ const Leads = ({ statuses }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
-  const onProjectStatusClicked = async (project, status) => {
-    const result = await ClientsRest.projectStatus(project, status)
+  const onClientStatusClicked = async (client, status) => {
+    const result = await ClientsRest.clientStatus(client, status)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
@@ -146,7 +146,7 @@ const Leads = ({ statuses }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
             ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} tippy="Actualizar estado">
               {statuses.map(({ id, name }) => {
-                return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
+                return <DropdownItem key={id} onClick={() => onClientStatusClicked(data.id, id)}>
                   {name}
                 </DropdownItem>
               })}

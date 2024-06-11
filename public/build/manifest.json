@@ -6,8 +6,8 @@
       "_CreateReactScript-CMiyu2aM.js"
     ]
   },
-  "_ClientsRest-sJ7Nb-vc.js": {
-    "file": "assets/ClientsRest-sJ7Nb-vc.js",
+  "_ClientsRest-DMeIUk5h.js": {
+    "file": "assets/ClientsRest-DMeIUk5h.js",
     "name": "ClientsRest",
     "imports": [
       "_CreateReactScript-CMiyu2aM.js"
@@ -73,7 +73,7 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-sSFbZD4Q.js",
+    "file": "assets/Clients-Dl0x6XJE.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
@@ -82,7 +82,7 @@
       "_Adminto-6gONrFtF.js",
       "_tippy-Bo9uQQiJ.js",
       "_InputFormGroup-9wtOdvUR.js",
-      "_ClientsRest-sJ7Nb-vc.js",
+      "_ClientsRest-DMeIUk5h.js",
       "_TextareaFormGroup-CkLVDc6p.js",
       "_ProjectsRest-94OnTKuH.js"
     ]
@@ -98,14 +98,14 @@
     ]
   },
   "resources/js/Leads.jsx": {
-    "file": "assets/Leads-Bg0shTOF.js",
+    "file": "assets/Leads-MCT3vDyA.js",
     "name": "Leads",
     "src": "resources/js/Leads.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-CMiyu2aM.js",
       "_tippy-Bo9uQQiJ.js",
-      "_ClientsRest-sJ7Nb-vc.js",
+      "_ClientsRest-DMeIUk5h.js",
       "_Adminto-6gONrFtF.js",
       "_DropdownItem-BS2nWQ6k.js"
     ]
