@@ -10,8 +10,10 @@ use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Auth;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
+use SoDe\Extend\Trace;
 
 class ClientController extends Controller
 {
@@ -30,7 +32,7 @@ class ClientController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!auth()->user()->can('users.root')) {
+            if (!Auth::user()->can('users.root')) {
                 $instance->whereNotNull('status');
             }
             if ($request->filter) {
@@ -90,8 +92,19 @@ class ClientController extends Controller
             $jpa = Client::find($request->id);
 
             if (!$jpa) {
+                $body['name'] = $body['name'] ?? $body['contact_name'];
+                $body['web_url'] = $body['web_url'] ?? 'https://...';
+                $body['source'] = 'Atalaya';
+                $body['origin'] = 'Interno';
+                $body['ip'] = request()->ip();
+                $body['date'] = Trace::getDate('date');
+                $body['time'] = Trace::getDate('time');
+                $body['status_id'] = 10;
+                $body['created_by'] = Auth::user()->id;
+                $body['updated_by'] = Auth::user()->id;
                 Client::create($body);
             } else {
+                $body['updated_by'] = Auth::user()->id;
                 $jpa->update($body);
             }
 
@@ -136,6 +149,7 @@ class ClientController extends Controller
         try {
             Client::where('id', $request->client)
                 ->update([
+                    'updated_by' => Auth::user()->id,
                     'status_id' => $request->status
                 ]);
 

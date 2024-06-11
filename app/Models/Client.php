@@ -23,6 +23,15 @@ class Client extends Model
         'contact_name',
         'contact_phone',
         'contact_email',
-        'contact_address'
+        'contact_address',
+        'source',
+        'origin',
+        'date',
+        'time',
+        'ip',
+        'status_id',
+        'created_by',
+        'updated_by',
+        'status'
     ];
 }

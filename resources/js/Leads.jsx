@@ -10,10 +10,7 @@ import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
-import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import moment from 'moment-timezone'
-import SetSelectValue from './Utils/SetSelectValue.jsx'
-import { GET } from 'sode-extend-react'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 
@@ -24,6 +21,14 @@ const Leads = ({ statuses }) => {
   const modalLeadRef = useRef()
   const modalRef = useRef()
 
+  // Form ref
+  const contactNameRef = useRef()
+  const contactEmailRef = useRef()
+  const contactPhoneRef = useRef()
+  const nameRef = useRef()
+  const webUrlRef = useRef()
+  const messageRef = useRef()
+
   const [isEditing, setIsEditing] = useState(false)
   const [lead, setLead] = useState({})
 
@@ -31,7 +36,33 @@ const Leads = ({ statuses }) => {
     if (data?.id) setIsEditing(true)
     else setIsEditing(false)
 
+    contactNameRef.current.value = data?.contact_name ?? ''
+    contactEmailRef.current.value = data?.contact_email ?? ''
+    contactPhoneRef.current.value = data?.contact_phone ?? ''
+    nameRef.current.value = data?.name ?? ''
+    webUrlRef.current.value = data?.web_url ?? ''
+    messageRef.current.value = data?.message ?? ''
+
     $(modalRef.current).modal('show')
+  }
+
+  const onModalSubmit = async (e) => {
+    e.preventDefault()
+
+    const request = {
+      contact_name: contactNameRef.current.value,
+      contact_email: contactEmailRef.current.value,
+      contact_phone: contactPhoneRef.current.value,
+      name: nameRef.current.value,
+      web_url: webUrlRef.current.value,
+      message: messageRef.current.value
+    }
+
+    const result = await ClientsRest.save(request)
+    if (!result) return
+
+    $(gridRef.current).dxDataGrid('instance').refresh()
+    $(modalRef.current).modal('hide')
   }
 
   const onModalLeadOpen = (data) => {
@@ -131,18 +162,18 @@ const Leads = ({ statuses }) => {
           <b>Correo</b>: {lead?.contact_email}
         </p>
         <b>Mensaje</b>:
-        <p>{lead?.message}</p>
+        <p className='mb-0'>{lead?.message}</p>
       </div>
     </Modal>
 
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar lead' : 'Nuevo lead'}>
-      <div className="row">
-        <InputFormGroup label='Nombre completo' required />
-        <InputFormGroup label='Correo electronico' col='col-md-6' required />
-        <InputFormGroup label='Telefono' col='col-md-6' required />
-        <InputFormGroup label='Empresa / Marca' col='col-md-6' />
-        <InputFormGroup label='Link de WEB' col='col-md-6' />
-        <TextareaFormGroup label='Mensaje' placeholder='Ingresa tu mensaje' rows={4} required />
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar lead' : 'Nuevo lead'} btnSubmitText='Guardar' onSubmit={onModalSubmit}>
+      <div className="row mb-0">
+        <InputFormGroup eRef={contactNameRef} label='Nombre completo' required />
+        <InputFormGroup eRef={contactEmailRef} label='Correo electronico' col='col-md-6' required />
+        <InputFormGroup eRef={contactPhoneRef} label='Telefono' col='col-md-6' required />
+        <InputFormGroup eRef={nameRef} label='Empresa / Marca' col='col-md-6' />
+        <InputFormGroup eRef={webUrlRef} label='Link de WEB' col='col-md-6' />
+        <TextareaFormGroup eRef={messageRef} label='Mensaje' placeholder='Ingresa tu mensaje' rows={4} required />
       </div>
     </Modal>
   </>
