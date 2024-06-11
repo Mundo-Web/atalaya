@@ -31,8 +31,8 @@ class Router
         ]
       ]
     ],
-    'landing-forms' => [
-      'component' => 'LandingForms.jsx',
+    'leads' => [
+      'component' => 'Leads.jsx',
       'adminto-instance' => true
     ],
     'types' => [

@@ -11,7 +11,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Gestion de clientes | Atalaya</title>
-  <link rel="shortcut icon" href="assets/img/icon.svg" type="image/png">
+  <link rel="shortcut icon" href="/assets/img/icon.svg" type="image/png">
 
   @if ($admintoInstance)
     <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />

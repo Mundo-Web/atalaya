@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
 use App\Models\Client;
+use App\Models\ClientView;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -18,12 +19,12 @@ class ClientController extends Controller
     {
         $response =  new dxResponse();
         try {
-            $instance = Client::select();
+            $instance = ClientView::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = Client::select([
+                $instance = ClientView::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);

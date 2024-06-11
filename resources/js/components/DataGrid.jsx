@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail }) => {
+const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, filterValue }) => {
   useEffect(() => {
     $(dataGridRef.current).dxDataGrid({
       language: "es",
@@ -17,12 +17,12 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail }
       remoteOperations: true,
       columnResizingMode: "widget",
       columnAutoWidth: true,
-      showBorders: true,
       scrollbars: 'auto',
       filterPanel: { visible: true },
       searchPanel: { visible: true },
       headerFilter: { visible: true, search: { enabled: true } },
       height: 'calc(100vh - 185px)',
+      filterValue,
       // export: {
       //   enabled: true
       // },
@@ -74,7 +74,7 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail }
         title: 'Mostrar/Ocultar columnas',
         enabled: true,
         mode: 'select',
-        search: {enabled: true}
+        search: { enabled: true }
       },
       columns,
       masterDetail

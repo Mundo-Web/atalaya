@@ -20,6 +20,8 @@ const Clients = () => {
   const idRef = useRef()
   const rucRef = useRef()
   const nameRef = useRef()
+  const webUrlRef = useRef()
+  const messageRef = useRef()
   const descriptionRef = useRef()
   const contactNameRef = useRef()
   const contactPhoneRef = useRef()
@@ -35,6 +37,8 @@ const Clients = () => {
     idRef.current.value = data?.id || null
     rucRef.current.value = data?.ruc || null
     nameRef.current.value = data?.name || null
+    webUrlRef.current.value = data?.weburl || null
+    messageRef.current.value = data?.message || 'Cliente creado desde Atalaya'
     descriptionRef.current.value = data?.description || null
     contactNameRef.current.value = data?.contact_name || null
     contactPhoneRef.current.value = data?.contact_phone || null
@@ -51,11 +55,13 @@ const Clients = () => {
       id: idRef.current.value || undefined,
       ruc: rucRef.current.value,
       name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      contact_name: contactNameRef.current.value,
-      contact_phone: contactPhoneRef.current.value,
-      contact_email: contactEmailRef.current.value,
-      contact_address: contactAddressRef.current.value,
+      web_url: webUrlRef.current.value,
+      message: messageRef.current.value ?? 'Cliente creado desde Atalaya',
+      description: descriptionRef.current.value ?? '',
+      contact_name: contactNameRef.current.value ?? '',
+      contact_phone: contactPhoneRef.current.value ?? '',
+      contact_email: contactEmailRef.current.value ?? '',
+      contact_address: contactAddressRef.current.value ?? '',
     }
 
     const result = await ClientsRest.save(request)
@@ -88,15 +94,16 @@ const Clients = () => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        container.unshift({
-          widget: 'dxButton', location: 'after',
-          options: {
-            icon: 'plus',
-            hint: 'NUEVO REGISTRO',
-            onClick: () => onModalOpen()
-          }
-        });
+        // container.unshift({
+        //   widget: 'dxButton', location: 'after',
+        //   options: {
+        //     icon: 'plus',
+        //     hint: 'NUEVO REGISTRO',
+        //     onClick: () => onModalOpen()
+        //   }
+        // });
       }}
+      filterValue={['client_status.id', 'eq', 1]}
       columns={[
         {
           dataField: 'id',
@@ -127,6 +134,10 @@ const Clients = () => {
         {
           dataField: 'contact_email',
           caption: 'Correo'
+        },
+        {
+          dataField: 'status_client.name',
+          caption: 'Estado del cliente'
         },
         {
           dataField: 'status',
@@ -225,6 +236,8 @@ const Clients = () => {
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
         <InputFormGroup eRef={nameRef} label='Razon social' col='col-8' required />
+        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-12' required />
+        <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required/>
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
         <div className="col-12"><hr className='my-1' /></div>
         <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />

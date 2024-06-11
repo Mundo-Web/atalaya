@@ -240,7 +240,7 @@ const NavBar = ({ session = {}, title = '' }) => {
             <img src="lte/assets/images/logo-sm.png" alt="" height="22" />
           </span>
           <span className="logo-lg">
-            <img src="lte/assets/images/logo-light.png" alt="" height="16" />
+            <img src="assets/img/icon.svg" alt="" height="16" />
           </span>
         </a>
         <a href="index.html" className="logo logo-dark text-center">
@@ -248,7 +248,7 @@ const NavBar = ({ session = {}, title = '' }) => {
             <img src="lte/assets/images/logo-sm.png" alt="" height="22" />
           </span>
           <span className="logo-lg">
-            <img src="lte/assets/images/logo-dark.png" alt="" height="16" />
+            <img src="assets/img/icon.svg" alt="" height="16" />
           </span>
         </a>
       </div>

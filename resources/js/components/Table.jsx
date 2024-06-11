@@ -1,7 +1,8 @@
 import React from 'react'
 import DataGrid from './DataGrid'
 
-const Table = ({ title, gridRef, rest, columns, toolBar, masterDetail }) => {
+const Table = ({ title, gridRef, rest, columns, toolBar, masterDetail, filterValue = [] }) => {
+  console.log(filterValue)
   return (<div className="row">
     <div className="col-12">
       <div className="card">
@@ -10,7 +11,7 @@ const Table = ({ title, gridRef, rest, columns, toolBar, masterDetail }) => {
             <div id="header-title-options" className="float-end"></div>
             <span id="header-title-prefix"></span> Lista de {title} <span id="header-title-suffix"></span>
           </h4>
-          <DataGrid gridRef={gridRef} rest={rest} columns={columns} toolBar={toolBar} masterDetail={masterDetail}/>
+          <DataGrid gridRef={gridRef} rest={rest} columns={columns} toolBar={toolBar} masterDetail={masterDetail} filterValue={filterValue} />
         </div>
       </div>
     </div>

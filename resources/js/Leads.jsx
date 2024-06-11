@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
-import LandingFormsRest from './actions/LandingForms.js'
+import ClientsRest from './actions/ClientsRest.js'
 import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
@@ -19,7 +19,7 @@ import DropdownItem from './components/dropdown/DropdownItem.jsx'
 
 moment.locale('es')
 
-const LandingForms = ({ statuses }) => {
+const Leads = ({ statuses }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -68,7 +68,7 @@ const LandingForms = ({ statuses }) => {
       ends_at: endsAtRef.current.value,
     }
 
-    const result = await LandingFormsRest.save(request)
+    const result = await ClientsRest.save(request)
     if (!result) return
 
     $(gridRef.current).dxDataGrid('instance').refresh()
@@ -76,25 +76,25 @@ const LandingForms = ({ statuses }) => {
   }
 
   const onStatusChange = async ({ id, status }) => {
-    const result = await LandingFormsRest.status({ id, status })
+    const result = await ClientsRest.status({ id, status })
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onDeleteClicked = async (id) => {
-    const result = await LandingFormsRest.delete(id)
+    const result = await ClientsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   const onProjectStatusClicked = async (project, status) => {
-    const result = await LandingFormsRest.projectStatus(project, status)
+    const result = await ClientsRest.projectStatus(project, status)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Formularios de landing' rest={LandingFormsRest}
+    <Table gridRef={gridRef} title='Leads' rest={ClientsRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -113,6 +113,7 @@ const LandingForms = ({ statuses }) => {
         //   }
         // });
       }}
+      filterValue={['client_status.id', '<>', 12]}
       columns={[
         {
           dataField: 'id',
@@ -131,6 +132,11 @@ const LandingForms = ({ statuses }) => {
         {
           dataField: 'telefono',
           caption: 'Telefono'
+        },
+        {
+          dataField: 'client_status.id',
+          caption: 'ID estado cliente',
+          visible: false
         },
         {
           dataField: 'created_at',
@@ -160,8 +166,8 @@ const LandingForms = ({ statuses }) => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto session={properties.session} title='Formularios de landing'>
-      <LandingForms {...properties} />
+    <Adminto session={properties.session} title='Leads'>
+      <Leads {...properties} />
     </Adminto>
   );
 })

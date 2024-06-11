@@ -1,8 +1,8 @@
 import { Fetch, Notify } from "sode-extend-react"
 
-class LandingFormsRest {
+class LeadsRest {
   static paginate = async (params) => {
-    const { result } = await Fetch(`/api/landing-forms/paginate`, {
+    const { result } = await Fetch(`/api/leads/paginate`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -15,7 +15,7 @@ class LandingFormsRest {
 
   static save = async (client) => {
     try {
-      const { status, result } = await Fetch('/api/landing-forms', {
+      const { status, result } = await Fetch('/api/leads', {
         method: 'POST',
         body: JSON.stringify(client)
       })
@@ -42,7 +42,7 @@ class LandingFormsRest {
 
   static status = async ({ id, status }) => {
     try {
-      const { status: fetchStatus, result } = await Fetch('/api/landing-forms/status', {
+      const { status: fetchStatus, result } = await Fetch('/api/leads/status', {
         method: 'PATCH',
         body: JSON.stringify({ id, status })
       })
@@ -70,7 +70,7 @@ class LandingFormsRest {
 
   static projectStatus = async (project, status) => {
     try {
-      const { status: fetchStatus, result } = await Fetch('/api/landing-forms/project-status', {
+      const { status: fetchStatus, result } = await Fetch('/api/leads/project-status', {
         method: 'PATCH',
         body: JSON.stringify({ project, status })
       })
@@ -98,7 +98,7 @@ class LandingFormsRest {
 
   static delete = async (id) => {
     try {
-      const { status: fetchStatus, result } = await Fetch(`/api/landing-forms/${id}`, {
+      const { status: fetchStatus, result } = await Fetch(`/api/leads/${id}`, {
         method: 'DELETE'
       })
       if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
@@ -124,4 +124,4 @@ class LandingFormsRest {
   }
 }
 
-export default LandingFormsRest
+export default LeadsRest
