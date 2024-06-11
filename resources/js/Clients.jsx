@@ -217,7 +217,29 @@ const Clients = () => {
               });
             },
             columns: [
-              
+              {
+                dataField: 'id',
+                caption: 'ID',
+                dataType: 'number',
+                sortOrder: 'asc'
+              },
+              {
+                dataField: 'client.name',
+                caption: 'Cliente'
+              },
+              {
+                dataField: 'type.name',
+                caption: 'Tipo'
+              },
+              {
+                dataField: 'name',
+                caption: 'Proyecto'
+              },
+              {
+                dataField: 'cost',
+                caption: 'Costo',
+                dataType: 'number'
+              },
             ],
             allowColumnResizing: true,
             columnResizingMode: "widget",

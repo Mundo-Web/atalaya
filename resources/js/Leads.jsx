@@ -22,7 +22,17 @@ moment.locale('es')
 const Leads = ({ statuses }) => {
   const gridRef = useRef()
   const modalLeadRef = useRef()
+  const modalRef = useRef()
+
+  const [isEditing, setIsEditing] = useState(false)
   const [lead, setLead] = useState({})
+
+  const onModalOpen = (data) => {
+    if (data?.id) setIsEditing(true)
+    else setIsEditing(false)
+
+    $(modalRef.current).modal('show')
+  }
 
   const onModalLeadOpen = (data) => {
     setLead(data)
@@ -45,14 +55,14 @@ const Leads = ({ statuses }) => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        // container.unshift({
-        //   widget: 'dxButton', location: 'after',
-        //   options: {
-        //     icon: 'plus',
-        //     hint: 'NUEVO REGISTRO',
-        //     onClick: () => onModalOpen()
-        //   }
-        // });
+        container.unshift({
+          widget: 'dxButton', location: 'after',
+          options: {
+            icon: 'plus',
+            hint: 'NUEVO REGISTRO',
+            onClick: () => onModalOpen()
+          }
+        });
       }}
       filterValue={['client_status.id', '<>', 12]}
       columns={[
@@ -79,7 +89,7 @@ const Leads = ({ statuses }) => {
           dataType: 'string',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} tippy="Actualizar estado">
+            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} tippy='Actualizar estado'>
               {statuses.map(({ id, name }) => {
                 return <DropdownItem key={id} onClick={() => onClientStatusClicked(data.id, id)}>
                   {name}
@@ -122,6 +132,17 @@ const Leads = ({ statuses }) => {
         </p>
         <b>Mensaje</b>:
         <p>{lead?.message}</p>
+      </div>
+    </Modal>
+
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar lead' : 'Nuevo lead'}>
+      <div className="row">
+        <InputFormGroup label='Nombre completo' required />
+        <InputFormGroup label='Correo electronico' col='col-md-6' required />
+        <InputFormGroup label='Telefono' col='col-md-6' required />
+        <InputFormGroup label='Empresa / Marca' col='col-md-6' />
+        <InputFormGroup label='Link de WEB' col='col-md-6' />
+        <TextareaFormGroup label='Mensaje' placeholder='Ingresa tu mensaje' rows={4} required />
       </div>
     </Modal>
   </>

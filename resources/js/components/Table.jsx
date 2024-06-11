@@ -2,7 +2,6 @@ import React from 'react'
 import DataGrid from './DataGrid'
 
 const Table = ({ title, gridRef, rest, columns, toolBar, masterDetail, filterValue = [] }) => {
-  console.log(filterValue)
   return (<div className="row">
     <div className="col-12">
       <div className="card">

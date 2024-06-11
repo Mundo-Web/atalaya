@@ -112,6 +112,7 @@ const Projects = ({ statuses }) => {
           }
         });
       }}
+      filterValue={undefined}
       columns={[
         {
           dataField: 'id',
