@@ -122,15 +122,15 @@ const Leads = ({ statuses }) => {
           sortOrder: 'asc'
         },
         {
-          dataField: 'nombre',
+          dataField: 'contact_name',
           caption: 'Cliente'
         },
         {
-          dataField: 'email',
+          dataField: 'contact_email',
           caption: 'Correo'
         },
         {
-          dataField: 'telefono',
+          dataField: 'contact_phone',
           caption: 'Telefono'
         },
         {
@@ -160,6 +160,17 @@ const Leads = ({ statuses }) => {
           cellTemplate: (container, { data }) => {
             container.text(moment(data.created_at).format('LL'))
           }
+        },
+        {
+          caption: 'Acciones',
+          cellTemplate: (container, { data }) => {
+            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={() => onClientStatusClicked(data.id, 12)}>
+              <i className='fa fa-user-plus'></i>
+            </TippyButton>)
+          },
+          allowFiltering: false,
+          allowExporting: false
         }
       ]} />
     {/* <Modal modalRef={modalRef} title={isEditing ? 'Editar proyecto' : 'Agregar proyecto'} onSubmit={onModalSubmit}>
