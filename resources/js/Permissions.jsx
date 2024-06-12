@@ -138,6 +138,7 @@ const Permissions = () => {
 };
 
 CreateReactScript((el, properties) => {
+  if (!properties.can('permissions', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Permisos'>
       <Permissions {...properties} />
