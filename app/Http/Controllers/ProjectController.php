@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Auth;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
@@ -30,8 +31,11 @@ class ProjectController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!auth()->user()->can('users.root')) {
+            if (!Auth::user()->can('projects.root')) {
                 $instance->whereNotNull('status');
+            }
+            if (!Auth::user()->can('clients.root')) {
+                $instance->whereNotNull('client__status');
             }
             if ($request->filter) {
                 $instance->where(function ($query) use ($request) {
