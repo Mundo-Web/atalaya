@@ -113,18 +113,18 @@ const Clients = ({ can }) => {
           caption: 'ID',
           dataType: 'number',
           cellTemplate: (container, { data, value, ...otherParams }) => {
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-white' title="Ver proyectos" onClick={() => {
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-white' title={`Ver ${data.projects} proyectos`} onClick={() => {
               otherParams.component.collapseAll(-1);
               otherParams.component.expandRow(otherParams.row.data)
             }}>
-              <i className='fas fa-shapes'></i>
+              <i className='fas fa-shapes'></i> {data.projects}
             </TippyButton>)
-          }
+          },
+          sortOrder: 'desc'
         } : null,
         {
           dataField: 'ruc',
-          caption: 'RUC',
-          sortOrder: 'asc',
+          caption: 'RUC'
         },
         {
           dataField: 'name',
@@ -167,7 +167,7 @@ const Clients = ({ can }) => {
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            can('projects', 'root', 'all', 'list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
+            can('projects', 'root', 'all', 'list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title={`Ver ${data.projects} proyectos en una nueva ventana`} onClick={() => location.href = `/projects/?client=${data.name}`}>
               <i className='mdi mdi-page-next'></i>
             </TippyButton>)
 
