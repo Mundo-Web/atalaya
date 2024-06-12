@@ -272,8 +272,8 @@ const Projects = ({ statuses, can }) => {
       </div>
     </Modal>
 
-    <Modal modalRef={modalPaymentRef} title={`Pagos de ${dataLoaded?.name} - S/.${dataLoaded?.cost}`} onSubmit={onPaymentSubmit}>
-      <div className='row'>
+    <Modal modalRef={modalPaymentRef} title={`Pagos de ${dataLoaded?.name} - S/.${dataLoaded?.cost}`} onSubmit={onPaymentSubmit} hideButtonSubmit>
+      {dataLoaded?.remaining_amount > 0 && <div className='row'>
         <input ref={idPaymentRef} type='hidden' />
         <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-md-7' required />
         <div className='form-group col-md-5'>
@@ -287,7 +287,7 @@ const Projects = ({ statuses, can }) => {
             </Tippy>
           </div>
         </div>
-      </div>
+      </div>}
       <table className='table table-bordered table-sm table-responsive table-striped mb-2'>
         <thead>
           <tr>

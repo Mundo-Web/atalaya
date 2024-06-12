@@ -202,12 +202,15 @@ const NavBar = ({ session = {}, title = '' }) => {
             </div>
 
 
-            <a href="contacts-profile.html" className="dropdown-item notify-item">
+            <a href="/profile" className="dropdown-item notify-item">
               <i className="fe-user"></i>
-              <span>Mi cuenta</span>
+              <span>Mi perfil</span>
             </a>
 
-
+            <a href="/account" className="dropdown-item notify-item">
+              <i className="mdi mdi-account-key-outline"></i>
+              <span>Mi cuenta</span>
+            </a>
             <a href="#" className="dropdown-item notify-item right-bar-toggle">
               <i className="fe-lock"></i>
               <span>Configuracion</span>

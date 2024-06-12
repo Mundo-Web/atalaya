@@ -21,8 +21,13 @@ const Menu = ({ session, can }) => {
           <div className="dropdown-menu user-pro-dropdown">
 
 
-            <a href="#" className="dropdown-item notify-item">
+            <a href="/profile" className="dropdown-item notify-item">
               <i className="fe-user me-1"></i>
+              <span>Mi perfil</span>
+            </a>
+
+            <a href="/account" className="dropdown-item notify-item">
+              <i className="mdi mdi-account-key-outline me-1"></i>
               <span>Mi cuenta</span>
             </a>
 
@@ -30,11 +35,6 @@ const Menu = ({ session, can }) => {
               <i className="fe-settings me-1"></i>
               <span>Configuracion</span>
             </a>
-
-            {/* <a href="#" className="dropdown-item notify-item">
-              <i className="fe-lock me-1"></i>
-              <span>Lock Screen</span>
-            </a> */}
 
             <a href="#" className="dropdown-item notify-item" onClick={Logout}>
               <i className="fe-log-out me-1"></i>
@@ -56,7 +56,7 @@ const Menu = ({ session, can }) => {
           </li>
 
           <li className="list-inline-item">
-            <a href="#">
+            <a href="#" onClick={Logout}>
               <i className="mdi mdi-power"></i>
             </a>
           </li>
@@ -98,6 +98,10 @@ const Menu = ({ session, can }) => {
               }
             </MenuItemContainer>
           }
+
+          <li className="menu-title">Configuracion</li>
+          <MenuItem href="/profile" icon='mdi mdi-account'>Mi perfil</MenuItem>
+          <MenuItem href="/account" icon='mdi mdi-account-key'>Mi cuenta</MenuItem>
 
           {
             (can('tables', 'root', 'all', 'list') || can('statuses', 'root', 'all', 'list') || can('types', 'root', 'all', 'list')) && <>

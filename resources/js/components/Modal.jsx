@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', children, bodyClass = '', btnCancelText, btnSubmitText, hideFooter, onSubmit = (e) => { e.preventDefault(); $(modalRef.current).modal('hide') } }) => {
+const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', children, bodyClass = '', btnCancelText, btnSubmitText, hideFooter, hideButtonSubmit, onSubmit = (e) => { e.preventDefault(); $(modalRef.current).modal('hide') } }) => {
 
   return (<form className='modal fade' ref={modalRef} tabIndex='-1' aria-hidden='true' dataa-bs-backdrop={isStatic ? 'static' : ''} onSubmit={onSubmit} autoComplete='off'>
     <div className={`modal-dialog modal-dialog-centered modal-${size ?? 'md'}`}>
@@ -16,7 +16,7 @@ const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', child
           !hideFooter && <div className='modal-footer'>
             <button className='btn btn-sm btn-danger pull-left' type='button'
               data-bs-dismiss='modal'>{btnCancelText ?? 'Cerrar'}</button>
-            <button className='btn btn-sm btn-success pull-right' type='submit'>{btnSubmitText ?? 'Aceptar'}</button>
+            {!hideButtonSubmit && <button className='btn btn-sm btn-success pull-right' type='submit'>{btnSubmitText ?? 'Aceptar'}</button>}
           </div>
         }
       </div>
