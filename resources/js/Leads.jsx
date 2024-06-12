@@ -13,7 +13,7 @@ import TippyButton from './components/form/TippyButton.jsx'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 
-const Leads = ({ statuses , can}) => {
+const Leads = ({ statuses, can }) => {
   const gridRef = useRef()
   const modalLeadRef = useRef()
   const modalRef = useRef()
@@ -76,6 +76,8 @@ const Leads = ({ statuses , can}) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
+  console.log(statuses)
+
   return (<>
     <Table gridRef={gridRef} title='Leads' rest={ClientsRest}
       toolBar={(container) => {
@@ -121,14 +123,19 @@ const Leads = ({ statuses , can}) => {
           dataType: 'string',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} tippy='Actualizar estado'>
-              {statuses.map(({ id, name }) => {
+            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} icon={{ icon: 'fa fa-circle', color: data.client_status.color }} tippy='Actualizar estado'>
+              {statuses.map(({ id, name, color }) => {
                 return <DropdownItem key={id} onClick={() => onClientStatusClicked(data.id, id)}>
-                  {name}
+                  <i className='fa fa-circle' style={{ color }}></i> {name}
                 </DropdownItem>
               })}
             </Dropdown>)
           }
+        },
+        {
+          dataField: 'source',
+          caption: 'Fuente',
+          dataType: 'string'
         },
         {
           dataField: 'created_at',
@@ -182,6 +189,7 @@ const Leads = ({ statuses , can}) => {
 };
 
 CreateReactScript((el, properties) => {
+  if (!properties.can('leads', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Leads'>
       <Leads {...properties} />

@@ -17,6 +17,7 @@ class Status extends Model
     protected $fillable = [
         'table_id',
         'name',
-        'description'
+        'description',
+        'color'
     ];
 }

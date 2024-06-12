@@ -1,15 +1,24 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '7136484802e4d8ea4c4de5ba81149633c3fa5c51',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'beyondcode/laravel-dump-server' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => 'e0dff1b2c7caf49d07ca5cb331fc7c5f1e52c715',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../beyondcode/laravel-dump-server',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
         'brick/math' => array(
             'pretty_version' => '0.12.1',
             'version' => '0.12.1.0',
@@ -398,9 +407,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '7136484802e4d8ea4c4de5ba81149633c3fa5c51',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -105,7 +105,7 @@ const Clients = ({ can }) => {
       }}
       filterValue={['status_id', '=', 12]}
       columns={[
-        can('projects.all', 'projects.list') ? {
+        can('projects', 'root', 'all', 'list') ? {
           dataField: 'id',
           caption: 'ID',
           dataType: 'number',
@@ -159,20 +159,20 @@ const Clients = ({ can }) => {
             }
           }
         },
-        can('projects.all', 'projects.list', 'clients.all', 'clients.update', 'clients.changestatus', 'clients.delete') ? {
+        can('projects', 'root', 'all','list', 'update', 'changestatus', 'delete') ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            can('projects.all', 'projects.list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
+            can('projects', 'root', 'all', 'list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
               <i className='mdi mdi-page-next'></i>
             </TippyButton>)
 
-            can('clients.all', 'clients.update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
+            can('clients', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            can('clients.all', 'clients.changestatus') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
+            can('clients', 'root', 'all', 'changestatus') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
               {
                 data.status === 1
                   ? <i className='fa fa-toggle-on text-success' />
@@ -182,7 +182,7 @@ const Clients = ({ can }) => {
               }
             </TippyButton>)
 
-            can('clients.all', 'clients.delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
+            can('clients', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
             </TippyButton>)
           },
@@ -275,7 +275,7 @@ const Clients = ({ can }) => {
 };
 
 CreateReactScript((el, properties) => {
-  if (!properties.can('clients.all', 'clients.list')) return location.href = '/';
+  if (!properties.can('clients', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Clientes'>
       <Clients {...properties} />

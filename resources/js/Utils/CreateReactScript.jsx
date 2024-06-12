@@ -7,7 +7,9 @@ const CreateReactScript = (render) => {
     resolve: name => `/${name}.jsx`,
     setup: ({ el, props }) => {
       const properties = props.initialPage.props
-      const can = (...keys) => {
+      const can = (page, ...keys) => {
+        console.log(page, keys)
+        keys = keys.map(x => `${page}.${x}`)
         if (properties?.session?.permissions?.find(x => keys.includes(x.name))) return true
         const roles = properties?.session?.roles ?? []
         for (const rol of roles) {
@@ -20,7 +22,7 @@ const CreateReactScript = (render) => {
         'Content-Type': 'application/json',
         'X-Xsrf-Token': decodeURIComponent(Cookies.get('XSRF-TOKEN'))
       }
-      render(el, {...properties, can})
+      render(el, { ...properties, can })
     },
   });
 }

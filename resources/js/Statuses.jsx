@@ -21,6 +21,7 @@ const Statuses = () => {
   const idRef = useRef()
   const tableRef = useRef()
   const nameRef = useRef()
+  const colorRef = useRef()
   const descriptionRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
@@ -32,6 +33,7 @@ const Statuses = () => {
     idRef.current.value = data?.id || null
     SetSelectValue(tableRef.current, data?.table?.id, data?.table?.name)
     nameRef.current.value = data?.name || null
+    colorRef.current.value = data?.color || '#343a40'
     descriptionRef.current.value = data?.description || null
 
     $(modalRef.current).modal('show')
@@ -44,6 +46,7 @@ const Statuses = () => {
       id: idRef.current.value || undefined,
       table_id: tableRef.current.value,
       name: nameRef.current.value,
+      color: colorRef.current.value,
       description: descriptionRef.current.value,
     }
 
@@ -100,7 +103,14 @@ const Statuses = () => {
         },
         {
           dataField: 'name',
-          caption: 'Estado de proyecto'
+          caption: 'Estado de tabla'
+        },
+        {
+          dataField: 'color',
+          caption: 'Color',
+          cellTemplate: (container, { data }) => {
+            ReactAppend(container, <span className={`badge rounded-pill`} style={{ backgroundColor: data.color || '#343a40' }}>{data.color}</span>)
+          }
         },
         {
           dataField: 'description',
@@ -160,6 +170,7 @@ const Statuses = () => {
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={nameRef} label='Estado de proyecto' col='col-12' required />
         <SelectAPIFormGroup eRef={tableRef} label='Tabla' col='col-12' dropdownParent='#status-crud-container' searchAPI='/api/tables/paginate' searchBy='name' required />
+        <InputFormGroup eRef={colorRef} type='color' label='Color' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>
@@ -168,6 +179,7 @@ const Statuses = () => {
 };
 
 CreateReactScript((el, properties) => {
+  if (!properties.can('statuses', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Estados'>
       <Statuses {...properties} />

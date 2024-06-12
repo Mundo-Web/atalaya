@@ -70,54 +70,54 @@ const Menu = ({ session, can }) => {
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           {
-            can('clients.list', 'clients.all') &&
+            can('clients', 'root', 'all', 'list') &&
             <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
           }
           {
-            can('leads.list', 'leads.all') &&
+            can('leads', 'root', 'all', 'list') &&
             <MenuItem href="/leads" icon='mdi mdi-page-next'>Leads</MenuItem>
           }
           {
-            can('projects.list', 'projects.all', 'types.list', 'types.all') &&
+            (can('projects', 'root', 'all', 'list') || can('projects', 'root', 'all', 'create')) &&
             <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
               {
-                can('projects.list', 'projects.all') &&
+                can('projects', 'root', 'all', 'list') &&
                 <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
               }
               {
-                can('types.list', 'types.all') &&
+                can('types', 'root', 'all', 'list') &&
                 <MenuItem href="/types" icon='mdi mdi-format-list-text'>Tipos</MenuItem>
               }
             </MenuItemContainer>
           }
 
           {
-            can('users.list', 'users.all', 'roles.list', 'roles.all', 'permissions.list', 'permissions.all') &&
+            (can('users', 'root', 'all', 'list') || can('roles', 'root', 'all', 'list') || can('permissions', 'root', 'all', 'list')) &&
             <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
               {
-                can('users.list', 'users.all') &&
+                can('users', 'root', 'all', 'list') &&
                 <MenuItem href="/users" icon='mdi mdi-account'>Usuarios</MenuItem>
               }
               {
-                can('roles.list', 'roles.all') &&
+                can('roles', 'root', 'all', 'list') &&
                 <MenuItem href="/roles" icon='mdi mdi-account-convert'>Roles</MenuItem>
               }
               {
-                can('permissions.list', 'permissions.all') &&
+                can('permissions', 'root', 'all', 'list') &&
                 <MenuItem href="/permissions" icon='mdi mdi-account-check'>Permisos</MenuItem>
               }
             </MenuItemContainer>
           }
 
           {
-            can('tables.list', 'tables.all', 'statuses.list', 'statuses.all') &&
+            (can('tables', 'root', 'all', 'list') || can('statuses', 'root', 'all', 'list')) &&
             <MenuItemContainer title='Mantenimiento' icon='mdi mdi-application-cog'>
               {
-                can('tables.list', 'tables.all') &&
+                can('tables', 'root', 'all', 'list') &&
                 <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
               }
               {
-                can('statuses.list', 'statuses.all') &&
+                can('statuses', 'root', 'all', 'list') &&
                 <MenuItem href='/statuses' icon='mdi mdi-table'>Estados</MenuItem>
               }
             </MenuItemContainer>

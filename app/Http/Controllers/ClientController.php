@@ -31,9 +31,9 @@ class ClientController extends Controller
                 ])
                     ->groupBy($selector);
             }
-
+            // dump(Auth::user()->can('clients.root'));
             if (!Auth::user()->can('clients.root')) {
-                $instance->whereNotNull('status');
+                $instance->whereIn('status', [0, 1]);
             }
             if ($request->filter) {
                 $instance->where(function ($query) use ($request) {
