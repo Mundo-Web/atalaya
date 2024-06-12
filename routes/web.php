@@ -49,11 +49,15 @@ Route::middleware('auth')->group(function () {
                 ];
                 if (isset($page['compact'])) {
                     foreach ($page['compact'] as $key => $compact) {
-                        if (isset($compact['filter'])) {
-                            $properties[$key] = $compact['class']::where($compact['filter'])->get();
+                        if (isset($compact['select'])) {
+                            $query = $compact['class']::select($compact['select']);
                         } else {
-                            $properties[$key] = $compact['class']::all();
+                            $query = $compact['class']::select();
                         }
+                        if (isset($compact['filter'])) {
+                            $query = $query->where($compact['filter']);
+                        }
+                        $properties[$key] = $query->get();
                     }
                 }
                 return Inertia::render($page['component'], $properties);

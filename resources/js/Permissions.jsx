@@ -10,7 +10,6 @@ import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import JSEncrypt from 'jsencrypt'
 import PermissionsRest from './actions/PermissionsRest.js'
-import moment from 'moment-timezone'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 
 const Permissions = ({ PUBLIC_RSA_KEY }) => {

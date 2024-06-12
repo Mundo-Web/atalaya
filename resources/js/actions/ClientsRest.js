@@ -23,7 +23,7 @@ class ClientsRest {
       if (!status) throw new Error(result?.message || 'Ocurrio un error inesperado')
 
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Correcto',
         body: result.message,
         type: 'success'
@@ -31,7 +31,7 @@ class ClientsRest {
       return true
     } catch (error) {
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Error',
         body: error.message,
         type: 'danger'
@@ -49,7 +49,7 @@ class ClientsRest {
       if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
 
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Correcto',
         body: result.message,
         type: 'success'
@@ -58,7 +58,7 @@ class ClientsRest {
       return true
     } catch (error) {
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Error',
         body: error.message,
         type: 'danger'
@@ -77,7 +77,7 @@ class ClientsRest {
       if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
 
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Correcto',
         body: result.message,
         type: 'success'
@@ -86,7 +86,7 @@ class ClientsRest {
       return true
     } catch (error) {
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Error',
         body: error.message,
         type: 'danger'
@@ -104,7 +104,7 @@ class ClientsRest {
       if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
 
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Correcto',
         body: result.message,
         type: 'success'
@@ -113,7 +113,7 @@ class ClientsRest {
       return true
     } catch (error) {
       Notify.add({
-        icon: '/assets/img/logo.svg',
+        icon: '/assets/img/logo-login.svg',
         title: 'Error',
         body: error.message,
         type: 'danger'

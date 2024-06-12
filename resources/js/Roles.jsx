@@ -9,13 +9,24 @@ import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import RolesRest from './actions/RolesRest.js'
-import moment from 'moment-timezone'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
-import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import PermissionsRest from './actions/PermissionsRest.js'
-import SetSelectValue from './Utils/SetSelectValue.jsx'
+import CheckboxFormGroup from './components/form/CheckboxFormGroup.jsx'
+import Accordion from './components/accordion/Accordion.jsx'
+import AccordionCard from './components/accordion/AccordionCard.jsx'
 
-const Roles = () => {
+const Roles = ({ permissions }) => {
+  permissions = Object.values(permissions.map((x) => {
+    const [origin] = x.name.split('.')
+    return { ...x, origin }
+  }).reduce((acc, item) => {
+    if (!acc[item.origin]) {
+      acc[item.origin] = [];
+    }
+    acc[item.origin].push(item);
+    return acc;
+  }, {}))
+
   const gridRef = useRef()
   const modalRef = useRef()
   const modalPermissionRef = useRef()
@@ -44,10 +55,13 @@ const Roles = () => {
   const onPermissionsModalOpen = async (data) => {
     buttonPermissionsRef.current.disabled = true
     setRolActive(data)
-    const permissions = await PermissionsRest.byRole(data.id)
+    const userPermissions = await PermissionsRest.byRole(data.id)
     buttonPermissionsRef.current.disabled = false
 
-    SetSelectValue(permissionsRef.current, permissions, 'id', 'name')
+    $('#permissions input').prop('checked', false)
+    userPermissions.forEach(({name}) => {
+      $(`[name="${name}"]`).prop('checked', true)
+    })
 
     $(modalPermissionRef.current).modal('show')
   }
@@ -70,8 +84,8 @@ const Roles = () => {
 
   const onPermissionsModalSubmit = async (e) => {
     e.preventDefault()
-    const permissions = $(permissionsRef.current).val()
 
+    const permissions = [...$('#permissions input:checked')].map(e => e.value)
     const request = {
       role_id: rolActive.id,
       permissions: permissions
@@ -169,10 +183,15 @@ const Roles = () => {
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>
-    <Modal modalRef={modalPermissionRef} title={`Permisos para ${rolActive.name}`} btnSubmitText='Guardar' onSubmit={onPermissionsModalSubmit}>
-      <div id="permissions-container" className='row'>
-        <SelectAPIFormGroup eRef={permissionsRef} label='Permisos' col='col-12' dropdownParent='#permissions-container' searchAPI='/api/permissions/paginate' searchBy='name' required multiple />
-      </div>
+    <Modal modalRef={modalPermissionRef} title={`Permisos para ${rolActive.name}`} btnSubmitText='Guardar' onSubmit={onPermissionsModalSubmit} size='sm'>
+      <Accordion id='permissions'>
+        {permissions.map((children, i) => {
+          const origin = children[0].origin
+          return <AccordionCard key={`accordion-${i}`} id={`permission-${origin}`} title={origin} parent='permissions' className='d-flex gap-2 flex-wrap flex-row'>
+            {children.map(({ id, name, description }) => <CheckboxFormGroup key={`permission-${id}`} className='mb-0' id={`permission-ck-${id}`} label={name.replace(`${origin}.`, '')} name={name} value={id} title={description} style={{ width: 'max-content' }} rounded />)}
+          </AccordionCard>
+        })}
+      </Accordion>
     </Modal>
   </>
   )

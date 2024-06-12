@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Status;
+use Spatie\Permission\Models\Permission;
 
 class Router
 {
@@ -60,7 +61,13 @@ class Router
     ],
     'roles' => [
       'component' => 'Roles.jsx',
-      'adminto-instance' => true
+      'adminto-instance' => true,
+      'compact' => [
+        'permissions' => [
+          'class' => Permission::class,
+          'select' => ['id', 'name', 'description']
+        ]
+      ]
     ],
     'permissions' => [
       'component' => 'Permissions.jsx',

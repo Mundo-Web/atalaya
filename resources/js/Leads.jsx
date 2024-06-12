@@ -10,13 +10,10 @@ import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
-import moment from 'moment-timezone'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 
-moment.locale('es')
-
-const Leads = ({ statuses }) => {
+const Leads = ({ statuses , can}) => {
   const gridRef = useRef()
   const modalLeadRef = useRef()
   const modalRef = useRef()

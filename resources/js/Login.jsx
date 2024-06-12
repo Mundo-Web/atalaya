@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
 import React, { useRef, useState } from 'react'
-import { Notify, Fetch } from 'sode-extend-react'
 import JSEncrypt from 'jsencrypt'
 import '../css/login.css'
 import CreateReactScript from './Utils/CreateReactScript'
@@ -69,7 +68,7 @@ const Login = ({ PUBLIC_RSA_KEY, NOCAPTCHA_SITEKEY, token }) => {
           onSubmit={onLoginSubmit}>
           <div className="form-header">
             <div className="form-img">
-              <img id="image" src='assets/img/logo.svg' alt="SoDe World" />
+              <img id="image" src='assets/img/logo-login.svg' alt="SoDe World" />
             </div>
             <h2 className='form-title'>Gestion de clientes</h2>
             <p className='form-description'>Inicie sesion para continuar</p>

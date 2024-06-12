@@ -55,6 +55,8 @@
 
     <script src="/lte/assets/libs/dxdatagrid/js/dx.all.js"></script>
     <script src="/lte/assets/libs/dxdatagrid/js/localization/dx.messages.es.js"></script>
+    <script src="/lte/assets/libs/moment/min/moment.min.js"></script>
+    <script src="/lte/assets/libs/moment/locale/es.js"></script>
   @endif
 </body>
 

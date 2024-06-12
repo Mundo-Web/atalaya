@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import { Fetch, Notify } from "sode-extend-react"
 import Logout from "../actions/Logout"
 
 const NavBar = ({ session = {}, title = '' }) => {
@@ -237,18 +236,18 @@ const NavBar = ({ session = {}, title = '' }) => {
       <div className="logo-box">
         <a href="index.html" className="logo logo-light text-center">
           <span className="logo-sm">
-            <img src="lte/assets/images/logo-sm.png" alt="" height="22" />
+            <img src="/assets/img/icon.svg" alt="" height="22" />
           </span>
           <span className="logo-lg">
-            <img src="assets/img/logo.svg" alt="" height="16" />
+            <img src="/assets/img/logo.svg" alt="" height="16" />
           </span>
         </a>
         <a href="index.html" className="logo logo-dark text-center">
           <span className="logo-sm">
-            <img src="lte/assets/images/logo-sm.png" alt="" height="22" />
+            <img src="/assets/img/icon-dark.svg" alt="" height="22" />
           </span>
           <span className="logo-lg">
-            <img src="assets/img/logo-dark.svg" alt="" height="16" />
+            <img src="/assets/img/logo-dark.svg" alt="" height="16" />
           </span>
         </a>
       </div>

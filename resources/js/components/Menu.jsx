@@ -2,8 +2,10 @@ import React from 'react'
 import Logout from '../actions/Logout'
 import MenuItem from './MenuItem'
 import MenuItemContainer from './MenuItemContainer'
+import Tippy from '@tippyjs/react'
 
 const Menu = ({ session, can }) => {
+  const mainRole = session.roles[0]
   return (<div className="left-side-menu">
 
     <div className="h-100" data-simplebar>
@@ -42,7 +44,9 @@ const Menu = ({ session, can }) => {
           </div>
         </div>
 
-        <p className="text-muted left-user-info">@{session.username}</p>
+        <Tippy content={mainRole.description} arrow={true}>
+          <p className="text-muted left-user-info" >{mainRole.name}</p>
+        </Tippy>
 
         <ul className="list-inline">
           <li className="list-inline-item">
