@@ -15,7 +15,7 @@ class Router
     ],
     'clients' => [
       'component' => 'Clients.jsx',
-      'adminto-instance' => true
+      'adminto-instance' => true,
     ],
     'projects' => [
       'component' => 'Projects.jsx',

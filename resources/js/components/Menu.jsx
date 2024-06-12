@@ -3,6 +3,7 @@ import Logout from '../actions/Logout'
 import MenuItem from './MenuItem'
 import MenuItemContainer from './MenuItemContainer'
 import Tippy from '@tippyjs/react'
+import 'tippy.js/dist/tippy.css';
 
 const Menu = ({ session, can }) => {
   const mainRole = session.roles[0]
@@ -31,7 +32,7 @@ const Menu = ({ session, can }) => {
               <span>Mi cuenta</span>
             </a>
 
-            <a href="#" className="dropdown-item notify-item right-bar-toggle">
+            <a href="#" className="dropdown-item notify-item right-bar-toggle dropdown notification-list">
               <i className="fe-settings me-1"></i>
               <span>Configuracion</span>
             </a>
@@ -50,15 +51,19 @@ const Menu = ({ session, can }) => {
 
         <ul className="list-inline">
           <li className="list-inline-item">
-            <a href="#" className="text-muted left-user-info">
-              <i className="mdi mdi-cog"></i>
-            </a>
+            <Tippy content="Configuracion">
+              <a href="#" className="text-muted left-user-info right-bar-toggle dropdown notification-list">
+                <i className="mdi mdi-cog"></i>
+              </a>
+            </Tippy>
           </li>
 
           <li className="list-inline-item">
-            <a href="#" onClick={Logout}>
-              <i className="mdi mdi-power"></i>
-            </a>
+            <Tippy content="Cerrar sesion">
+              <a href="#" className="text-danger" onClick={Logout}>
+                <i className="mdi mdi-power"></i>
+              </a>
+            </Tippy>
           </li>
         </ul>
       </div>

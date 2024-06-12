@@ -211,7 +211,7 @@ const NavBar = ({ session = {}, title = '' }) => {
               <i className="mdi mdi-account-key-outline"></i>
               <span>Mi cuenta</span>
             </a>
-            <a href="#" className="dropdown-item notify-item right-bar-toggle">
+            <a href="#" className="dropdown-item notify-item right-bar-toggle dropdown notification-list">
               <i className="fe-lock"></i>
               <span>Configuracion</span>
             </a>

@@ -11,6 +11,7 @@ import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ClientsRest from './actions/ClientsRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
+import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
 
 const Clients = ({ can }) => {
   const gridRef = useRef()
@@ -29,6 +30,8 @@ const Clients = ({ can }) => {
   const contactAddressRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
+  const [projectLoaded, setProjectLoaded] = useState({})
+  const [projectsGrid, setProjectsGrid] = useState({})
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -159,7 +162,7 @@ const Clients = ({ can }) => {
             }
           }
         },
-        can('projects', 'root', 'all','list', 'update', 'changestatus', 'delete') ? {
+        can('projects', 'root', 'all', 'list', 'update', 'changestatus', 'delete') ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
@@ -200,7 +203,7 @@ const Clients = ({ can }) => {
             isLoadingAll: true
           })
 
-          $('<div>').appendTo(container).dxDataGrid({
+          const dataGrid = $('<div>').appendTo(container).dxDataGrid({
             dataSource,
             onToolbarPreparing: (e) => {
               const toolbarItems = e.toolbarOptions.items;
@@ -224,10 +227,6 @@ const Clients = ({ can }) => {
                 sortOrder: 'asc'
               },
               {
-                dataField: 'client.name',
-                caption: 'Cliente'
-              },
-              {
                 dataField: 'type.name',
                 caption: 'Tipo'
               },
@@ -238,8 +237,63 @@ const Clients = ({ can }) => {
               {
                 dataField: 'cost',
                 caption: 'Costo',
-                dataType: 'number'
+                dataType: 'number',
+                width: 150,
+                cellTemplate: (container, { data }) => {
+                  const percent = ((data.total_payments / data.cost) * 100).toFixed(2)
+                  ReactAppend(container, <>
+                    <p className='mb-1 d-flex justify-content-between'>
+                      <span>S/.{Number(data.total_payments).toFixed(2)}</span>
+                      <b className='float-end'>S/.{Number(data.cost).toFixed(2)}</b>
+                    </p>
+                    <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0'>
+                      <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                      </div>
+                    </div>
+                  </>)
+                }
               },
+              can('projects', 'root', 'all', 'changestatus') && {
+                dataField: 'project_status.name',
+                caption: 'Estado del proyecto',
+                dataType: 'string',
+                cellTemplate: (container, { data }) => {
+                  container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+                  ReactAppend(container, < >
+                    <i className='fa fa-circle' style={{ color: data.project_status.color }}></i> {data.project_status.name}
+                  </>)
+                }
+              },
+              {
+                dataField: 'status',
+                caption: 'Estado',
+                dataType: 'boolean',
+                cellTemplate: (container, { data }) => {
+                  switch (data.status) {
+                    case 1:
+                      ReactAppend(container, <span className='badge bg-success rounded-pill'>Activo</span>)
+                      break
+                    case 0:
+                      ReactAppend(container, <span className='badge bg-danger rounded-pill'>Inactivo</span>)
+                      break
+                    default:
+                      ReactAppend(container, <span className='badge bg-dark rounded-pill'>Eliminado</span>)
+                      break
+                  }
+                }
+              },
+              {
+                caption: 'Acciones',
+                cellTemplate: (container, { data }) => {
+                  container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+
+                  can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setProjectLoaded(data)}>
+                    <i className='fas fa-money-check-alt'></i>
+                  </TippyButton>)
+                },
+                allowFiltering: false,
+                allowExporting: false
+              }
             ],
             allowColumnResizing: true,
             columnResizingMode: "widget",
@@ -252,6 +306,7 @@ const Clients = ({ can }) => {
               search: { enabled: true }
             },
           })
+          setProjectsGrid(dataGrid.dxDataGrid('instance'))
         }
       }}
     />
@@ -270,6 +325,8 @@ const Clients = ({ can }) => {
         <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
       </div>
     </Modal>
+
+    <PaymentModal dataLoaded={projectLoaded} setDataLoaded={setProjectLoaded} grid2refresh={projectsGrid} />
   </>
   )
 };

@@ -15,13 +15,11 @@ import SetSelectValue from './Utils/SetSelectValue.jsx'
 import { GET } from 'sode-extend-react'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
-import PaymentsRest from './actions/PaymentsRest.js'
-import Tippy from '@tippyjs/react'
+import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
-  const modalPaymentRef = useRef()
 
   // Form elements ref
   const idRef = useRef()
@@ -34,13 +32,8 @@ const Projects = ({ statuses, can }) => {
   const startsAtRef = useRef()
   const endsAtRef = useRef()
 
-  const idPaymentRef = useRef()
-  const paymentTypeRef = useRef()
-  const paymentAmountRef = useRef()
-
   const [isEditing, setIsEditing] = useState(false)
   const [dataLoaded, setDataLoaded] = useState({})
-  const [payments, setPayments] = useState([])
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -57,16 +50,6 @@ const Projects = ({ statuses, can }) => {
     endsAtRef.current.value = data?.ends_at ? moment(data.ends_at).format('YYYY-MM-DD') : null
 
     $(modalRef.current).modal('show')
-  }
-
-  const onPaymentModalOpen = async (data) => {
-    setDataLoaded(data)
-
-    const paymentsByProject = await PaymentsRest.byProject(data.id)
-    setPayments(paymentsByProject)
-
-    idPaymentRef.current.value = data?.id || null
-    $(modalPaymentRef.current).modal('show')
   }
 
   const onModalSubmit = async (e) => {
@@ -89,31 +72,6 @@ const Projects = ({ statuses, can }) => {
 
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
-  }
-
-  const onPaymentSubmit = async (e) => {
-    e.preventDefault()
-    const request = {
-      payment_id: idPaymentRef.current.value || undefined,
-      project_id: dataLoaded.id,
-      payment_type: paymentTypeRef.current.value,
-      amount: paymentAmountRef.current.value,
-    }
-
-    const result = await PaymentsRest.save(request)
-    if (!result) return
-
-    paymentTypeRef.current.value = null
-    paymentAmountRef.current.value = null
-
-    const paymentsByProject = await PaymentsRest.byProject(dataLoaded.id)
-    const total_payments = paymentsByProject.reduce((acc, payment) => Number(acc) + Number(payment.amount), 0)
-    const newDataLoaded = { ...dataLoaded, total_payments, remaining_amount: dataLoaded.cost - total_payments }
-    setDataLoaded(newDataLoaded)
-    setPayments(paymentsByProject)
-
-    $(gridRef.current).dxDataGrid('instance').refresh()
-    // $(modalPaymentRef.current).modal('hide')
   }
 
   const onStatusChange = async ({ id, status }) => {
@@ -236,7 +194,7 @@ const Projects = ({ statuses, can }) => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => onPaymentModalOpen(data)}>
+            can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
               <i className='fas fa-money-check-alt'></i>
             </TippyButton>)
 
@@ -272,54 +230,7 @@ const Projects = ({ statuses, can }) => {
       </div>
     </Modal>
 
-    <Modal modalRef={modalPaymentRef} title={`Pagos de ${dataLoaded?.name} - S/.${dataLoaded?.cost}`} onSubmit={onPaymentSubmit} hideButtonSubmit>
-      {dataLoaded?.remaining_amount > 0 && <div className='row'>
-        <input ref={idPaymentRef} type='hidden' />
-        <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-md-7' required />
-        <div className='form-group col-md-5'>
-          <label>Monto <b className='text-danger'>*</b></label>
-          <div className='input-group' >
-            <input ref={paymentAmountRef} type='number' className='form-control' placeholder={`Max: ${dataLoaded?.remaining_amount}`} min={0} max={dataLoaded?.remaining_amount} />
-            <Tippy content='Agregar pago'>
-              <button className='btn input-group-text btn-dark waves-effect waves-light' type='submit'>
-                <i className='fa fa-plus'></i>
-              </button>
-            </Tippy>
-          </div>
-        </div>
-      </div>}
-      <table className='table table-bordered table-sm table-responsive table-striped mb-2'>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Fecha</th>
-            <th>Concepto</th>
-            <th>Monto</th>
-          </tr>
-        </thead>
-        <tbody>{payments.map(payment => {
-          return <tr>
-            <td></td>
-            <td>{moment(payment.created_at).format('LL')}</td>
-            <td>{payment.payment_type}</td>
-            <td>S/.{payment.amount}</td>
-          </tr>
-        })}</tbody>
-      </table>
-      <table className='table table-bordered table-sm table-responsive table-striped mb-0' style={{ width: 'max-content', float: 'right' }}>
-        <tbody>
-          <tr>
-            <th colSpan={3} className='text-end'>Pagado</th>
-            <td>S/.{dataLoaded?.total_payments}</td>
-          </tr>
-          <tr>
-            <th colSpan={3} className='text-end'>Por pagar</th>
-            <td>S/.{dataLoaded?.remaining_amount}</td>
-          </tr>
-        </tbody>
-      </table>
-
-    </Modal>
+    <PaymentModal dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
   </>
   )
 };
