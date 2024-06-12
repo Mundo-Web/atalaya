@@ -11,7 +11,7 @@ import CreateReactScript from './Utils/CreateReactScript.jsx'
 import PermissionsRest from './actions/PermissionsRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 
-const Permissions = () => {
+const Permissions = ({can}) => {
   const gridRef = useRef()
   const modalRef = useRef()
 

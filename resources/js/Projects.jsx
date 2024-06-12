@@ -18,7 +18,7 @@ import DropdownItem from './components/dropdown/DropdownItem.jsx'
 import PaymentsRest from './actions/PaymentsRest.js'
 import Tippy from '@tippyjs/react'
 
-const Projects = ({ statuses }) => {
+const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
   const modalPaymentRef = useRef()
