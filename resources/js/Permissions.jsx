@@ -125,8 +125,11 @@ const Permissions = ({ PUBLIC_RSA_KEY }) => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalRef} title={isEditing ? 'Editar rol' : 'Agregar rol'} onSubmit={onModalSubmit}>
+    <Modal modalRef={modalRef} title={isEditing ? 'Editar permiso' : 'Agregar permiso'} onSubmit={onModalSubmit}>
       <div className='row'>
+        <p>
+          Intenta con el formato <code>ventana.permiso</code>. Ej: <code>clients.create</code>, <code>clients.read</code>, <code>clients.update</code>, <code>clients.delete</code>
+        </p>
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={nameRef} label='Permiso' col='col-12' required disabled={isEditing} />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
