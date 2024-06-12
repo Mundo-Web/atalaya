@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\PermissionsByRol;
 use App\Models\PermissionsByRole;
 use App\Models\RoleHasPermissions;
 use Exception;

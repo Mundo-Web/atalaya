@@ -7,6 +7,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
@@ -95,4 +96,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/tables/paginate', [TableController::class, 'paginate']);
     Route::patch('/tables/status', [TableController::class, 'status']);
     Route::delete('/tables/{id}', [TableController::class, 'delete']);
+
+    Route::get('/profile/{uuid}', [ProfileController::class, 'full']);
+    Route::get('/profile/thumbnail/{uuid}', [ProfileController::class, 'full']);
+    Route::post('/profile', [ProfileController::class, 'saveProfile']);
+    Route::patch('/profile', [ProfileController::class, 'save']);
 });

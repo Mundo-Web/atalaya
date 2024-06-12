@@ -189,8 +189,8 @@ const NavBar = ({ session = {}, title = '' }) => {
         <li className="dropdown notification-list topbar-dropdown">
           <a className="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown"
             href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            <img src="/assets/img/user-404.svg" alt="user-image" className="rounded-circle" />
-            <span className="pro-user-name ms-1">
+            <img src={`api/profile/thumbnail/${session.relative_id}?v=${crypto.randomUUID()}`} alt="user-image" className="rounded-circle" style={{ objectFit: 'cover', objectPosition: 'center' }} />
+            <span className="pro-user-name ms-1"> 
               {session.name} {session.lastname}
               <i className="mdi mdi-chevron-down"></i>
             </span>

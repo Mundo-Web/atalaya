@@ -8,17 +8,13 @@ import 'tippy.js/dist/tippy.css';
 const Menu = ({ session, can }) => {
   const mainRole = session.roles[0]
   return (<div className="left-side-menu">
-
     <div className="h-100" data-simplebar>
-
-
       <div className="user-box text-center">
-
-        <img src="/assets/img/user-404.svg" alt={session.name} title={session.name}
-          className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad' }} />
+        <img src={`api/profile/thumbnail/${session.relative_id}?v=${crypto.randomUUID()}`} alt={session.name} title={session.name}
+          className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad', objectFit: 'cover', objectPosition: 'center' }} />
         <div className="dropdown">
           <a href="#" className="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"
-            aria-expanded="false">{session.name} {session.lastname}</a>
+            aria-expanded="false">{session.name} {session.lastname} {session.birthdate == moment().format('YYYY-MM-DD') ? <Tippy content={`Feliz cumpleaños ${session.name}`} arrow={true}><i className=' fas fa-birthday-cake text-danger'></i></Tippy> : ''}</a>
           <div className="dropdown-menu user-pro-dropdown">
 
 

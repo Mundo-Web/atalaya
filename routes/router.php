@@ -72,6 +72,15 @@ class Router
     'permissions' => [
       'component' => 'Permissions.jsx',
       'adminto-instance' => true
-    ]
+    ],
+    'profile' => [
+      'component' => 'Profile.jsx',
+      'adminto-instance' => true
+    ],
+    'account' => [
+      'component' => 'Account.jsx',
+      'adminto-instance' => true
+    ],
+
   ];
 }

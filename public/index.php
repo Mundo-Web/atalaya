@@ -4,7 +4,8 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
-
+date_default_timezone_set('America/Lima');
+setlocale(LC_TIME, 'es_ES.utf8');
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

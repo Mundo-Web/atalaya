@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
