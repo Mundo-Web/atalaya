@@ -18,6 +18,8 @@ return new class extends Migration
             c.id AS client__id,
             c.ruc AS client__ruc,
             c.name AS client__name,
+            t.id AS type__id,
+            t.name AS type__name,
             s.id AS project_status__id,
             s.name AS project_status__name,
             s.color AS project_status__color,
@@ -31,10 +33,11 @@ return new class extends Migration
             LIMIT 1) AS last_payment_type
         FROM projects p
         INNER JOIN clients c ON c.id = p.client_id
+        INNER JOIN types t ON t.id = p.type_id
         INNER JOIN statuses s ON s.id = p.status_id
         LEFT JOIN payments pymts ON pymts.project_id = p.id
         GROUP BY
-            p.id, c.id, c.ruc, c.name, s.id, s.name, s.color, p.cost');
+            p.id, c.id, c.ruc, c.name, t.id, t.name, s.id, s.name, s.color, p.cost');
     }
 
     /**
