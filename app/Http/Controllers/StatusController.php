@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Auth;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
@@ -30,7 +31,7 @@ class StatusController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!auth()->user()->can('users.root')) {
+            if (!Auth::user()->can('status.root')) {
                 $instance->whereNotNull('status');
             }
             if ($request->filter) {
