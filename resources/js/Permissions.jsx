@@ -66,7 +66,7 @@ const Permissions = () => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        container.unshift({
+        can('permissions', 'root', 'all', 'create') && container.unshift({
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
@@ -106,22 +106,22 @@ const Permissions = () => {
             ReactAppend(container, <span>{moment(data.updated_at).format('LL')}</span>)
           }
         },
-        {
+        (can('permissions', 'root', 'all', 'update', 'delete')) ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
+            can('permissions', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
+            can('permissions', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
             </TippyButton>)
           },
           allowFiltering: false,
           allowExporting: false
-        }
+        } : null
       ]} />
     <Modal modalRef={modalRef} title={isEditing ? 'Editar permiso' : 'Agregar permiso'} onSubmit={onModalSubmit}>
       <div className='row'>

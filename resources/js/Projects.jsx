@@ -145,7 +145,7 @@ const Projects = ({ statuses }) => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        container.unshift({
+        can('projects', 'root', 'all', 'create') && container.unshift({
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
@@ -194,7 +194,7 @@ const Projects = ({ statuses }) => {
             </>)
           }
         },
-        {
+        can('projects', 'root', 'all', 'changestatus') && {
           dataField: 'project_status.name',
           caption: 'Estado del proyecto',
           dataType: 'string',
@@ -232,15 +232,15 @@ const Projects = ({ statuses }) => {
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
+            can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => onPaymentModalOpen(data)}>
+            can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => onPaymentModalOpen(data)}>
               <i className='fas fa-money-check-alt'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
+            can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
               {
                 data.status === 1
                   ? <i className='fa fa-toggle-on text-success' />
@@ -250,7 +250,7 @@ const Projects = ({ statuses }) => {
               }
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
+            can('projects', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
             </TippyButton>)
           },
@@ -275,7 +275,7 @@ const Projects = ({ statuses }) => {
     <Modal modalRef={modalPaymentRef} title={`Pagos de ${dataLoaded?.name} - S/.${dataLoaded?.cost}`} onSubmit={onPaymentSubmit}>
       <div className='row'>
         <input ref={idPaymentRef} type='hidden' />
-        <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-md-7' required/>
+        <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-md-7' required />
         <div className='form-group col-md-5'>
           <label>Monto <b className='text-danger'>*</b></label>
           <div className='input-group' >
@@ -306,7 +306,7 @@ const Projects = ({ statuses }) => {
           </tr>
         })}</tbody>
       </table>
-      <table className='table table-bordered table-sm table-responsive table-striped mb-0' style={{width: 'max-content', float: 'right'}}>
+      <table className='table table-bordered table-sm table-responsive table-striped mb-0' style={{ width: 'max-content', float: 'right' }}>
         <tbody>
           <tr>
             <th colSpan={3} className='text-end'>Pagado</th>
@@ -318,13 +318,14 @@ const Projects = ({ statuses }) => {
           </tr>
         </tbody>
       </table>
-      
+
     </Modal>
   </>
   )
 };
 
 CreateReactScript((el, properties) => {
+  if (!properties.can('projects', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Proyectos'>
       <Projects {...properties} />
