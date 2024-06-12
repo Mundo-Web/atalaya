@@ -8,11 +8,10 @@ import ReactAppend from './Utils/ReactAppend.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import JSEncrypt from 'jsencrypt'
 import PermissionsRest from './actions/PermissionsRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 
-const Permissions = ({ PUBLIC_RSA_KEY }) => {
+const Permissions = () => {
   const gridRef = useRef()
   const modalRef = useRef()
 

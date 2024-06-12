@@ -78,19 +78,9 @@ const Menu = ({ session, can }) => {
             <MenuItem href="/leads" icon='mdi mdi-page-next'>Leads</MenuItem>
           }
           {
-            (can('projects', 'root', 'all', 'list') || can('projects', 'root', 'all', 'create')) &&
-            <MenuItemContainer title='Proyectos' icon='mdi mdi-view-dashboard'>
-              {
-                can('projects', 'root', 'all', 'list') &&
-                <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
-              }
-              {
-                can('types', 'root', 'all', 'list') &&
-                <MenuItem href="/types" icon='mdi mdi-format-list-text'>Tipos</MenuItem>
-              }
-            </MenuItemContainer>
+            can('projects', 'root', 'all', 'list') &&
+            <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
           }
-
           {
             (can('users', 'root', 'all', 'list') || can('roles', 'root', 'all', 'list') || can('permissions', 'root', 'all', 'list')) &&
             <MenuItemContainer title='Usuarios y roles' icon='mdi mdi-account-lock'>
@@ -110,17 +100,23 @@ const Menu = ({ session, can }) => {
           }
 
           {
-            (can('tables', 'root', 'all', 'list') || can('statuses', 'root', 'all', 'list')) &&
-            <MenuItemContainer title='Mantenimiento' icon='mdi mdi-application-cog'>
-              {
-                can('tables', 'root', 'all', 'list') &&
-                <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
-              }
-              {
-                can('statuses', 'root', 'all', 'list') &&
-                <MenuItem href='/statuses' icon='mdi mdi-table'>Estados</MenuItem>
-              }
-            </MenuItemContainer>
+            (can('tables', 'root', 'all', 'list') || can('statuses', 'root', 'all', 'list') || can('types', 'root', 'all', 'list')) && <>
+              <li className="menu-title">Menus del sistema</li>
+              <MenuItemContainer title='Mantenimiento' icon='mdi mdi-application-cog'>
+                {
+                  can('tables', 'root', 'all', 'list') &&
+                  <MenuItem href='/tables' icon='mdi mdi-table'>Tablas</MenuItem>
+                }
+                {
+                  can('statuses', 'root', 'all', 'list') &&
+                  <MenuItem href='/statuses' icon='mdi mdi-format-list-checks'>Estados</MenuItem>
+                }
+                {
+                  can('types', 'root', 'all', 'list') &&
+                  <MenuItem href="/types" icon='mdi mdi-format-list-text'>Tipos</MenuItem>
+                }
+              </MenuItemContainer>
+            </>
           }
         </ul>
 

@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
-use App\Models\Status;
-use App\Models\StatusView;
+use App\Models\Payment;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -14,24 +13,24 @@ use Illuminate\Support\Facades\Auth;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
-class StatusController extends Controller
+class PaymentController extends Controller
 {
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = StatusView::select();
+            $instance = Payment::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = StatusView::select([
+                $instance = Payment::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
             }
 
-            if (!Auth::user()->can('statuses.root')) {
+            if (!Auth::user()->can('payments.root')) {
                 $instance->whereNotNull('status');
             }
             if ($request->filter) {
@@ -82,16 +81,39 @@ class StatusController extends Controller
         }
     }
 
+    public function byProject(Request $request, $project): HttpResponse|ResponseFactory
+    {
+        $response =  new dxResponse();
+        try {
+            $payments = Payment::select()
+                ->where('project_id', $project)
+                ->get();
+
+            $response->status = 200;
+            $response->message = 'Operación correcta';
+            $response->data = $payments;
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage() . ' Ln.' . $th->getLine();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
     public function save(Request $request): HttpResponse|ResponseFactory
     {
         $response = new Response();
         try {
 
             $body = $request->all();
-            $jpa = Status::find($request->id);
+            $jpa = Payment::find($request->id);
 
             if (!$jpa) {
-                Status::create($body);
+                $body['user_id'] = Auth::user()->id;
+                Payment::create($body);
             } else {
                 $jpa->update($body);
             }
@@ -113,7 +135,7 @@ class StatusController extends Controller
     {
         $response = new Response();
         try {
-            Status::where('id', $request->id)
+            Payment::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
                 ]);
@@ -135,7 +157,7 @@ class StatusController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Status::where('id', $id)
+            $deleted = Payment::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

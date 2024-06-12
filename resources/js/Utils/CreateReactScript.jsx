@@ -8,7 +8,6 @@ const CreateReactScript = (render) => {
     setup: ({ el, props }) => {
       const properties = props.initialPage.props
       const can = (page, ...keys) => {
-        console.log(page, keys)
         keys = keys.map(x => `${page}.${x}`)
         if (properties?.session?.permissions?.find(x => keys.includes(x.name))) return true
         const roles = properties?.session?.roles ?? []

@@ -76,8 +76,6 @@ const Leads = ({ statuses, can }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
-  console.log(statuses)
-
   return (<>
     <Table gridRef={gridRef} title='Leads' rest={ClientsRest}
       toolBar={(container) => {
@@ -89,7 +87,7 @@ const Leads = ({ statuses, can }) => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        container.unshift({
+        can('leads', 'create') && container.unshift({
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
@@ -117,7 +115,7 @@ const Leads = ({ statuses, can }) => {
           caption: 'ID estado cliente',
           visible: false
         },
-        {
+        can('leads', 'changestatus') ? {
           dataField: 'client_status.name',
           caption: 'Estado del cliente',
           dataType: 'string',
@@ -131,7 +129,7 @@ const Leads = ({ statuses, can }) => {
               })}
             </Dropdown>)
           }
-        },
+        } : null,
         {
           dataField: 'source',
           caption: 'Fuente',
@@ -150,7 +148,7 @@ const Leads = ({ statuses, can }) => {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={() => onClientStatusClicked(data.id, 12)}>
+            can('leads', 'movetoclient') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={() => onClientStatusClicked(data.id, 12)}>
               <i className='fa fa-user-plus'></i>
             </TippyButton>)
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Ver lead' onClick={() => onModalLeadOpen(data)}>

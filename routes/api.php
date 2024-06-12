@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LandingFormController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -75,6 +76,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/projects/status', [ProjectController::class, 'status']);
     Route::patch('/projects/project-status', [ProjectController::class, 'projectStatus']);
     Route::delete('/projects/{id}', [ProjectController::class, 'delete']);
+
+    // Payments routes
+    Route::post('/payments', [PaymentController::class, 'save']);
+    Route::post('/payments/paginate', [PaymentController::class, 'paginate']);
+    Route::get('/payments/project/{id}', [PaymentController::class, 'byProject']);
+    Route::patch('/payments/status', [PaymentController::class, 'status']);
+    Route::delete('/payments/{id}', [PaymentController::class, 'delete']);
 
     // Statuses routes
     Route::post('/landing-forms', [LandingFormController::class, 'save']);
