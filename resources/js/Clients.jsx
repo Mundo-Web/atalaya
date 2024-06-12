@@ -12,7 +12,7 @@ import ClientsRest from './actions/ClientsRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
 
-const Clients = () => {
+const Clients = ({ can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -105,7 +105,7 @@ const Clients = () => {
       }}
       filterValue={['status_id', '=', 12]}
       columns={[
-        {
+        can('projects.all', 'projects.list') ? {
           dataField: 'id',
           caption: 'ID',
           dataType: 'number',
@@ -117,7 +117,7 @@ const Clients = () => {
               <i className='fas fa-shapes'></i>
             </TippyButton>)
           }
-        },
+        } : null,
         {
           dataField: 'ruc',
           caption: 'RUC',
@@ -159,20 +159,20 @@ const Clients = () => {
             }
           }
         },
-        {
+        can('projects.all', 'projects.list', 'clients.all', 'clients.update', 'clients.changestatus', 'clients.delete') ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
+            can('projects.all', 'projects.list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Ver proyectos' onClick={() => location.href = `/projects/?client=${data.name}`}>
               <i className='mdi mdi-page-next'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
+            can('clients.all', 'clients.update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
+            can('clients.all', 'clients.changestatus') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
               {
                 data.status === 1
                   ? <i className='fa fa-toggle-on text-success' />
@@ -182,13 +182,13 @@ const Clients = () => {
               }
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
+            can('clients.all', 'clients.delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
             </TippyButton>)
           },
           allowFiltering: false,
           allowExporting: false
-        }
+        } : null
       ]}
       masterDetail={{
         enabled: false,
@@ -261,7 +261,7 @@ const Clients = () => {
         <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
         <InputFormGroup eRef={nameRef} label='Razon social' col='col-8' required />
         <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-12' required />
-        <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required/>
+        <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
         <div className="col-12"><hr className='my-1' /></div>
         <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
@@ -275,6 +275,7 @@ const Clients = () => {
 };
 
 CreateReactScript((el, properties) => {
+  if (!properties.can('clients.all', 'clients.list')) return location.href = '/';
   createRoot(el).render(
     <Adminto {...properties} title='Clientes'>
       <Clients {...properties} />

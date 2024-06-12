@@ -33,9 +33,6 @@ class PermissionController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!auth()->user()->can('users.root')) {
-                $instance->whereNotNull('status');
-            }
             if ($request->filter) {
                 $instance->where(function ($query) use ($request) {
                     dxDataGrid::filter($query, $request->filter ?? []);

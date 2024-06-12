@@ -10,7 +10,7 @@ const Table = ({ title, gridRef, rest, columns, toolBar, masterDetail, filterVal
             <div id="header-title-options" className="float-end"></div>
             <span id="header-title-prefix"></span> Lista de {title} <span id="header-title-suffix"></span>
           </h4>
-          <DataGrid gridRef={gridRef} rest={rest} columns={columns} toolBar={toolBar} masterDetail={masterDetail} filterValue={filterValue} />
+          <DataGrid gridRef={gridRef} rest={rest} columns={columns.filter(Boolean)} toolBar={toolBar} masterDetail={masterDetail} filterValue={filterValue} />
         </div>
       </div>
     </div>
