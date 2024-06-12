@@ -32,7 +32,7 @@ class ClientController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!Auth::user()->can('users.root')) {
+            if (!Auth::user()->can('clients.root')) {
                 $instance->whereNotNull('status');
             }
             if ($request->filter) {
