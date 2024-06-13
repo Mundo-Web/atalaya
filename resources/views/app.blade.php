@@ -24,9 +24,9 @@
       id="bs-dark-stylesheet" disabled="disabled" />
 
     {{-- App Styles --}}
-    <link href="/lte/assets/css/config/default/app.min.css" rel="stylesheet" type="text/css"
+    <link href="/lte/assets/css/config/default/app.css" rel="stylesheet" type="text/css"
       id="app-default-stylesheet" />
-    <link href="/lte/assets/css/config/default/app-dark.min.css" rel="stylesheet" type="text/css"
+    <link href="/lte/assets/css/config/default/app-dark.css" rel="stylesheet" type="text/css"
       id="app-dark-stylesheet" disabled="disabled" />
 
     {{-- icons --}}

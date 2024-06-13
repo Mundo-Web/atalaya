@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
 use App\Models\Type;
+use App\Models\TypeView;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -18,12 +19,12 @@ class TypeController extends Controller
     {
         $response =  new dxResponse();
         try {
-            $instance = Type::select();
+            $instance = TypeView::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = Type::select([
+                $instance = TypeView::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);

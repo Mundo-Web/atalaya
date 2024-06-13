@@ -1726,8 +1726,9 @@
   print-color-adjust: exact;
   color: #dedede;
   font-weight: 400;
-  font-size: 12px;
-  font-family: "Helvetica Neue","Segoe UI",helvetica,verdana,sans-serif;
+  font-size: 14px;
+  /* font-family: "Helvetica Neue","Segoe UI",helvetica,verdana,sans-serif; */
+  font-family: Roboto, sans-serif;
   line-height: 1.33334;
 }
 .dx-widget,

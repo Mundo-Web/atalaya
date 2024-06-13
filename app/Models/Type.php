@@ -16,6 +16,7 @@ class Type extends Model
      */
     protected $fillable = [
         'name',
+        'table_id',
         'description'
     ];
 }

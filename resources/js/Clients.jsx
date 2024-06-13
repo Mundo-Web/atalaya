@@ -13,7 +13,6 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
-import Tippy from '@tippyjs/react'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -331,7 +330,7 @@ const Clients = ({ statuses, can }) => {
         <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
         <InputFormGroup eRef={tradenameRef} label='Nombre comercial' col='col-8' required />
         <InputFormGroup eRef={nameRef} label='Razon social' col='col-md-6' required />
-        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-md-6' required />
+        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-md-6' />
         <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
         <div className="col-12"><hr className='my-1' /></div>

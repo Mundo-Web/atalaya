@@ -10,6 +10,8 @@ import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import TypesRest from './actions/TypesRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import SetSelectValue from './Utils/SetSelectValue.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 
 const Types = () => {
   const gridRef = useRef()
@@ -18,6 +20,7 @@ const Types = () => {
   // Form elements ref
   const idRef = useRef()
   const nameRef = useRef()
+  const tableRef = useRef()
   const descriptionRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
@@ -27,6 +30,7 @@ const Types = () => {
     else setIsEditing(false)
 
     idRef.current.value = data?.id || null
+    SetSelectValue(tableRef.current, data?.table?.id, data?.table?.name)
     nameRef.current.value = data?.name || null
     descriptionRef.current.value = data?.description || null
 
@@ -38,6 +42,7 @@ const Types = () => {
 
     const request = {
       id: idRef.current.value || undefined,
+      table_id: tableRef.current.value,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
     }
@@ -87,6 +92,11 @@ const Types = () => {
           caption: 'ID',
           dataType: 'number',
           sortOrder: 'asc'
+        },
+        {
+          dataField: 'table.name',
+          caption: 'Tabla',
+          dataType: 'string'
         },
         {
           dataField: 'name',
@@ -146,9 +156,10 @@ const Types = () => {
         }
       ]} />
     <Modal modalRef={modalRef} title={isEditing ? 'Editar tipo' : 'Agregar tipo'} onSubmit={onModalSubmit} size='sm'>
-      <div className='row'>
+      <div className='row' id='type-crud-container'>
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={nameRef} label='Tipo' col='col-12' required />
+        <SelectAPIFormGroup eRef={tableRef} label='Tabla' col='col-12' dropdownParent='#type-crud-container' searchAPI='/api/tables/paginate' searchBy='name' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
       </div>
     </Modal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import Adminto from './components/Adminto';
 import CreateReactScript from './Utils/CreateReactScript';

@@ -13,6 +13,7 @@ import TippyButton from './components/form/TippyButton.jsx'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 import Swal from 'sweetalert2'
+import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
 
 const Leads = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -29,6 +30,7 @@ const Leads = ({ statuses, can }) => {
 
   const [isEditing, setIsEditing] = useState(false)
   const [lead, setLead] = useState({})
+  const [clientLoaded, setClientLoaded] = useState({})
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -65,10 +67,6 @@ const Leads = ({ statuses, can }) => {
 
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
-  }
-
-  const onModalNoteOpen = (data) => {
-    // $(modalNoteRef.current).modal('show')
   }
 
   const onModalLeadOpen = (data) => {
@@ -166,7 +164,7 @@ const Leads = ({ statuses, can }) => {
             }}>
               <i className='fa fa-user-plus'></i>
             </TippyButton>)
-            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary" title="Agregar nota" onClick={() => onModalNoteOpen(data)}>
+            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
               <i className="fas fa-sticky-note" />
             </TippyButton>)
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-info' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
@@ -200,6 +198,7 @@ const Leads = ({ statuses, can }) => {
         <TextareaFormGroup eRef={messageRef} label='Mensaje' placeholder='Ingresa tu mensaje' rows={4} required />
       </div>
     </Modal>
+    <ClientNotesModal can={can} client={clientLoaded} setClient={setClientLoaded} grid2refresh={gridRef} />
   </>
   )
 };
