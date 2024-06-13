@@ -17,6 +17,7 @@ class Client extends Model
     protected $fillable = [
         'ruc',
         'name',
+        'tradename',
         'message',
         'web_url',
         'description',

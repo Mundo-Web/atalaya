@@ -13,6 +13,7 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
+import Tippy from '@tippyjs/react'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -22,6 +23,7 @@ const Clients = ({ statuses, can }) => {
   const idRef = useRef()
   const rucRef = useRef()
   const nameRef = useRef()
+  const tradenameRef = useRef()
   const webUrlRef = useRef()
   const messageRef = useRef()
   const descriptionRef = useRef()
@@ -41,6 +43,7 @@ const Clients = ({ statuses, can }) => {
     idRef.current.value = data?.id || null
     rucRef.current.value = data?.ruc || null
     nameRef.current.value = data?.name || null
+    tradenameRef.current.value = data?.tradename || null
     webUrlRef.current.value = data?.weburl || null
     messageRef.current.value = data?.message || 'Cliente creado desde Atalaya'
     descriptionRef.current.value = data?.description || null
@@ -59,6 +62,7 @@ const Clients = ({ statuses, can }) => {
       id: idRef.current.value || undefined,
       ruc: rucRef.current.value,
       name: nameRef.current.value,
+      tradename: tradenameRef.current.value,
       web_url: webUrlRef.current.value,
       message: messageRef.current.value ?? 'Cliente creado desde Atalaya',
       description: descriptionRef.current.value ?? '',
@@ -128,8 +132,13 @@ const Clients = ({ statuses, can }) => {
           caption: 'RUC'
         },
         {
+          dataField: 'tradename',
+          caption: 'Nombre comercial'
+        },
+        {
           dataField: 'name',
-          caption: 'Razon social'
+          caption: 'Razon social',
+          visible: false
         },
         {
           dataField: 'contact_phone',
@@ -320,8 +329,9 @@ const Clients = ({ statuses, can }) => {
       <div className='row'>
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
-        <InputFormGroup eRef={nameRef} label='Razon social' col='col-8' required />
-        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-12' required />
+        <InputFormGroup eRef={tradenameRef} label='Nombre comercial' col='col-8' required />
+        <InputFormGroup eRef={nameRef} label='Razon social' col='col-md-6' required />
+        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-md-6' required />
         <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
         <div className="col-12"><hr className='my-1' /></div>
