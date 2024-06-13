@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-const PasswordFormGroup = ({ col, label, eRef, placeholder, required = false }) => {
+const PasswordFormGroup = ({ col, label, eRef, placeholder, required = false, value }) => {
   if (!eRef) eRef = useRef()
 
   const [type, setType] = useState('password')
@@ -14,7 +14,7 @@ const PasswordFormGroup = ({ col, label, eRef, placeholder, required = false }) 
       {label} {required && <b className="text-danger">*</b>}
     </label>
     <div className='input-group input-group-merge'>
-      <input ref={eRef} type={type} className='form-control' placeholder={placeholder} required={required} />
+      <input ref={eRef} type={type} className='form-control' placeholder={placeholder} required={required} defaultValue={value ?? ''} />
       <div className='input-group-text' data-password='true' onClick={onChangeVisibility}>
         <i className={type == 'text' ? 'mdi mdi-eye-off-outline' : 'mdi mdi-eye-outline'}></i>
       </div>

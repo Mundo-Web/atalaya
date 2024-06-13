@@ -12,18 +12,25 @@ const RigthBar = () => {
   const appLight = document.getElementById('app-default-stylesheet')
   const appDark = document.getElementById('app-dark-stylesheet')
 
+  const dgLight = document.getElementById('dg-default-stylesheet')
+  const dgDark = document.getElementById('dg-dark-stylesheet')
+
   if (settings.theme == 'dark') {
     bsDark.disabled = false
     appDark.disabled = false
+    dgDark.disabled = false
 
     bsLight.disabled = true
     appLight.disabled = true
+    dgLight.disabled = true
   } else {
     bsLight.disabled = false
     appLight.disabled = false
+    dgLight.disabled = false
 
     bsDark.disabled = true
     appDark.disabled = true
+    dgDark.disabled = true
   }
 
   const body = document.body
@@ -36,6 +43,8 @@ const RigthBar = () => {
   body.setAttribute('data-sidebar-color', settings.menuColor ?? 'light')
   // User info
   body.setAttribute('data-sidebar-showuser', settings.userInfo ?? true)
+  // Menu size
+  body.setAttribute('data-sidebar-size', settings.menuSize ?? 'default')
   // Navbar color
   body.setAttribute('data-topbar-color', settings.navbarColor ?? 'light')
 
@@ -103,26 +112,24 @@ const RigthBar = () => {
                 id="gradient-check" defaultChecked={settings.menuColor == 'gradient'} />
               <label className="form-check-label" htmlFor="gradient-check">Gradiente</label>
             </div>
-            <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Left Sidebar Size</h6>
+            <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Medida del menu</h6>
 
             <div className="form-check form-switch mb-1">
-              <input type="checkbox" className="form-check-input" name="leftsidebar-size" value="default"
-                id="default-size-check" defaultChecked />
-              <label className="form-check-label" htmlFor="default-size-check">Default</label>
+              <input type="radio" className="form-check-input" name="leftsidebar-size" value="default"
+                id="default-size-check" defaultChecked={!settings.menuSize || settings.menuSize == 'default'} />
+              <label className="form-check-label" htmlFor="default-size-check">Por defecto</label>
             </div>
 
             <div className="form-check form-switch mb-1">
-              <input type="checkbox" className="form-check-input" name="leftsidebar-size" value="condensed"
-                id="condensed-check" />
-              <label className="form-check-label" htmlFor="condensed-check">Condensed <small>(Extra Small
-                size)</small></label>
+              <input type="radio" className="form-check-input" name="leftsidebar-size" value="condensed"
+                id="condensed-check" defaultChecked={settings.menuSize == 'condensed'}/>
+              <label className="form-check-label" htmlFor="condensed-check">Condensado <small>(Tamaño extra pequeño)</small></label>
             </div>
 
             <div className="form-check form-switch mb-1">
-              <input type="checkbox" className="form-check-input" name="leftsidebar-size" value="compact"
-                id="compact-check" />
-              <label className="form-check-label" htmlFor="compact-check">Compact <small>(Small
-                size)</small></label>
+              <input type="radio" className="form-check-input" name="leftsidebar-size" value="compact"
+                id="compact-check" defaultChecked={settings.menuSize == 'compact'} />
+              <label className="form-check-label" htmlFor="compact-check">Compacto <small>(Tamaño pequeño)</small></label>
             </div>
             <h6 className="fw-medium font-14 mt-4 mb-2 pb-1">Informacion del Usuario (Menu)</h6>
 
