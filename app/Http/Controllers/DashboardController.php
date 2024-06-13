@@ -19,35 +19,35 @@ class DashboardController
       switch ($range) {
         case 'daily': // Diario
           $data = Payment::select([
-            DB::raw('DATE(created_at) as date'),
+            DB::raw('IFNULL(DATE(date), DATE(created_at)) as date'),
             DB::raw('SUM(amount) as total')
           ])
-            ->groupBy(DB::raw('DATE(created_at)'))
+            ->groupBy(DB::raw('IFNULL(DATE(date), DATE(created_at))'))
             ->get();
           break;
         case 'weekly': // Semanal
           $data = Payment::select([
-            DB::raw('YEARWEEK(created_at) as week'),
+            DB::raw('IFNULL(YEARWEEK(date), YEARWEEK(created_at)) as week'),
             DB::raw('SUM(amount) as total')
           ])
-            ->groupBy(DB::raw('YEARWEEK(created_at)'))
+            ->groupBy(DB::raw('IFNULL(YEARWEEK(date), YEARWEEK(created_at))'))
             ->get();
           break;
         case 'annually': // Anual
           $data = Payment::select(
-            DB::raw('YEAR(created_at) as year'),
+            DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
             DB::raw('SUM(amount) as total')
           )
-            ->groupBy(DB::raw('YEAR(created_at)'))
+            ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'))
             ->get();
           break;
         default: // Mensual
           $data = Payment::select(
-            DB::raw('YEAR(created_at) as year'),
-            DB::raw('MONTH(created_at) as month'),
+            DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
+            DB::raw('IFNULL(MONTH(date), MONTH(created_at)) as month'),
             DB::raw('SUM(amount) as total')
           )
-            ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), DB::raw('IFNULL(MONTH(date), MONTH(created_at))'))
             ->get();
           break;
       }
