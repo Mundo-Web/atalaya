@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingFormController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
@@ -31,6 +32,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth')->group(function () {
     Route::delete('logout', [AuthController::class, 'destroy'])
         ->name('logout');
+
+    Route::get('/dashboard/{range}', [DashboardController::class, 'revenue']);
 
     // Users routes
     Route::post('/users', [UserController::class, 'save']);
