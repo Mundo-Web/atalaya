@@ -14,6 +14,9 @@
   <link rel="shortcut icon" href="/assets/img/icon.svg" type="image/png">
 
   @if ($admintoInstance)
+    <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
+
     {{-- Bootstrap Styles --}}
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
       id="bs-default-stylesheet" />
@@ -28,8 +31,6 @@
 
     {{-- icons --}}
     <link href="/lte/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-    <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
 
     {{-- DxDataGrid Styles --}}
     <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css" rel="stylesheet" type="text/css"

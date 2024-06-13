@@ -157,8 +157,7 @@ class PaymentController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Payment::where('id', $id)
-                ->update(['status' => null]);
+            $deleted = Payment::where('id', $id)->delete();
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');
 

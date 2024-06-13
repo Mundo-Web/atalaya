@@ -16,6 +16,15 @@ class Router
     'clients' => [
       'component' => 'Clients.jsx',
       'adminto-instance' => true,
+      'compact' => [
+        'statuses' => [
+          'class' => Status::class,
+          'filter' => [
+            'table_id' => 1, // Projects
+            'status' => true
+          ]
+        ]
+      ]
     ],
     'projects' => [
       'component' => 'Projects.jsx',

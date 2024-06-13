@@ -12,8 +12,11 @@ import ClientsRest from './actions/ClientsRest.js'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
 import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
+import Dropdown from './components/dropdown/DropDown.jsx'
+import DropdownItem from './components/dropdown/DropdownItem.jsx'
+import ProjectStatusDropdown from './reutilizable/projects/ProjectStatusDropdown.jsx'
 
-const Clients = ({ can }) => {
+const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -165,7 +168,7 @@ const Clients = ({ can }) => {
         can('projects', 'root', 'all', 'list', 'update', 'changestatus', 'delete') ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            container.attr('style', 'display: flex; gap: 4px;')
 
             can('projects', 'root', 'all', 'list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title={`Ver ${data.projects} proyectos en una nueva ventana`} onClick={() => location.href = `/projects/?client=${data.name}`}>
               <i className='mdi mdi-page-next'></i>
@@ -195,15 +198,16 @@ const Clients = ({ can }) => {
       ]}
       masterDetail={{
         enabled: false,
-        template: async (container, { data, component }) => {
+        template: async (container, { data: client, component }) => {
           container.css('padding', '10px')
+          container.css('overflow', 'visible')
 
           let { data: dataSource } = await ProjectsRest.paginate({
-            filter: ['client_id', '=', data.id],
+            filter: ['client_id', '=', client.id],
             isLoadingAll: true
           })
 
-          const dataGrid = $('<div>').appendTo(container).dxDataGrid({
+          const dataGrid = $('<div id="projects-grid" style="height: 320px">').appendTo(container).dxDataGrid({
             dataSource,
             onToolbarPreparing: (e) => {
               const toolbarItems = e.toolbarOptions.items;
@@ -253,17 +257,21 @@ const Clients = ({ can }) => {
                   </>)
                 }
               },
-              can('projects', 'root', 'all', 'changestatus') && {
+              can('projects', 'root', 'all', 'changestatus') ? {
                 dataField: 'project_status.name',
                 caption: 'Estado del proyecto',
                 dataType: 'string',
                 cellTemplate: (container, { data }) => {
-                  container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-                  ReactAppend(container, < >
-                    <i className='fa fa-circle' style={{ color: data.project_status.color }}></i> {data.project_status.name}
-                  </>)
+                  container.attr('style', 'overflow: visible')
+                  ReactAppend(container, <ProjectStatusDropdown statuses={statuses} data={data} onChange={async () => {
+                    const { data: dataSource } = await ProjectsRest.paginate({
+                      filter: ['client_id', '=', client.id],
+                      isLoadingAll: true
+                    })
+                    $('#projects-grid').dxDataGrid('instance').option('dataSource', dataSource)
+                  }} />)
                 }
-              },
+              }: null,
               {
                 dataField: 'status',
                 caption: 'Estado',

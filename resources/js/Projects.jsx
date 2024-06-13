@@ -16,6 +16,7 @@ import { GET } from 'sode-extend-react'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
+import ProjectStatusDropdown from './reutilizable/projects/ProjectStatusDropdown.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -86,12 +87,6 @@ const Projects = ({ statuses, can }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
-  const onProjectStatusClicked = async (project, status) => {
-    const result = await ProjectsRest.projectStatus(project, status)
-    if (!result) return
-    $(gridRef.current).dxDataGrid('instance').refresh()
-  }
-
   return (<>
     <Table gridRef={gridRef} title='Proyectos' rest={ProjectsRest}
       toolBar={(container) => {
@@ -157,14 +152,10 @@ const Projects = ({ statuses, can }) => {
           caption: 'Estado del proyecto',
           dataType: 'string',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.project_status.name} tippy='Actualizar estado' icon={{ icon: 'fa fa-circle', color: data.project_status.color }}>
-              {statuses.map(({ id, name, color }) => {
-                return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
-                  <i className='fa fa-circle' style={{ color }}></i> {name}
-                </DropdownItem>
-              })}
-            </Dropdown>)
+            container.attr('style', 'overflow: visible')
+            ReactAppend(container, <ProjectStatusDropdown statuses={statuses} data={data} onChange={() => {
+              $(gridRef.current).dxDataGrid('instance').refresh()
+            }}/>)
           }
         },
         {
