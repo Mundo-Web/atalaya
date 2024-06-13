@@ -178,7 +178,7 @@ const Projects = ({ statuses, can }) => {
           caption: 'Acciones',
           width: 'max-content',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px;')
+            container.attr('style', 'display: flex; gap: 4px; overflow: visible')
 
             can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>

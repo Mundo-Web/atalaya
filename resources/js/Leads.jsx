@@ -12,6 +12,7 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
+import Swal from 'sweetalert2'
 
 const Leads = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -64,6 +65,10 @@ const Leads = ({ statuses, can }) => {
 
     $(gridRef.current).dxDataGrid('instance').refresh()
     $(modalRef.current).modal('hide')
+  }
+
+  const onModalNoteOpen = (data) => {
+    // $(modalNoteRef.current).modal('show')
   }
 
   const onModalLeadOpen = (data) => {
@@ -147,11 +152,24 @@ const Leads = ({ statuses, can }) => {
         {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-            can('leads', 'root', 'all', 'movetoclient') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={() => onClientStatusClicked(data.id, 12)}>
+            container.attr('style', 'display: flex; gap: 4px; overflow: visible')
+            can('leads', 'root', 'all', 'movetoclient') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={async () => {
+              const { isConfirmed } = await Swal.fire({
+                title: "Estas seguro?",
+                text: `${data.contact_name} pasara a ser un cliente!`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Continuar",
+                cancelButtonText: `Cancelar`
+              })
+              if (isConfirmed) onClientStatusClicked(data.id, 12)
+            }}>
               <i className='fa fa-user-plus'></i>
             </TippyButton>)
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
+            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary" title="Agregar nota" onClick={() => onModalNoteOpen(data)}>
+              <i className="fas fa-sticky-note" />
+            </TippyButton>)
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-info' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
               <i className='fa fa-comment'></i>
             </TippyButton>)
           },
@@ -159,7 +177,7 @@ const Leads = ({ statuses, can }) => {
           allowExporting: false
         }
       ]} />
-    <Modal modalRef={modalLeadRef} title={`Lead de ${lead?.contact_name}`} onSubmit={(e) => { e.preventDefault(); $(modalRef.current).modal('hide') }}>
+    <Modal modalRef={modalLeadRef} title={`Lead de ${lead?.contact_name}`} onSubmit={(e) => { e.preventDefault(); $(modalRef.current).modal('hide') }} hideButtonSubmit={true}>
       <div>
         <p>
           <b>Telefono</b>: {lead?.contact_phone}

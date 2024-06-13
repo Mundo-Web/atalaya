@@ -175,7 +175,7 @@ const Clients = ({ statuses, can }) => {
         can('projects', 'root', 'all', 'list', 'update', 'changestatus', 'delete') ? {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px;')
+            container.attr('style', 'display: flex; gap: 4px; overflow: visible')
 
             can('projects', 'root', 'all', 'list') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title={`Ver ${data.projects} proyectos en una nueva ventana`} onClick={() => location.href = `/projects/?client=${data.name}`}>
               <i className='mdi mdi-page-next'></i>
