@@ -1,20 +1,18 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import ClientsRest from './actions/ClientsRest.js'
-import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
-import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
-import Dropdown from './components/dropdown/DropDown.jsx'
-import DropdownItem from './components/dropdown/DropdownItem.jsx'
-import ProjectStatusDropdown from './reutilizable/projects/ProjectStatusDropdown.jsx'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
+import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
+import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
+import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -263,7 +261,7 @@ const Clients = ({ statuses, can }) => {
                 dataType: 'string',
                 cellTemplate: (container, { data }) => {
                   container.attr('style', 'overflow: visible')
-                  ReactAppend(container, <ProjectStatusDropdown statuses={statuses} data={data} onChange={async () => {
+                  ReactAppend(container, <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={async () => {
                     const { data: dataSource } = await ProjectsRest.paginate({
                       filter: ['client_id', '=', client.id],
                       isLoadingAll: true
@@ -271,7 +269,7 @@ const Clients = ({ statuses, can }) => {
                     $('#projects-grid').dxDataGrid('instance').option('dataSource', dataSource)
                   }} />)
                 }
-              }: null,
+              } : null,
               {
                 dataField: 'status',
                 caption: 'Estado',
@@ -334,7 +332,7 @@ const Clients = ({ statuses, can }) => {
       </div>
     </Modal>
 
-    <PaymentModal dataLoaded={projectLoaded} setDataLoaded={setProjectLoaded} grid2refresh={projectsGrid} />
+    <PaymentModal can={can} dataLoaded={projectLoaded} setDataLoaded={setProjectLoaded} grid2refresh={projectsGrid} />
   </>
   )
 };

@@ -1,22 +1,20 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import { GET } from 'sode-extend-react'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
+import SetSelectValue from './Utils/SetSelectValue.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
 import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
-import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
-import SetSelectValue from './Utils/SetSelectValue.jsx'
-import { GET } from 'sode-extend-react'
-import Dropdown from './components/dropdown/DropDown.jsx'
-import DropdownItem from './components/dropdown/DropdownItem.jsx'
-import PaymentModal from './reutilizable/payments/PaymentModal.jsx'
-import ProjectStatusDropdown from './reutilizable/projects/ProjectStatusDropdown.jsx'
+import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
+import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -153,9 +151,9 @@ const Projects = ({ statuses, can }) => {
           dataType: 'string',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'overflow: visible')
-            ReactAppend(container, <ProjectStatusDropdown statuses={statuses} data={data} onChange={() => {
+            ReactAppend(container, <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={() => {
               $(gridRef.current).dxDataGrid('instance').refresh()
-            }}/>)
+            }} />)
           }
         },
         {
@@ -178,8 +176,9 @@ const Projects = ({ statuses, can }) => {
         },
         {
           caption: 'Acciones',
+          width: 'max-content',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            container.attr('style', 'display: flex; gap: 4px;')
 
             can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
@@ -221,7 +220,7 @@ const Projects = ({ statuses, can }) => {
       </div>
     </Modal>
 
-    <PaymentModal dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
+    <PaymentModal can={can} dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
   </>
   )
 };

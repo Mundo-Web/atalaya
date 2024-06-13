@@ -7,13 +7,14 @@ import PaymentsRest from "../../actions/PaymentsRest";
 import TippyButton from "../../components/form/TippyButton";
 import Swal from "sweetalert2";
 
-const PaymentModal = ({ dataLoaded, setDataLoaded, grid2refresh }) => {
+const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
 
   const modalPaymentRef = useRef()
 
   const idRef = useRef()
   const projectIdRef = useRef()
   const paymentTypeRef = useRef()
+  const dateRef = useRef()
   const paymentAmountRef = useRef()
 
   const [payments, setPayments] = useState([])
@@ -52,6 +53,7 @@ const PaymentModal = ({ dataLoaded, setDataLoaded, grid2refresh }) => {
       project_id: dataLoaded.id,
       payment_type: paymentTypeRef.current.value,
       amount: paymentAmountRef.current.value,
+      date: dateRef.current.value
     }
 
     const result = await PaymentsRest.save(request)
@@ -77,6 +79,7 @@ const PaymentModal = ({ dataLoaded, setDataLoaded, grid2refresh }) => {
     idRef.current.value = payment.id
     paymentTypeRef.current.value = payment.payment_type
     paymentAmountRef.current.value = payment.amount
+    dateRef.current.value = payment.date || moment(payment.created_at).format('YYYY-MM-DD')
     setIsEditing(true)
   }
 
@@ -100,10 +103,11 @@ const PaymentModal = ({ dataLoaded, setDataLoaded, grid2refresh }) => {
 
   return (
     <Modal modalRef={modalPaymentRef} title={`Pagos de ${dataLoaded?.name} - S/.${dataLoaded?.cost}`} onSubmit={onPaymentSubmit} hideButtonSubmit>
-      <div className={`row ${dataLoaded.remaining_amount > 0 ? '' : 'd-none'}`}>
+      <div className={`row ${!can('projects', 'addpayment', 'editpayment') && 'd-none'}`}>
         <input ref={projectIdRef} type='hidden' />
         <input ref={idRef} type="hidden" />
-        <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-md-7' required />
+        <InputFormGroup eRef={paymentTypeRef} label='Concepto' col='col-12' required />
+        <InputFormGroup eRef={dateRef} type="date" label='Fecha' col='col-md-7' required />
         <div className='form-group col-md-5'>
           <label>Monto <b className='text-danger'>*</b></label>
           <div className='input-group' >
@@ -116,29 +120,41 @@ const PaymentModal = ({ dataLoaded, setDataLoaded, grid2refresh }) => {
           </div>
         </div>
       </div>
+      <hr className="mb-2 mt-0" />
       <table className='table table-bordered table-sm table-responsive table-striped mb-2'>
         <thead>
           <tr>
-            <th></th>
-            <th>Fecha</th>
+            {
+              can('projects', 'editpayment', 'deletepayment') && <th></th>
+            }
             <th>Concepto</th>
+            <th>Fecha</th>
             <th>Monto</th>
           </tr>
         </thead>
-        <tbody>{payments.map(payment => {
+        <tbody>{payments.map(x => {
+          if (!x.date) x.date = moment(x.created_at).format('YYYY-MM-DD')
+          return x
+        }).sort((a, b) => new Date(a.date) - new Date(b.date)).map(payment => {
           return <tr key={`project-payment-${payment.id}`}>
-            <td>
-              <div className="d-flex align-items-center gap-1">
-                <TippyButton title='Editar pago' className='btn btn-xs btn-soft-primary' type='button' onClick={() => onEditPayment(payment)}>
-                  <i className="fa fa-pen"></i>
-                </TippyButton>
-                <TippyButton title='Eliminar pago' className='btn btn-xs btn-soft-danger' type='button' onClick={() => onDeletePayment(payment.id)}>
-                  <i className="fa fa-trash"></i>
-                </TippyButton>
-              </div>
-            </td>
-            <td>{moment(payment.created_at).format('LL')}</td>
+            {
+              can('projects', 'editpayment', 'deletepayment') && <td>
+                <div className="d-flex align-items-center gap-1">
+                  {
+                    can('projects', 'editpayment') && <TippyButton title='Editar pago' className='btn btn-xs btn-soft-primary' type='button' onClick={() => onEditPayment(payment)}>
+                      <i className="fa fa-pen"></i>
+                    </TippyButton>
+                  }
+                  {
+                    can('projects', 'deletepayment') && <TippyButton title='Eliminar pago' className='btn btn-xs btn-soft-danger' type='button' onClick={() => onDeletePayment(payment.id)}>
+                      <i className="fa fa-trash"></i>
+                    </TippyButton>
+                  }
+                </div>
+              </td>
+            }
             <td>{payment.payment_type}</td>
+            <td>{moment(payment.date).format('LL')}</td>
             <td>S/.{payment.amount}</td>
           </tr>
         })}</tbody>

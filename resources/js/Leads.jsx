@@ -120,7 +120,7 @@ const Leads = ({ statuses, can }) => {
           caption: 'Estado del cliente',
           dataType: 'string',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+            container.attr('style', 'overflow: visible')
             ReactAppend(container, <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.client_status.name} icon={{ icon: 'fa fa-circle', color: data.client_status.color }} tippy='Actualizar estado'>
               {statuses.map(({ id, name, color }) => {
                 return <DropdownItem key={id} onClick={() => onClientStatusClicked(data.id, id)}>
@@ -140,7 +140,7 @@ const Leads = ({ statuses, can }) => {
           caption: 'Fecha creacion',
           dataType: 'datetime',
           cellTemplate: (container, { data }) => {
-            container.text(moment(data.created_at).format('LL'))
+            container.text(moment(data.created_at).format('lll'))
           },
           sortOrder: 'desc',
         },

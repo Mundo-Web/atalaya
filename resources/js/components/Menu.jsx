@@ -74,13 +74,19 @@ const Menu = ({ session, can }) => {
           <li className="menu-title">Panel de navegacion</li>
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           {
-            can('clients', 'root', 'all', 'list') &&
-            <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
+            (can('clients', 'root', 'all', 'list') || can('leads', 'root', 'all', 'list')) &&
+            <MenuItemContainer title='Personas' icon='mdi mdi-account-group'>
+              {
+                can('clients', 'root', 'all', 'list') &&
+                <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>
+              }
+              {
+                can('leads', 'root', 'all', 'list') &&
+                <MenuItem href="/leads" icon='mdi mdi-texture'>Leads</MenuItem>
+              }
+            </MenuItemContainer>
           }
-          {
-            can('leads', 'root', 'all', 'list') &&
-            <MenuItem href="/leads" icon='mdi mdi-page-next'>Leads</MenuItem>
-          }
+
           {
             can('projects', 'root', 'all', 'list') &&
             <MenuItem href="/projects" icon='mdi mdi-page-next'>Proyectos</MenuItem>
