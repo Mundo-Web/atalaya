@@ -57,8 +57,8 @@
       "_CreateReactScript-ClVaIZLH.js"
     ]
   },
-  "_ProjectStatusDropdown-B6OIEBG8.js": {
-    "file": "assets/ProjectStatusDropdown-B6OIEBG8.js",
+  "_ProjectStatusDropdown-CY6MuSdg.js": {
+    "file": "assets/ProjectStatusDropdown-CY6MuSdg.js",
     "name": "ProjectStatusDropdown",
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
@@ -111,7 +111,7 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-Bb40-EDn.js",
+    "file": "assets/Clients-BD8Q8cnf.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
@@ -119,7 +119,7 @@
       "_CreateReactScript-ClVaIZLH.js",
       "_TippyButton-BGVr4KNJ.js",
       "_ClientsRest-CfgxvIc0.js",
-      "_ProjectStatusDropdown-B6OIEBG8.js",
+      "_ProjectStatusDropdown-CY6MuSdg.js",
       "_Adminto-WgZqf3ZZ.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
@@ -190,7 +190,7 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-Cu7Xm8FY.js",
+    "file": "assets/Projects-D0v9QNaK.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
@@ -198,7 +198,7 @@
       "_CreateReactScript-ClVaIZLH.js",
       "_TippyButton-BGVr4KNJ.js",
       "_SelectAPIFormGroup-BEX-s1d4.js",
-      "_ProjectStatusDropdown-B6OIEBG8.js",
+      "_ProjectStatusDropdown-CY6MuSdg.js",
       "_Adminto-WgZqf3ZZ.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
