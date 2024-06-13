@@ -1,33 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "../../components/Modal";
-import InputFormGroup from "../../components/form/InputFormGroup";
-import Tippy from "@tippyjs/react";
 import 'tippy.js/dist/tippy.css';
-import PaymentsRest from "../../actions/PaymentsRest";
-import TippyButton from "../../components/form/TippyButton";
 import Swal from "sweetalert2";
+import Accordion from "../../components/accordion/Accordion";
+import NotesRest from "../../actions/ClientNotesRest";
+import InputFormGroup from "../../components/form/InputFormGroup";
+import TextareaFormGroup from "../../components/form/TextareaFormGroup";
+import SelectAPIFormGroup from "../../components/form/SelectAPIFormGroup";
+import SetSelectValue from "../../Utils/SetSelectValue";
+import AccordionCard from "../../components/accordion/AccordionCard";
 
 const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
 
-  const modalPaymentRef = useRef()
+  const modalNoteRef = useRef()
+  const modalAddNoteRef = useRef()
 
   const idRef = useRef()
-  const projectIdRef = useRef()
-  const paymentTypeRef = useRef()
-  const dateRef = useRef()
-  const paymentAmountRef = useRef()
+  const typeRef = useRef()
+  const nameRef = useRef()
+  const descriptionRef = useRef()
 
-  const [payments, setPayments] = useState([])
+  const [notes, setNotes] = useState([])
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
     if (client.id) {
-      onPaymentModalOpen()
+      onNotesModalOpen()
     }
 
-    $(modalPaymentRef.current).on('hidden.bs.modal', () => {
+    $(modalNoteRef.current).on('hidden.bs.modal', () => {
       setClient({})
-      setPayments([])
+      setNotes([])
       setIsEditing(false)
       // idRef.current.value = null
       // projectIdRef.current.value = null
@@ -37,42 +40,42 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
   }, [client])
 
 
-  const onPaymentModalOpen = async () => {
-    const paymentsByProject = await PaymentsRest.byProject(client?.id)
-    setPayments(paymentsByProject)
-
-    // projectIdRef.current.value = client?.id || null
-    $(modalPaymentRef.current).modal('show')
+  const onNotesModalOpen = async () => {
+    const notesByClient = await NotesRest.byClient(client?.id)
+    setNotes(notesByClient)
+    $(modalNoteRef.current).modal('show')
   }
 
-  const onPaymentSubmit = async (e) => {
+  const onNoteSubmit = async (e) => {
     e.preventDefault()
     const request = {
       id: idRef.current.value || undefined,
-      payment_id: projectIdRef.current.value,
-      project_id: client.id,
-      payment_type: paymentTypeRef.current.value,
-      amount: paymentAmountRef.current.value,
-      date: dateRef.current.value
+      type_id: typeRef.current.value,
+      client_id: client.id,
+      name: nameRef.current.value,
+      description: descriptionRef.current.value
     }
 
-    const result = await PaymentsRest.save(request)
+    const result = await NotesRest.save(request)
     if (!result) return
 
-    idRef.current.value = null
-    paymentTypeRef.current.value = null
-    paymentAmountRef.current.value = null
+    $(modalAddNoteRef.current).modal('hide')
 
-    await reloadPayment()
+    idRef.current.value = null
+    SetSelectValue(typeRef.current, null, null)
+    nameRef.current.value = null
+    descriptionRef.current.value = null
+
+    await reloadNotes()
     grid2refresh.refresh()
   }
 
-  const reloadPayment = async () => {
-    const paymentsByProject = await PaymentsRest.byProject(client.id)
+  const reloadNotes = async () => {
+    const paymentsByProject = await NotesRest.byClient(client.id)
     const total_payments = paymentsByProject.reduce((acc, payment) => Number(acc) + Number(payment.amount), 0)
     const newDataLoaded = { ...client, total_payments, remaining_amount: client.cost - total_payments }
     setClient(newDataLoaded)
-    setPayments(paymentsByProject)
+    setNotes(paymentsByProject)
   }
 
   const onEditPayment = async (payment) => {
@@ -94,31 +97,38 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
     })
     if (!isConfirmed) return
 
-    const result = await PaymentsRest.delete(payment_id)
+    const result = await NotesRest.delete(payment_id)
     if (!result) return
-    await reloadPayment()
+    await reloadNotes()
     grid2refresh.refresh()
-
   }
 
-  return (
-    <div ref={modalPaymentRef} className="modal fade" tabIndex="-1" aria-labelledby="standard-modalLabel" aria-hidden="true">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h4 className="modal-title" id="standard-modalLabel">Notas de  {client?.tradename || client?.name || client?.contact_name}</h4>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div className="modal-body">
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
-          </div>
-        </div>
+  return (<>
+    <Modal modalRef={modalNoteRef} title={`Notas de ${client?.tradename || client?.name || client?.contact_name}`} hideFooter>
+      <div className="text-center">
+        <button className="btn btn-primary" type="button" onClick={() => $(modalAddNoteRef.current).modal('show')} >Agregar nota</button>
       </div>
-    </div>
-  )
+      {notes.length > 0 && <hr className="my-2" />}
+      <Accordion id='notes-accordion'>
+        {notes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((note, i) => {
+          return <AccordionCard key={`note-${i}`} id={`note-${i}`} title={<>
+            {note.name}
+            <small className="text-muted float-end">{moment(note.created_at).fromNow()}</small>
+          </>} parent='notes-accordion' isOpened={i ===0}>
+            {note.description}
+          </AccordionCard>
+        })}
+      </Accordion>
+    </Modal>
+    <Modal modalRef={modalAddNoteRef} title="Agregar nota" size="sm" onSubmit={onNoteSubmit}>
+      <div id="note-crud-container">
+        <input ref={idRef} type="hidden" />
+        <SelectAPIFormGroup eRef={typeRef} label='Tipo de nota' col='col-12' dropdownParent='#note-crud-container' searchAPI='/api/types/paginate' searchBy='name' filter={['table_id', '=', 4]} required />
+        <InputFormGroup eRef={nameRef} label="Titulo de la nota" required />
+        <TextareaFormGroup eRef={descriptionRef} label="Descripcion de la nota" required />
+      </div>
+    </Modal>
+  </>)
 }
 
 export default ClientNotesModal;

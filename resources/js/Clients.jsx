@@ -13,6 +13,7 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
+import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -34,6 +35,7 @@ const Clients = ({ statuses, can }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [projectLoaded, setProjectLoaded] = useState({})
   const [projectsGrid, setProjectsGrid] = useState({})
+  const [clientLoaded, setClientLoaded] = useState({})
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -182,6 +184,10 @@ const Clients = ({ statuses, can }) => {
 
             can('clients', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
+            </TippyButton>)
+
+            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
+              <i className="fas fa-sticky-note" />
             </TippyButton>)
 
             can('clients', 'root', 'all', 'changestatus') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
@@ -342,6 +348,8 @@ const Clients = ({ statuses, can }) => {
     </Modal>
 
     <PaymentModal can={can} dataLoaded={projectLoaded} setDataLoaded={setProjectLoaded} grid2refresh={projectsGrid} />
+
+    <ClientNotesModal can={can} client={clientLoaded} setClient={setClientLoaded} grid2refresh={gridRef} />
   </>
   )
 };

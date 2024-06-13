@@ -4,7 +4,7 @@ const Modal = ({ modalRef, title = 'Modal', isStatic = false, size = 'md', child
 
   return (<form className='modal fade' ref={modalRef} tabIndex='-1' aria-hidden='true' dataa-bs-backdrop={isStatic ? 'static' : ''} onSubmit={onSubmit} autoComplete='off'>
     <div className={`modal-dialog modal-dialog-centered modal-${size ?? 'md'}`}>
-      <div className='modal-content '>
+      <div className='modal-content ' style={{boxShadow: '0 0 10px rgba(0,0,0,0.25)'}}>
         <div className='modal-header'>
           <h4 className='modal-title'>{title}</h4>
           <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
