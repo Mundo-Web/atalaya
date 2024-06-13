@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import Adminto from './components/Adminto';
 import CreateReactScript from './Utils/CreateReactScript';
@@ -6,8 +6,12 @@ import InputFormGroup from './components/form/InputFormGroup';
 import PasswordFormGroup from './components/form/PasswordFormGroup';
 import 'tippy.js/dist/tippy.css';
 import Logout from './actions/Logout';
+import AccountRest from './actions/AccountRest';
+import JSEncrypt from 'jsencrypt'
 
-const Account = ({ session }) => {
+const Account = ({ session, PUBLIC_RSA_KEY }) => {
+  const jsEncrypt = new JSEncrypt()
+  jsEncrypt.setPublicKey(PUBLIC_RSA_KEY)
 
   const emailRef = useRef()
   const confirmPasswordRef = useRef()
@@ -19,7 +23,7 @@ const Account = ({ session }) => {
     e.preventDefault()
     const request = {
       email: emailRef.current.value,
-      password: confirmPasswordRef.current.value
+      password: jsEncrypt.encrypt(confirmPasswordRef.current.value)
     }
     const result = await AccountRest.email(request)
     if (!result) return
@@ -29,9 +33,9 @@ const Account = ({ session }) => {
   const onPasswordFormSubmit = async (e) => {
     e.preventDefault()
     const request = {
-      password: lastPasswordRef.current.value,
-      newPassword: lastPasswordRef.current.value,
-      confirmPassword: repeatPasswordRef.current.value
+      password: jsEncrypt.encrypt(lastPasswordRef.current.value),
+      newPassword: jsEncrypt.encrypt(newPasswordRef.current.value),
+      confirmPassword: jsEncrypt.encrypt(repeatPasswordRef.current.value)
     }
     const result = await AccountRest.password(request)
     if (!result) return

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\LandingFormController;
@@ -101,4 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/thumbnail/{uuid}', [ProfileController::class, 'full']);
     Route::post('/profile', [ProfileController::class, 'saveProfile']);
     Route::patch('/profile', [ProfileController::class, 'save']);
+
+    Route::patch('/account/email', [AccountController::class, 'email']);
+    Route::patch('/account/password', [AccountController::class, 'password']);
 });

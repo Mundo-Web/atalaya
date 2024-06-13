@@ -97,7 +97,7 @@
     ]
   },
   "resources/js/Account.jsx": {
-    "file": "assets/Account-DLTz00Lx.js",
+    "file": "assets/Account-CF2mEljf.js",
     "name": "Account",
     "src": "resources/js/Account.jsx",
     "isEntry": true,
@@ -105,7 +105,8 @@
       "_CreateReactScript-BhyNrTql.js",
       "_Adminto-piemSMfh.js",
       "_InputFormGroup-CvKM2mq1.js",
-      "_PasswordFormGroup-Dz5qCkgl.js"
+      "_PasswordFormGroup-Dz5qCkgl.js",
+      "_JSEncrypt-D3I3x59l.js"
     ]
   },
   "resources/js/Clients.jsx": {
