@@ -9,7 +9,7 @@ const NavBar = ({ session = {}, title = '' }) => {
     <div className="navbar-custom">
       <ul className="list-unstyled topnav-menu float-end mb-0">
 
-        <li className="d-none d-lg-block">
+        {/* <li className="d-none d-lg-block">
           <form className="app-search">
             <div className="app-search-box">
               <div className="input-group">
@@ -184,7 +184,7 @@ const NavBar = ({ session = {}, title = '' }) => {
             </a>
 
           </div>
-        </li>
+        </li> */}
 
         <li className="dropdown notification-list topbar-dropdown">
           <a className="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown"
