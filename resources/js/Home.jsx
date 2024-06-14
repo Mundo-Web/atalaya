@@ -77,7 +77,7 @@ const Home = () => {
         data.forEach(x => {
           if (x.month == moment().month() + 1) lastRevenues.actual = Number(x.total)
           else {
-            setLastMonth(moment({ month: x.month }).format('MMM Y'))
+            setLastMonth(moment({ month: x.month - 1 }).format('MMM Y'))
             lastRevenues.last = Number(x.total)
           }
         })
@@ -93,7 +93,10 @@ const Home = () => {
     setRevenuesTitle(title)
   }
 
-  const trending = (lastRevenues.last * (moment().format('DD') / moment().daysInMonth()) / lastRevenues.actual) || 0
+  const totalDays = moment().daysInMonth()
+  const daysPassed = moment().format('DD')
+  const suposeToBe = lastRevenues.actual * totalDays / daysPassed
+  const trending = (suposeToBe / lastRevenues.last) - 1
 
   return (
     <>
@@ -123,7 +126,9 @@ const Home = () => {
               <h4 className="header-title mt-0 mb-3">Ingresos - Mes actual</h4>
               <div className="widget-box-2">
                 <div className="widget-detail-2 text-end">
+                  <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% de ${trending >= 0 ? 'ganancia' : 'perdida'} respecto al mes anterior`}>
                   <span className="badge bg-success rounded-pill float-start mt-3">{Math.round(trending * 100)}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
+                  </Tippy>
                   <h2 className="fw-normal mb-1"> S/.{Number(lastRevenues?.actual || 0).toFixed(2)} </h2>
                   <p className="text-muted mb-3">{moment().format('MMMM Y')}</p>
                 </div>

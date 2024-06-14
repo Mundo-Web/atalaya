@@ -63,6 +63,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
     if (!result) return
 
     idRef.current.value = null
+    dateRef.current.value = null
     paymentTypeRef.current.value = null
     paymentAmountRef.current.value = null
 
