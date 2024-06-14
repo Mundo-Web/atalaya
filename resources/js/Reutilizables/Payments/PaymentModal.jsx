@@ -115,7 +115,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
         <div className='form-group col-md-5'>
           <label>Monto <b className='text-danger'>*</b></label>
           <div className='input-group' >
-            <input ref={paymentAmountRef} type='number' className='form-control' placeholder={`Max: ${maxAmount}`} min={0} max={maxAmount} step={0.01} />
+            <input ref={paymentAmountRef} type='number' className='form-control' placeholder={`Max: ${maxAmount}`} min={0} max={maxAmount || 0} step={0.01} />
             <Tippy content={isEditing ? 'Actualizar pago' : 'Agregar pago'}>
               <button className='btn input-group-text btn-dark waves-effect waves-light' type='submit'>
                 <i className={`fa ${isEditing ? 'fa-save' : 'fa-plus'}`}></i>

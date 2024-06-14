@@ -7,6 +7,7 @@ import DashboardRest from './actions/DashboardRest';
 import DropdownEnd from './components/dropdown/DropdownEnd';
 import DropdownItem from './components/dropdown/DropdownItem';
 import Tippy from '@tippyjs/react';
+import ProjectsRest from './actions/ProjectsRest';
 
 const Home = () => {
   const revenueRef = useRef();
@@ -84,6 +85,19 @@ const Home = () => {
 
         setLastRevenues(lastRevenues)
       })
+
+    ProjectsRest.paginate({
+      filter: [
+        ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'AND', [
+          ['status_id', '=', 4], 'OR',
+          ['status_id', '=', 5], 'OR',
+          ['status_id', '=', 6]
+        ]
+      ]
+    })
+      .then(({ data }) => {
+        console.log(data)
+      })
   }, [null])
 
   const onRevenueRangeChange = (e) => {
@@ -127,7 +141,7 @@ const Home = () => {
               <div className="widget-box-2">
                 <div className="widget-detail-2 text-end">
                   <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% ${trending >= 0 ? 'mas' : 'menos'} de ingresos respecto al mes anterior`}>
-                  <span className="badge bg-success rounded-pill float-start mt-3">{Math.round(trending * 100)}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
+                    <span className="badge bg-success rounded-pill float-start mt-3">{Math.round(trending * 100)}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
                   </Tippy>
                   <h2 className="fw-normal mb-1"> S/.{Number(lastRevenues?.actual || 0).toFixed(2)} </h2>
                   <p className="text-muted mb-3">{moment().format('MMMM Y')}</p>
@@ -203,6 +217,7 @@ const Home = () => {
         </div>
 
       </div>
+
       <div className="row">
         <div className="col-12">
           <div className="card">
@@ -216,7 +231,165 @@ const Home = () => {
               <h4 className="header-title mb-0">Ingresos - {revenuesTitle}</h4>
             </div>
             <div className="card-body">
-              <canvas ref={revenueRef} height={75}></canvas>
+              <canvas ref={revenueRef} height={80}></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-xl-4">
+          <div className="card">
+            <div className="card-body">
+              <div className="dropdown float-end">
+                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i className="mdi mdi-dots-vertical"></i>
+                </a>
+                <div className="dropdown-menu dropdown-menu-end">
+                  <a href="#" className="dropdown-item">Action</a>
+                  <a href="#" className="dropdown-item">Another action</a>
+                  <a href="#" className="dropdown-item">Something else</a>
+                  <a href="#" className="dropdown-item">Separated link</a>
+                </div>
+              </div>
+
+              <h4 className="header-title mb-3">Inbox</h4>
+
+              <div className="inbox-widget">
+
+                <div className="inbox-item">
+                  <a href="#">
+                    <div className="inbox-item-img"><img src="assets/images/users/user-1.jpg" className="rounded-circle" alt="" /></div>
+                    <h5 className="inbox-item-author mt-0 mb-1">Chadengle</h5>
+                    <p className="inbox-item-text">Hey! there I'm available...</p>
+                    <p className="inbox-item-date">13:40 PM</p>
+                  </a>
+                </div>
+
+                <div className="inbox-item">
+                  <a href="#">
+                    <div className="inbox-item-img"><img src="assets/images/users/user-2.jpg" className="rounded-circle" alt="" /></div>
+                    <h5 className="inbox-item-author mt-0 mb-1">Tomaslau</h5>
+                    <p className="inbox-item-text">I've finished it! See you so...</p>
+                    <p className="inbox-item-date">13:34 PM</p>
+                  </a>
+                </div>
+
+                <div className="inbox-item">
+                  <a href="#">
+                    <div className="inbox-item-img"><img src="assets/images/users/user-3.jpg" className="rounded-circle" alt="" /></div>
+                    <h5 className="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
+                    <p className="inbox-item-text">This theme is awesome!</p>
+                    <p className="inbox-item-date">13:17 PM</p>
+                  </a>
+                </div>
+
+                <div className="inbox-item">
+                  <a href="#">
+                    <div className="inbox-item-img"><img src="assets/images/users/user-4.jpg" className="rounded-circle" alt="" /></div>
+                    <h5 className="inbox-item-author mt-0 mb-1">Kurafire</h5>
+                    <p className="inbox-item-text">Nice to meet you</p>
+                    <p className="inbox-item-date">12:20 PM</p>
+                  </a>
+                </div>
+
+                <div className="inbox-item">
+                  <a href="#">
+                    <div className="inbox-item-img"><img src="assets/images/users/user-5.jpg" className="rounded-circle" alt="" /></div>
+                    <h5 className="inbox-item-author mt-0 mb-1">Shahedk</h5>
+                    <p className="inbox-item-text">Hey! there I'm available...</p>
+                    <p className="inbox-item-date">10:15 AM</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="col-xl-8">
+          <div className="card">
+            <div className="card-body">
+              <div className="dropdown float-end">
+                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i className="mdi mdi-dots-vertical"></i>
+                </a>
+                <div className="dropdown-menu dropdown-menu-end">
+                  <a href="#" className="dropdown-item">Action</a>
+                  <a href="#" className="dropdown-item">Another action</a>
+                  <a href="#" className="dropdown-item">Something else</a>
+                  <a href="#" className="dropdown-item">Separated link</a>
+                </div>
+              </div>
+
+              <h4 className="header-title mt-0 mb-3">Proyectos prontos a terminar</h4>
+
+              <div className="table-responsive">
+                <table className="table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th>Proyecto</th>
+                      <th>Fecha de inicio</th>
+                      <th>Fecha de finalización</th>
+                      <th>Estado</th>
+                      <th>Asignado a</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Adminto Admin v1</td>
+                      <td>01/01/2017</td>
+                      <td>26/04/2017</td>
+                      <td><span className="badge bg-danger">Released</span></td>
+                      <td>Coderthemes</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Adminto Frontend v1</td>
+                      <td>01/01/2017</td>
+                      <td>26/04/2017</td>
+                      <td><span className="badge bg-success">Released</span></td>
+                      <td>Adminto admin</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Adminto Admin v1.1</td>
+                      <td>01/05/2017</td>
+                      <td>10/05/2017</td>
+                      <td><span className="badge bg-pink">Pending</span></td>
+                      <td>Coderthemes</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Adminto Frontend v1.1</td>
+                      <td>01/01/2017</td>
+                      <td>31/05/2017</td>
+                      <td><span className="badge bg-purple">Work in Progress</span>
+                      </td>
+                      <td>Adminto admin</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Adminto Admin v1.3</td>
+                      <td>01/01/2017</td>
+                      <td>31/05/2017</td>
+                      <td><span className="badge bg-warning">Coming soon</span></td>
+                      <td>Coderthemes</td>
+                    </tr>
+
+                    <tr>
+                      <td>6</td>
+                      <td>Adminto Admin v1.3</td>
+                      <td>01/01/2017</td>
+                      <td>31/05/2017</td>
+                      <td><span className="badge bg-primary">Coming soon</span></td>
+                      <td>Adminto admin</td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

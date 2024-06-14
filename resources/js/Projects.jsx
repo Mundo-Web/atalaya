@@ -146,9 +146,12 @@ const Projects = ({ statuses, can }) => {
           }
         },
         {
-          dataField: 'status_id',
-          caption: 'ID estado proyecto',
-          visible: false
+          dataField: 'ends_at',
+          caption: 'Fecha de finalización',
+          dataType: 'date',
+          cellTemplate: (container, { data }) => {
+            container.text(moment(data.ends_at).format('LL'))
+          }
         },
         can('projects', 'root', 'all', 'changestatus') && {
           dataField: 'project_status.name',

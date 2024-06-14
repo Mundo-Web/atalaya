@@ -275,6 +275,14 @@ const Clients = ({ statuses, can }) => {
                   </>)
                 }
               },
+              {
+                dataField: 'ends_at',
+                caption: 'Fecha de finalización',
+                dataType: 'date',
+                cellTemplate: (container, { data }) => {
+                  container.text(moment(data.ends_at).format('LL'))
+                }
+              },
               can('projects', 'root', 'all', 'changestatus') ? {
                 dataField: 'project_status.name',
                 caption: 'Estado del proyecto',
