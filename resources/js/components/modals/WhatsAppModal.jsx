@@ -4,6 +4,7 @@ import '../../../css/qr-code.css'
 
 const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   const qrRef = useRef()
+  const whatsappIP = 'https://whatsapp.mundoweb.pe'
 
   const { color, icon, text } = WhatsAppStatuses[whatsappStatus]
   const [percent, setPercent] = useState(0)
@@ -11,7 +12,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
 
   useEffect(() => {
     if (whatsappStatus == 'verifying') {
-      let eventSource = new EventSource('http://localhost:8080/api/verify?session=atalaya')
+      let eventSource = new EventSource(`${whatsappIP}/api/verify?session=atalaya`)
       eventSource.onmessage = ({ data }) => {
         if (data == 'ping') return console.log('Realtime active')
         const { status, qr, percent, info } = JSON.parse(data)
@@ -62,7 +63,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   }, [whatsappStatus])
 
   const onCloseClicked = async () => {
-    await fetch('https://whatsapp.mundoweb.pe/api/session/atalaya', {
+    await fetch(`${whatsappIP}/api/session/atalaya`, {
       method: 'DELETE'
     })
     setStatus('verifying')

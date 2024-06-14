@@ -153,7 +153,7 @@ const Projects = ({ statuses, can }) => {
             container.text(moment(data.ends_at).format('LL'))
           }
         },
-        can('projects', 'root', 'all', 'changestatus') && {
+        can('projects', 'root', 'all', 'changestatus') ? {
           dataField: 'project_status.name',
           caption: 'Estado del proyecto',
           dataType: 'string',
@@ -163,7 +163,7 @@ const Projects = ({ statuses, can }) => {
               $(gridRef.current).dxDataGrid('instance').refresh()
             }} />)
           }
-        },
+        }: null,
         {
           dataField: 'status',
           caption: 'Estado',
@@ -184,7 +184,6 @@ const Projects = ({ statuses, can }) => {
         },
         {
           caption: 'Acciones',
-          width: 'max-content',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: visible')
 
@@ -192,7 +191,7 @@ const Projects = ({ statuses, can }) => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
+            can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
               <i className='fas fa-money-check-alt'></i>
             </TippyButton>)
 

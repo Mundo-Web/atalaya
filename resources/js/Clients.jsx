@@ -321,7 +321,7 @@ const Clients = ({ statuses, can }) => {
                 cellTemplate: (container, { data }) => {
                   container.attr('style', 'display: flex; gap: 4px; overflow: unset')
 
-                  can('projects', 'root', 'all', 'addpayments') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setProjectLoaded(data)}>
+                  can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setProjectLoaded(data)}>
                     <i className='fas fa-money-check-alt'></i>
                   </TippyButton>)
                 },
