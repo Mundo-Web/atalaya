@@ -248,88 +248,15 @@ const Home = () => {
       </div>
 
       <div className="row">
-        <div className="col-xl-4">
+        <div className="col-12">
           <div className="card">
             <div className="card-body">
               <div className="dropdown float-end">
-                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i className="mdi mdi-dots-vertical"></i>
-                </a>
-                <div className="dropdown-menu dropdown-menu-end">
-                  <a href="#" className="dropdown-item">Action</a>
-                  <a href="#" className="dropdown-item">Another action</a>
-                  <a href="#" className="dropdown-item">Something else</a>
-                  <a href="#" className="dropdown-item">Separated link</a>
-                </div>
-              </div>
-
-              <h4 className="header-title mb-3">Inbox</h4>
-
-              <div className="inbox-widget">
-
-                <div className="inbox-item">
-                  <a href="#">
-                    <div className="inbox-item-img"><img src="assets/images/users/user-1.jpg" className="rounded-circle" alt="" /></div>
-                    <h5 className="inbox-item-author mt-0 mb-1">Chadengle</h5>
-                    <p className="inbox-item-text">Hey! there I'm available...</p>
-                    <p className="inbox-item-date">13:40 PM</p>
+                <Tippy content="Ver proyectos" arrow={true}>
+                  <a href="/projects" className="arrow-none card-drop">
+                    <i className="mdi mdi-arrow-top-right"></i>
                   </a>
-                </div>
-
-                <div className="inbox-item">
-                  <a href="#">
-                    <div className="inbox-item-img"><img src="assets/images/users/user-2.jpg" className="rounded-circle" alt="" /></div>
-                    <h5 className="inbox-item-author mt-0 mb-1">Tomaslau</h5>
-                    <p className="inbox-item-text">I've finished it! See you so...</p>
-                    <p className="inbox-item-date">13:34 PM</p>
-                  </a>
-                </div>
-
-                <div className="inbox-item">
-                  <a href="#">
-                    <div className="inbox-item-img"><img src="assets/images/users/user-3.jpg" className="rounded-circle" alt="" /></div>
-                    <h5 className="inbox-item-author mt-0 mb-1">Stillnotdavid</h5>
-                    <p className="inbox-item-text">This theme is awesome!</p>
-                    <p className="inbox-item-date">13:17 PM</p>
-                  </a>
-                </div>
-
-                <div className="inbox-item">
-                  <a href="#">
-                    <div className="inbox-item-img"><img src="assets/images/users/user-4.jpg" className="rounded-circle" alt="" /></div>
-                    <h5 className="inbox-item-author mt-0 mb-1">Kurafire</h5>
-                    <p className="inbox-item-text">Nice to meet you</p>
-                    <p className="inbox-item-date">12:20 PM</p>
-                  </a>
-                </div>
-
-                <div className="inbox-item">
-                  <a href="#">
-                    <div className="inbox-item-img"><img src="assets/images/users/user-5.jpg" className="rounded-circle" alt="" /></div>
-                    <h5 className="inbox-item-author mt-0 mb-1">Shahedk</h5>
-                    <p className="inbox-item-text">Hey! there I'm available...</p>
-                    <p className="inbox-item-date">10:15 AM</p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="col-xl-8">
-          <div className="card">
-            <div className="card-body">
-              <div className="dropdown float-end">
-                <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i className="mdi mdi-dots-vertical"></i>
-                </a>
-                <div className="dropdown-menu dropdown-menu-end">
-                  <a href="#" className="dropdown-item">Action</a>
-                  <a href="#" className="dropdown-item">Another action</a>
-                  <a href="#" className="dropdown-item">Something else</a>
-                  <a href="#" className="dropdown-item">Separated link</a>
-                </div>
+                </Tippy>
               </div>
 
               <h4 className="header-title mt-0 mb-3">Proyectos prontos a terminar</h4>

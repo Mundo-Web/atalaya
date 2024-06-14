@@ -21,6 +21,7 @@ const Leads = ({ statuses, can }) => {
   const modalRef = useRef()
 
   // Form ref
+  const idRef = useRef()
   const contactNameRef = useRef()
   const contactEmailRef = useRef()
   const contactPhoneRef = useRef()
@@ -36,6 +37,7 @@ const Leads = ({ statuses, can }) => {
     if (data?.id) setIsEditing(true)
     else setIsEditing(false)
 
+    idRef.current.value = data?.id ?? ''
     contactNameRef.current.value = data?.contact_name ?? ''
     contactEmailRef.current.value = data?.contact_email ?? ''
     contactPhoneRef.current.value = data?.contact_phone ?? ''
@@ -50,6 +52,7 @@ const Leads = ({ statuses, can }) => {
     e.preventDefault()
 
     const request = {
+      id: idRef.current.value,
       contact_name: contactNameRef.current.value,
       contact_email: contactEmailRef.current.value,
       contact_phone: contactPhoneRef.current.value,
@@ -151,6 +154,12 @@ const Leads = ({ statuses, can }) => {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: visible')
+
+            can('leads', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar lead' onClick={() => onModalOpen(data)}>
+              <i className='fa fa-pen'></i>
+            </TippyButton>)
+
+
             can('leads', 'root', 'all', 'movetoclient') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={async () => {
               const { isConfirmed } = await Swal.fire({
                 title: "Estas seguro?",
@@ -196,6 +205,7 @@ const Leads = ({ statuses, can }) => {
 
     <Modal modalRef={modalRef} title={isEditing ? 'Editar lead' : 'Nuevo lead'} btnSubmitText='Guardar' onSubmit={onModalSubmit}>
       <div className="row mb-0">
+        <input ref={idRef} type="hidden" />
         <InputFormGroup eRef={contactNameRef} label='Nombre completo' required />
         <InputFormGroup eRef={contactEmailRef} label='Correo electronico' col='col-md-6' required />
         <InputFormGroup eRef={contactPhoneRef} label='Telefono' col='col-md-6' required />

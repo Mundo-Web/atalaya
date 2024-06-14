@@ -1,10 +1,11 @@
 import React, { useEffect } from "react"
 import Logout from "../actions/Logout"
 
-const NavBar = ({ session = {}, title = '' }) => {
+const NavBar = ({ can, session = {}, title = '' }) => {
   useEffect(() => {
     document.title = `${title} | Atalaya`
   }, [null])
+
   return (
     <div className="navbar-custom">
       <ul className="list-unstyled topnav-menu float-end mb-0">
@@ -89,108 +90,25 @@ const NavBar = ({ session = {}, title = '' }) => {
                 aria-label="Recipient's username" />
             </form>
           </div>
-        </li>
-
-        <li className="dropdown notification-list topbar-dropdown">
-          <a className="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
-            role="button" aria-haspopup="false" aria-expanded="false">
-            <i className="fe-bell noti-icon"></i>
-            <span className="badge bg-danger rounded-circle noti-icon-badge">9</span>
-          </a>
-          <div className="dropdown-menu dropdown-menu-end dropdown-lg">
-
-
-            <div className="dropdown-item noti-title">
-              <h5 className="m-0">
-                <span className="float-end">
-                  <a href="" className="text-dark">
-                    <small>Clear All</small>
-                  </a>
-                </span>Notification
-              </h5>
-            </div>
-
-            <div className="noti-scroll" data-simplebar>
-
-
-              <a href="#" className="dropdown-item notify-item active">
-                <div className="notify-icon">
-                  <img src="/assets/img/user-404.svg" className="img-fluid rounded-circle" alt="" />
-                </div>
-                <p className="notify-details">Cristina Pride</p>
-                <p className="text-muted mb-0 user-msg">
-                  <small>Hi, How are you? What about our next meeting</small>
-                </p>
-              </a>
-
-
-              <a href="#" className="dropdown-item notify-item">
-                <div className="notify-icon bg-primary">
-                  <i className="mdi mdi-comment-account-outline"></i>
-                </div>
-                <p className="notify-details">Caleb Flakelar commented on Admin
-                  <small className="text-muted">1 min ago</small>
-                </p>
-              </a>
-
-
-              <a href="#" className="dropdown-item notify-item">
-                <div className="notify-icon">
-                  <img src="/assets/img/user-404.svg" className="img-fluid rounded-circle" alt="" />
-                </div>
-                <p className="notify-details">Karen Robinson</p>
-                <p className="text-muted mb-0 user-msg">
-                  <small>Wow ! this admin looks good and awesome design</small>
-                </p>
-              </a>
-
-
-              <a href="#" className="dropdown-item notify-item">
-                <div className="notify-icon bg-warning">
-                  <i className="mdi mdi-account-plus"></i>
-                </div>
-                <p className="notify-details">New user registered.
-                  <small className="text-muted">5 hours ago</small>
-                </p>
-              </a>
-
-
-              <a href="#" className="dropdown-item notify-item">
-                <div className="notify-icon bg-info">
-                  <i className="mdi mdi-comment-account-outline"></i>
-                </div>
-                <p className="notify-details">Caleb Flakelar commented on Admin
-                  <small className="text-muted">4 days ago</small>
-                </p>
-              </a>
-
-
-              <a href="#" className="dropdown-item notify-item">
-                <div className="notify-icon bg-secondary">
-                  <i className="mdi mdi-heart"></i>
-                </div>
-                <p className="notify-details">Carlos Crouch liked
-                  <b>Admin</b>
-                  <small className="text-muted">13 days ago</small>
-                </p>
-              </a>
-            </div>
-
-
-            <a href="#"
-              className="dropdown-item text-center text-primary notify-item notify-all">
-              View all
-              <i className="fe-arrow-right"></i>
-            </a>
-
-          </div>
         </li> */}
+
+        {can('whatsapp', 'root', 'all') && <li className="notification-list topbar-dropdown">
+          <a className="nav-link waves-effect waves-light">
+            <span className="position-relative">
+              <i className="mdi mdi-whatsapp noti-icon"></i>
+              <span className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                <span className="visually-hidden">New alerts</span>
+              </span>
+
+            </span>
+          </a>
+        </li>}
 
         <li className="dropdown notification-list topbar-dropdown">
           <a className="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown"
             href="#" role="button" aria-haspopup="false" aria-expanded="false">
             <img src={`api/profile/thumbnail/${session.relative_id}?v=${crypto.randomUUID()}`} alt="user-image" className="rounded-circle" style={{ objectFit: 'cover', objectPosition: 'center' }} />
-            <span className="pro-user-name ms-1"> 
+            <span className="pro-user-name ms-1">
               {session.name} {session.lastname}
               <i className="mdi mdi-chevron-down"></i>
             </span>
