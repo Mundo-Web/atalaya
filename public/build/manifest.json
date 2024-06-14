@@ -13,8 +13,8 @@
       "assets/Adminto-LriLsbSV.css"
     ]
   },
-  "_ClientNotesModal-BZJf_IIk.js": {
-    "file": "assets/ClientNotesModal-BZJf_IIk.js",
+  "_ClientNotesModal-CmpbcR4a.js": {
+    "file": "assets/ClientNotesModal-CmpbcR4a.js",
     "name": "ClientNotesModal",
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
@@ -134,14 +134,14 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-BKov3IkR.js",
+    "file": "assets/Clients-57OB7CpR.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_TippyButton-8JVuESJr.js",
-      "_ClientNotesModal-BZJf_IIk.js",
+      "_ClientNotesModal-CmpbcR4a.js",
       "_ProjectStatusDropdown-zelvWDEG.js",
       "_Adminto-BSg1Iqw4.js",
       "_InputFormGroup-CCmG0Ohr.js",
@@ -165,14 +165,14 @@
     ]
   },
   "resources/js/Leads.jsx": {
-    "file": "assets/Leads-Bw-eH5OE.js",
+    "file": "assets/Leads-BkcN7TWZ.js",
     "name": "Leads",
     "src": "resources/js/Leads.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_TippyButton-8JVuESJr.js",
-      "_ClientNotesModal-BZJf_IIk.js",
+      "_ClientNotesModal-CmpbcR4a.js",
       "_Adminto-BSg1Iqw4.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",

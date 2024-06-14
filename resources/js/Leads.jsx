@@ -204,7 +204,7 @@ const Leads = ({ statuses, can }) => {
         <TextareaFormGroup eRef={messageRef} label='Mensaje' placeholder='Ingresa tu mensaje' rows={4} required />
       </div>
     </Modal>
-    <ClientNotesModal can={can} client={clientLoaded} setClient={setClientLoaded} grid2refresh={gridRef} />
+    <ClientNotesModal can={can} client={clientLoaded} setClient={setClientLoaded} grid2refresh={gridRef} page='leads' />
   </>
   )
 };

@@ -10,7 +10,7 @@ import SetSelectValue from "../../Utils/SetSelectValue";
 import DropdownItem from "../../components/dropdown/DropdownItem";
 import DropdownEnd from "../../components/dropdown/DropdownEnd";
 
-const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
+const ClientNotesModal = ({ can, client, setClient, grid2refresh, page }) => {
 
   const modalNoteRef = useRef()
   const modalAddNoteRef = useRef()
@@ -80,7 +80,7 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
     SetSelectValue(typeRef.current, note.type.id, note.type.name)
     nameRef.current.value = note.name
     descriptionRef.current.value = note.description
-    
+
     $(modalAddNoteRef.current).modal('show')
     setIsEditing(true)
   }
@@ -129,10 +129,12 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
                         <h5 className="text-white m-0">{note.user.name} {note.user.lastname}</h5>
                         <p className="text-white-50 m-0 font-13 text-truncate">{time}</p>
                       </div>
-                      <DropdownEnd>
-                        <DropdownItem onClick={() => onEditNote(note)}>Editar</DropdownItem>
-                        <DropdownItem onClick={() => onDeleteNote(note.id)}>Eliminar</DropdownItem>
-                      </DropdownEnd>
+                      {
+                        can(page, 'root', 'all', 'editnotes', 'deletenotes') && <DropdownEnd>
+                          {can(page, 'root', 'all', 'editnotes') && <DropdownItem onClick={() => onEditNote(note)}>Editar</DropdownItem>}
+                          {can(page, 'root', 'all', 'deletenotes') && <DropdownItem onClick={() => onDeleteNote(note.id)}>Eliminar</DropdownItem>}
+                        </DropdownEnd>
+                      }
                     </div>
                     <blockquote className="card-bodyquote mb-0">
                       {note.name && <b>{note.name}</b>}
