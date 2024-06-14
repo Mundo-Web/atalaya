@@ -221,7 +221,7 @@ const Projects = ({ statuses, can }) => {
         <SelectAPIFormGroup eRef={typeRef} label='Tipo del proyecto' col='col-md-4' dropdownParent='#project-crud-container' searchAPI='/api/types/paginate' searchBy='name' filter={['table_id', '=', 1]} required />
         <InputFormGroup eRef={nameRef} label='Nombre del proyecto' col='col-md-8' required />
         <TextareaFormGroup eRef={descriptionRef} label='Descripcion del proyecto' col='col-12' />
-        <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' required />
+        <InputFormGroup eRef={costRef} label='Costo' col='col-md-6' type='number' step={0.01} required />
         <InputFormGroup eRef={signAtRef} label='Fecha firma' col='col-md-6' type='date' />
         <InputFormGroup eRef={startsAtRef} label='Fecha inicio' col='col-md-6' type='date' required />
         <InputFormGroup eRef={endsAtRef} label='Fecha fin' col='col-md-6' type='date' required />
