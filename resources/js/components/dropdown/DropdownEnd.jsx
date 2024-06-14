@@ -1,11 +1,11 @@
 import React from "react"
 
 const DropdownEnd = ({ children }) => {
-  return <div class="dropdown float-end">
-    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="mdi mdi-dots-vertical"></i>
+  return <div className="dropdown float-end">
+    <a href="#" className="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+      <i className="mdi mdi-dots-vertical"></i>
     </a>
-    <div class="dropdown-menu dropdown-menu-end">
+    <div className="dropdown-menu dropdown-menu-end">
       {children}
     </div>
   </div>

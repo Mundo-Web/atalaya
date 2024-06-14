@@ -41,6 +41,34 @@ class DashboardController
             ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'))
             ->get();
           break;
+        case 'last-revenues': // Últimos ingresos (dos últimos meses incluyendo el actual)
+          // Obtener los dos últimos meses con registros, asegurando incluir el mes actual
+          $lastTwoMonths = Payment::select([
+            DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
+            DB::raw('IFNULL(MONTH(date), MONTH(created_at)) as month')
+          ])
+            ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), DB::raw('IFNULL(MONTH(date), MONTH(created_at))'))
+            ->orderBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), 'desc')
+            ->orderBy(DB::raw('IFNULL(MONTH(date), MONTH(created_at))'), 'desc')
+            ->limit(2)
+            ->get();
+
+          $data = Payment::select([
+            DB::raw('IFNULL(MONTH(date), MONTH(created_at)) as month'),
+            DB::raw('SUM(amount) as total')
+          ])
+            ->where(function ($query) use ($lastTwoMonths) {
+              foreach ($lastTwoMonths as $month) {
+                $query->orWhere(function ($query) use ($month) {
+                  $query->whereYear(DB::raw('IFNULL(date, created_at)'), $month->year)
+                    ->whereMonth(DB::raw('IFNULL(date, created_at)'), $month->month);
+                });
+              }
+            })
+            ->groupBy('month')
+            ->limit(2)
+            ->get();
+          break;
         default: // Mensual
           $data = Payment::select(
             DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),

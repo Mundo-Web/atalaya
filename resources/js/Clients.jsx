@@ -189,9 +189,9 @@ const Clients = ({ statuses, can }) => {
             can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary position-relative" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
               <i className="fas fa-sticky-note" />
               {
-                data.notes > 0 && <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                data.notes > 0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {data.notes}
-                  <span class="visually-hidden">Notas de {data.name}</span>
+                  <span className="visually-hidden">Notas de {data.name}</span>
                 </span>
               }
             </TippyButton>)

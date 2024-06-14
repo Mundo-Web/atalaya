@@ -145,6 +145,10 @@ const Projects = ({ statuses, can }) => {
             </>)
           }
         },
+        {
+          dataField: 'status_id',
+          caption: 'ID estado proyecto'
+        },
         can('projects', 'root', 'all', 'changestatus') && {
           dataField: 'project_status.name',
           caption: 'Estado del proyecto',
