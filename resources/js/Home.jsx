@@ -126,7 +126,7 @@ const Home = () => {
               <h4 className="header-title mt-0 mb-3">Ingresos - Mes actual</h4>
               <div className="widget-box-2">
                 <div className="widget-detail-2 text-end">
-                  <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% de ${trending >= 0 ? 'ganancia' : 'perdida'} respecto al mes anterior`}>
+                  <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% ${trending >= 0 ? 'mas' : 'menos'} de ingresos respecto al mes anterior`}>
                   <span className="badge bg-success rounded-pill float-start mt-3">{Math.round(trending * 100)}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
                   </Tippy>
                   <h2 className="fw-normal mb-1"> S/.{Number(lastRevenues?.actual || 0).toFixed(2)} </h2>
