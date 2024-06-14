@@ -19,6 +19,7 @@ const Home = () => {
   const [revenues, setRevenues] = useState([]);
   const [lastRevenues, setLastRevenues] = useState({ last: 0, actual: 0 });
   const [lastMonth, setLastMonth] = useState(moment({ month: moment().month() - 1 }).format('MMMM Y'));
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -87,16 +88,25 @@ const Home = () => {
       })
 
     ProjectsRest.paginate({
-      filter: [
-        ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'AND', [
-          ['status_id', '=', 4], 'OR',
-          ['status_id', '=', 5], 'OR',
-          ['status_id', '=', 6]
+      "sort": [
+        {
+          "selector": "ends_at",
+          "desc": false
+        }
+      ],
+      "skip": 0,
+      "take": 10,
+      "filter": [
+        ["ends_at", ">=", moment().format('YYYY-MM-DD')], "and",
+        [
+          ["project_status.id", "=", 4], "or",
+          ["project_status.id", "=", 5], "or",
+          ["project_status.id", "=", 6]
         ]
       ]
     })
       .then(({ data }) => {
-        console.log(data)
+        setProjects(data)
       })
   }, [null])
 
@@ -336,57 +346,17 @@ const Home = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Adminto Admin v1</td>
-                      <td>01/01/2017</td>
-                      <td>26/04/2017</td>
-                      <td><span className="badge bg-danger">Released</span></td>
-                      <td>Coderthemes</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Adminto Frontend v1</td>
-                      <td>01/01/2017</td>
-                      <td>26/04/2017</td>
-                      <td><span className="badge bg-success">Released</span></td>
-                      <td>Adminto admin</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Adminto Admin v1.1</td>
-                      <td>01/05/2017</td>
-                      <td>10/05/2017</td>
-                      <td><span className="badge bg-pink">Pending</span></td>
-                      <td>Coderthemes</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Adminto Frontend v1.1</td>
-                      <td>01/01/2017</td>
-                      <td>31/05/2017</td>
-                      <td><span className="badge bg-purple">Work in Progress</span>
-                      </td>
-                      <td>Adminto admin</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Adminto Admin v1.3</td>
-                      <td>01/01/2017</td>
-                      <td>31/05/2017</td>
-                      <td><span className="badge bg-warning">Coming soon</span></td>
-                      <td>Coderthemes</td>
-                    </tr>
-
-                    <tr>
-                      <td>6</td>
-                      <td>Adminto Admin v1.3</td>
-                      <td>01/01/2017</td>
-                      <td>31/05/2017</td>
-                      <td><span className="badge bg-primary">Coming soon</span></td>
-                      <td>Adminto admin</td>
-                    </tr>
-
+                    {
+                      projects.map((project, i) => {
+                        return <tr key={`project-${i}`}>
+                          <td>{project.name}</td>
+                          <td>{moment(project.starts_at).format('LL')}</td>
+                          <td>{moment(project.ends_at).format('LL')}</td>
+                          <td><span className="badge" style={{ backgroundColor: project.project_status.color }}>{project.project_status.name}</span></td>
+                          <td>-</td>
+                        </tr>
+                      })
+                    }
                   </tbody>
                 </table>
               </div>
