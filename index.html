@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      background-color: #2c2f33;
+    }
+
+    .container {
+      column-count: 3;
+      /* Número de columnas */
+      column-gap: 10px;
+      /* Espacio entre columnas */
+      width: 80%;
+    }
+
+    .card {
+      position: relative;
+      display: inline-block;
+      background: #7289da;
+      color: white;
+      margin: 0 0 10px;
+      /* Espacio inferior entre tarjetas */
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 5px;
+      font-size: 14px;
+      overflow: hidden;
+      /* Para cortar el contenido desbordado */
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 0 50px 50px;
+      border-color: transparent transparent #7289da transparent;
+      z-index: 1;
+    }
+
+    .card::after {
+      content: 'Nota';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background: #ffcc00;
+      color: black;
+      text-align: center;
+      line-height: 50px;
+      transform: rotate(45deg) translate(50%, -50%);
+      transform-origin: 0 0;
+      display: none;
+      z-index: 2;
+    }
+
+    .card:hover::after {
+      display: block;
+    }
+
+    /* Estilos de ejemplo para distintas alturas */
+    .card.short {
+      height: 100px;
+    }
+
+    .card.medium {
+      height: 150px;
+    }
+
+    .card.tall {
+      height: 200px;
+    }
+  </style>
+  <title>Card with Folded Corner</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card short">Nota rápida<br>— hace 6 minutos</div>
+    <div class="card medium">Aviso de corte 2<br>Se está cortando el servicio al cliente<br>— hace 4 horas</div>
+    <div class="card tall">Notificación al cliente<br>Se le notificó al cliente que el corte se hará<br>— hace 4 horas
+    </div>
+    <div class="card short">Aviso<br>Se notificó al cliente que si no completa el pago, se le negará el acceso al
+      sistema<br>— hace 9 horas</div>
+    <div class="card medium">Nota grande<br>Esta es una nota súper súper grande, contiene un texto más grande que el
+      resto, es decir, muchos textos y gran cantidad de notas solo para esta nota, para hacer una prueba.<br>— hace 3
+      minutos</div>
+    <div class="card short">Aviso de corte<br>Si el cliente no paga, se hará corte del servicio<br>— hace 4 horas</div>
+    <!-- Añade más tarjetas aquí -->
+  </div>
+</body>
+
+</html>

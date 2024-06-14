@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
 use App\Models\ClientNote;
+use App\Models\ClientNoteView;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -84,12 +85,19 @@ class ClientNoteController extends Controller
     {
         $response =  new dxResponse();
         try {
-            $notes = ClientNote::where('client_id', $client)
+            $notes = ClientNoteView::where('client_id', $client)
                 ->get();
+
+            $results = [];
+
+            foreach ($notes as $note) {
+                $result = JSON::unflatten($note->toArray(), '__');
+                $results[] = $result;
+            }
 
             $response->status = 200;
             $response->message = 'Operación correcta';
-            $response->data = $notes;
+            $response->data = $results;
         } catch (\Throwable $th) {
             $response->status = 400;
             $response->message = $th->getMessage() . ' Ln.' . $th->getLine();
@@ -156,7 +164,7 @@ class ClientNoteController extends Controller
         $response = new Response();
         try {
             $deleted = ClientNote::where('id', $id)
-                ->update(['status' => null]);
+                ->delete();
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');
 

@@ -6,6 +6,7 @@ import 'tippy.js/dist/tippy.css';
 import PaymentsRest from "../../actions/PaymentsRest";
 import TippyButton from "../../components/form/TippyButton";
 import Swal from "sweetalert2";
+import { set } from "sode-extend-react/sources/cookies";
 
 const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
 
@@ -19,6 +20,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
 
   const [payments, setPayments] = useState([])
   const [isEditing, setIsEditing] = useState(false)
+  const [maxAmount, setMaxAmount] = useState(Number(dataLoaded?.remaining_amount))
 
   useEffect(() => {
     if (dataLoaded.id) {
@@ -40,6 +42,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
   const onPaymentModalOpen = async () => {
     const paymentsByProject = await PaymentsRest.byProject(dataLoaded?.id)
     setPayments(paymentsByProject)
+    setMaxAmount(Number(dataLoaded?.remaining_amount))
 
     projectIdRef.current.value = dataLoaded?.id || null
     $(modalPaymentRef.current).modal('show')
@@ -80,6 +83,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
     paymentTypeRef.current.value = payment.payment_type
     paymentAmountRef.current.value = payment.amount
     dateRef.current.value = payment.date || moment(payment.created_at).format('YYYY-MM-DD')
+    setMaxAmount(Number(dataLoaded?.remaining_amount) + Number(payment.amount))
     setIsEditing(true)
   }
 
@@ -98,7 +102,6 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
     if (!result) return
     await reloadPayment()
     grid2refresh.refresh()
-
   }
 
   return (
@@ -111,7 +114,7 @@ const PaymentModal = ({ can, dataLoaded, setDataLoaded, grid2refresh }) => {
         <div className='form-group col-md-5'>
           <label>Monto <b className='text-danger'>*</b></label>
           <div className='input-group' >
-            <input ref={paymentAmountRef} type='number' className='form-control' placeholder={`Max: ${dataLoaded?.remaining_amount}`} min={0} max={dataLoaded?.remaining_amount} />
+            <input ref={paymentAmountRef} type='number' className='form-control' placeholder={`Max: ${maxAmount}`} min={0} max={maxAmount} step={0.01} />
             <Tippy content={isEditing ? 'Actualizar pago' : 'Agregar pago'}>
               <button className='btn input-group-text btn-dark waves-effect waves-light' type='submit'>
                 <i className={`fa ${isEditing ? 'fa-save' : 'fa-plus'}`}></i>

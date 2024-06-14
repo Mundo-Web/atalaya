@@ -13,7 +13,7 @@ const Menu = ({ session, can }) => {
   return (<div className="left-side-menu">
     <div className="h-100" data-simplebar>
       <div className="user-box text-center">
-        <img src={`api/profile/thumbnail/${session.relative_id}?v=${crypto.randomUUID()}`} alt={session.name} title={session.name}
+        <img src={`api/profile/thumbnail/${session.relative_id}?v=${new Date(session.updated_at).getTime() }`} alt={session.name} title={session.name}
           className="rounded-circle img-thumbnail avatar-md" style={{ backgroundColor: 'unset', borderColor: '#98a6ad', objectFit: 'cover', objectPosition: 'center' }} />
         <div className="dropdown">
           <a href="#" className="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"

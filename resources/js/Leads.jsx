@@ -164,8 +164,14 @@ const Leads = ({ statuses, can }) => {
             }}>
               <i className='fa fa-user-plus'></i>
             </TippyButton>)
-            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
+            can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary position-relative" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
               <i className="fas fa-sticky-note" />
+              {
+                data.notes > 0 && <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {data.notes}
+                  <span class="visually-hidden">Notas de {data.name}</span>
+                </span>
+              }
             </TippyButton>)
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-info' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
               <i className='fa fa-comment'></i>

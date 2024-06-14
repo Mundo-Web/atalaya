@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "../../components/Modal";
 import 'tippy.js/dist/tippy.css';
 import Swal from "sweetalert2";
-import Accordion from "../../components/accordion/Accordion";
 import NotesRest from "../../actions/ClientNotesRest";
 import InputFormGroup from "../../components/form/InputFormGroup";
 import TextareaFormGroup from "../../components/form/TextareaFormGroup";
 import SelectAPIFormGroup from "../../components/form/SelectAPIFormGroup";
 import SetSelectValue from "../../Utils/SetSelectValue";
-import AccordionCard from "../../components/accordion/AccordionCard";
+import DropdownItem from "../../components/dropdown/DropdownItem";
+import DropdownEnd from "../../components/dropdown/DropdownEnd";
 
 const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
 
@@ -32,10 +32,10 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
       setClient({})
       setNotes([])
       setIsEditing(false)
-      // idRef.current.value = null
-      // projectIdRef.current.value = null
-      // paymentTypeRef.current.value = null
-      // paymentAmountRef.current.value = null
+      idRef.current.value = null
+      SetSelectValue(typeRef.current, null, null)
+      nameRef.current.value = null
+      descriptionRef.current.value = null
     })
   }, [client])
 
@@ -67,28 +67,27 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
     descriptionRef.current.value = null
 
     await reloadNotes()
-    grid2refresh.refresh()
+    $(grid2refresh.current).dxDataGrid('instance').refresh()
   }
 
   const reloadNotes = async () => {
-    const paymentsByProject = await NotesRest.byClient(client.id)
-    const total_payments = paymentsByProject.reduce((acc, payment) => Number(acc) + Number(payment.amount), 0)
-    const newDataLoaded = { ...client, total_payments, remaining_amount: client.cost - total_payments }
-    setClient(newDataLoaded)
-    setNotes(paymentsByProject)
+    const notesByClient = await NotesRest.byClient(client.id)
+    setNotes(notesByClient)
   }
 
-  const onEditPayment = async (payment) => {
-    idRef.current.value = payment.id
-    paymentTypeRef.current.value = payment.payment_type
-    paymentAmountRef.current.value = payment.amount
-    dateRef.current.value = payment.date || moment(payment.created_at).format('YYYY-MM-DD')
+  const onEditNote = async (note) => {
+    idRef.current.value = note.id
+    SetSelectValue(typeRef.current, note.type.id, note.type.name)
+    nameRef.current.value = note.name
+    descriptionRef.current.value = note.description
+    
+    $(modalAddNoteRef.current).modal('show')
     setIsEditing(true)
   }
 
-  const onDeletePayment = async (payment_id) => {
+  const onDeleteNote = async (note_id) => {
     const { isConfirmed } = await Swal.fire({
-      title: "Estas seguro de eliminar este pago?",
+      title: "Estas seguro de eliminar esta nota?",
       text: "No podras revertir esto!",
       icon: "warning",
       showCancelButton: true,
@@ -97,34 +96,60 @@ const ClientNotesModal = ({ can, client, setClient, grid2refresh }) => {
     })
     if (!isConfirmed) return
 
-    const result = await NotesRest.delete(payment_id)
+    const result = await NotesRest.delete(note_id)
     if (!result) return
     await reloadNotes()
-    grid2refresh.refresh()
+    $(grid2refresh.current).dxDataGrid('instance').refresh()
   }
 
   return (<>
-    <Modal modalRef={modalNoteRef} title={`Notas de ${client?.tradename || client?.name || client?.contact_name}`} hideFooter>
-      <div className="text-center">
-        <button className="btn btn-primary" type="button" onClick={() => $(modalAddNoteRef.current).modal('show')} >Agregar nota</button>
+    <Modal modalRef={modalNoteRef} title={`Notas de ${client?.tradename || client?.name || client?.contact_name}`} size="full-width" isStatic hideFooter>
+      <div style={{ height: 'calc(100vh - 180px)', overflowY: 'auto' }}>
+        <div className="text-center">
+          <button className="btn btn-primary" type="button" onClick={() => $(modalAddNoteRef.current).modal('show')} >Agregar nota</button>
+        </div>
+        <hr className="my-2" />
+        <div className="d-flex flex-wrap flex-row justify-content-center gap-2">
+          {
+            notes
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .map((note, i) => {
+                const noteDate = moment(note.created_at)
+                const now = moment()
+                const diffHours = now.diff(noteDate, 'hours')
+                const time = diffHours > 12 ? noteDate.format('lll') : noteDate.fromNow()
+
+                return <div key={`note-${i}`} className="card text-white bg-purple mb-0" style={{ width: "100%", maxWidth: '300px', height: 'max-content' }}>
+                  <div className="card-body p-2">
+                    <div className="d-flex align-items-center border-bottom border-white pb-1 mb-1">
+                      <div className="avatar-sm me-2 mb-1">
+                        <img src={`/api/profile/thumbnail/${note.user.relative_id}?v=${new Date(note.user.updated_at).getTime()}`} className="img-fluid rounded-circle" alt="user" />
+                      </div>
+                      <div className="flex-grow-1 overflow-hidden">
+                        <h5 className="text-white m-0">{note.user.name} {note.user.lastname}</h5>
+                        <p className="text-white-50 m-0 font-13 text-truncate">{time}</p>
+                      </div>
+                      <DropdownEnd>
+                        <DropdownItem onClick={() => onEditNote(note)}>Editar</DropdownItem>
+                        <DropdownItem onClick={() => onDeleteNote(note.id)}>Eliminar</DropdownItem>
+                      </DropdownEnd>
+                    </div>
+                    <blockquote className="card-bodyquote mb-0">
+                      {note.name && <b>{note.name}</b>}
+                      <p className="mb-1">{note.description}</p>
+                    </blockquote>
+                  </div>
+                </div>
+              })
+          }
+        </div>
       </div>
-      {notes.length > 0 && <hr className="my-2" />}
-      <Accordion id='notes-accordion'>
-        {notes.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map((note, i) => {
-          return <AccordionCard key={`note-${i}`} id={`note-${i}`} title={<>
-            {note.name}
-            <small className="text-muted float-end">{moment(note.created_at).fromNow()}</small>
-          </>} parent='notes-accordion' isOpened={i ===0}>
-            {note.description}
-          </AccordionCard>
-        })}
-      </Accordion>
     </Modal>
-    <Modal modalRef={modalAddNoteRef} title="Agregar nota" size="sm" onSubmit={onNoteSubmit}>
+    <Modal modalRef={modalAddNoteRef} title={isEditing ? "Editar nota" : "Agregar nota"} size="sm" onSubmit={onNoteSubmit}>
       <div id="note-crud-container">
         <input ref={idRef} type="hidden" />
         <SelectAPIFormGroup eRef={typeRef} label='Tipo de nota' col='col-12' dropdownParent='#note-crud-container' searchAPI='/api/types/paginate' searchBy='name' filter={['table_id', '=', 4]} required />
-        <InputFormGroup eRef={nameRef} label="Titulo de la nota" required />
+        <InputFormGroup eRef={nameRef} label="Titulo de la nota" />
         <TextareaFormGroup eRef={descriptionRef} label="Descripcion de la nota" required />
       </div>
     </Modal>
