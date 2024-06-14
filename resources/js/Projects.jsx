@@ -114,8 +114,8 @@ const Projects = ({ statuses, can }) => {
           sortOrder: 'asc'
         },
         {
-          dataField: 'client.name',
-          caption: 'Cliente',
+          dataField: 'client.tradename',
+          caption: 'Nombre comercial',
           filterValue: GET.client || undefined
         },
         {
@@ -147,7 +147,8 @@ const Projects = ({ statuses, can }) => {
         },
         {
           dataField: 'status_id',
-          caption: 'ID estado proyecto'
+          caption: 'ID estado proyecto',
+          visible: false
         },
         can('projects', 'root', 'all', 'changestatus') && {
           dataField: 'project_status.name',
