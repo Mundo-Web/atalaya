@@ -39,7 +39,7 @@ return new class extends Migration
         INNER JOIN statuses s ON s.id = p.status_id
         LEFT JOIN payments pymts ON pymts.project_id = p.id
         GROUP BY
-            p.id, p.type_id, p.client_id, p.status_id, p.name, p.description, p.cost, p.signed_at, p.starts_at, p.ends_at, p.visible, p.status, p.created_at, p.updated_at, c.id, c.ruc, c.name, c.status, t.id, t.name, s.id, s.name, s.color');
+            p.id, p.type_id, p.client_id, p.status_id, p.name, p.description, p.cost, p.signed_at, p.starts_at, p.ends_at, p.visible, p.status, p.created_at, p.updated_at, c.id, c.ruc, c.name, c.tradename, c.status, t.id, t.name, s.id, s.name, s.color');
     }
 
     /**
