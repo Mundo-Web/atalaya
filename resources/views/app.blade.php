@@ -33,9 +33,9 @@
     <link href="/lte/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
     {{-- DxDataGrid Styles --}}
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css" rel="stylesheet" type="text/css"
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426" rel="stylesheet" type="text/css"
       id="dg-default-stylesheet" />
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css" rel="stylesheet" type="text/css"
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426" rel="stylesheet" type="text/css"
       id="dg-dark-stylesheet" disabled="disabled" />
   @endif
 
