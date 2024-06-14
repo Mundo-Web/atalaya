@@ -13,12 +13,12 @@
       "assets/Adminto-LriLsbSV.css"
     ]
   },
-  "_ClientNotesModal-CgS1pkz-.js": {
-    "file": "assets/ClientNotesModal-CgS1pkz-.js",
+  "_ClientNotesModal-BZJf_IIk.js": {
+    "file": "assets/ClientNotesModal-BZJf_IIk.js",
     "name": "ClientNotesModal",
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_Adminto-BSg1Iqw4.js",
       "_Dropdown-CVEN-Z_y.js",
       "_InputFormGroup-CCmG0Ohr.js",
@@ -79,12 +79,12 @@
       "_CreateReactScript-ClVaIZLH.js"
     ]
   },
-  "_ProjectStatusDropdown-BX7CtUYO.js": {
-    "file": "assets/ProjectStatusDropdown-BX7CtUYO.js",
+  "_ProjectStatusDropdown-zelvWDEG.js": {
+    "file": "assets/ProjectStatusDropdown-zelvWDEG.js",
     "name": "ProjectStatusDropdown",
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_Adminto-BSg1Iqw4.js",
       "_Dropdown-CVEN-Z_y.js",
@@ -112,8 +112,8 @@
       "_CreateReactScript-ClVaIZLH.js"
     ]
   },
-  "_TippyButton-CnpkH4fW.js": {
-    "file": "assets/TippyButton-CnpkH4fW.js",
+  "_TippyButton-8JVuESJr.js": {
+    "file": "assets/TippyButton-8JVuESJr.js",
     "name": "TippyButton",
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
@@ -134,15 +134,15 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-DCrPBOmF.js",
+    "file": "assets/Clients-BKov3IkR.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
-      "_TippyButton-CnpkH4fW.js",
-      "_ClientNotesModal-CgS1pkz-.js",
-      "_ProjectStatusDropdown-BX7CtUYO.js",
+      "_TippyButton-8JVuESJr.js",
+      "_ClientNotesModal-BZJf_IIk.js",
+      "_ProjectStatusDropdown-zelvWDEG.js",
       "_Adminto-BSg1Iqw4.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
@@ -165,14 +165,14 @@
     ]
   },
   "resources/js/Leads.jsx": {
-    "file": "assets/Leads-BS6aGW-7.js",
+    "file": "assets/Leads-Bw-eH5OE.js",
     "name": "Leads",
     "src": "resources/js/Leads.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
-      "_TippyButton-CnpkH4fW.js",
-      "_ClientNotesModal-CgS1pkz-.js",
+      "_TippyButton-8JVuESJr.js",
+      "_ClientNotesModal-BZJf_IIk.js",
       "_Adminto-BSg1Iqw4.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
@@ -196,14 +196,14 @@
     ]
   },
   "resources/js/Permissions.jsx": {
-    "file": "assets/Permissions-CGiV5_k0.js",
+    "file": "assets/Permissions-CyAJqgOv.js",
     "name": "Permissions",
     "src": "resources/js/Permissions.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_PermissionsRest-HHNk85Gt.js",
       "_TextareaFormGroup-D05xY0Ci.js"
@@ -221,15 +221,15 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-HT646-cs.js",
+    "file": "assets/Projects-CEJ8MF-F.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_SetSelectValue-CwDYwahQ.js",
-      "_ProjectStatusDropdown-BX7CtUYO.js",
+      "_ProjectStatusDropdown-zelvWDEG.js",
       "_Adminto-BSg1Iqw4.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
@@ -238,14 +238,14 @@
     ]
   },
   "resources/js/Roles.jsx": {
-    "file": "assets/Roles-D41oPnIw.js",
+    "file": "assets/Roles-BHiTUx0b.js",
     "name": "Roles",
     "src": "resources/js/Roles.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_RolesRest-BoZVqJ8A.js",
       "_TextareaFormGroup-D05xY0Ci.js",
@@ -253,55 +253,55 @@
     ]
   },
   "resources/js/Statuses.jsx": {
-    "file": "assets/Statuses-CCMn4Fw0.js",
+    "file": "assets/Statuses-BrVE5ihi.js",
     "name": "Statuses",
     "src": "resources/js/Statuses.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
       "_SetSelectValue-CwDYwahQ.js"
     ]
   },
   "resources/js/Tables.jsx": {
-    "file": "assets/Tables-DoOg0qy_.js",
+    "file": "assets/Tables-DFusBx-x.js",
     "name": "Tables",
     "src": "resources/js/Tables.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js"
     ]
   },
   "resources/js/Types.jsx": {
-    "file": "assets/Types-BPeolDnc.js",
+    "file": "assets/Types-B-hhO6Gk.js",
     "name": "Types",
     "src": "resources/js/Types.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_TextareaFormGroup-D05xY0Ci.js",
       "_SetSelectValue-CwDYwahQ.js"
     ]
   },
   "resources/js/Users.jsx": {
-    "file": "assets/Users-CaZsDcMZ.js",
+    "file": "assets/Users-FFz70f82.js",
     "name": "Users",
     "src": "resources/js/Users.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-ClVaIZLH.js",
       "_Adminto-BSg1Iqw4.js",
-      "_TippyButton-CnpkH4fW.js",
+      "_TippyButton-8JVuESJr.js",
       "_InputFormGroup-CCmG0Ohr.js",
       "_PasswordFormGroup-CqEjf_zM.js",
       "_JSEncrypt-D3I3x59l.js",
