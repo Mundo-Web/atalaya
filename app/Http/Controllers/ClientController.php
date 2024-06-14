@@ -95,15 +95,25 @@ class ClientController extends Controller
                 $body['name'] = $body['name'] ?? $body['contact_name'];
                 $body['tradename'] = $body['name'] ?? $body['contact_name'];
                 $body['web_url'] = $body['web_url'] ?? 'https://...';
-                $body['source'] = 'Atalaya';
-                $body['origin'] = 'Interno';
+                $body['source'] = $body['source'] ?? 'Atalaya';
+                $body['origin'] = $body['origin'] ?? 'Interno';
                 $body['ip'] = request()->ip();
                 $body['date'] = Trace::getDate('date');
                 $body['time'] = Trace::getDate('time');
                 $body['status_id'] = 10;
-                $body['created_by'] = Auth::user()->id;
-                $body['updated_by'] = Auth::user()->id;
-                Client::create($body);
+                if (Auth::check()) {
+                    $body['created_by'] = Auth::user()->id;
+                    $body['updated_by'] = Auth::user()->id;
+                }
+                if ($body['source'] == 'WhatsApp') {
+                    $exists = Client::where('contact_phone', $body['contact_phone'])
+                        ->exists();
+                    if (!$exists) {
+                        Client::create($body);
+                    }
+                } else {
+                    Client::create($body);
+                }
             } else {
                 $body['updated_by'] = Auth::user()->id;
                 $jpa->update($body);

@@ -207,7 +207,7 @@ const Leads = ({ statuses, can }) => {
       <div className="row mb-0">
         <input ref={idRef} type="hidden" />
         <InputFormGroup eRef={contactNameRef} label='Nombre completo' required />
-        <InputFormGroup eRef={contactEmailRef} label='Correo electronico' col='col-md-6' required />
+        <InputFormGroup eRef={contactEmailRef} label='Correo electronico' type="email" col='col-md-6' />
         <InputFormGroup eRef={contactPhoneRef} label='Telefono' col='col-md-6' required />
         <InputFormGroup eRef={nameRef} label='Empresa / Marca' col='col-md-6' />
         <InputFormGroup eRef={webUrlRef} label='Link de WEB' col='col-md-6' />

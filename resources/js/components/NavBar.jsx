@@ -1,7 +1,11 @@
 import React, { useEffect } from "react"
 import Logout from "../actions/Logout"
+import WhatsAppStatuses from "../Reutilizables/WhatsApp/WhatsAppStatuses"
 
-const NavBar = ({ can, session = {}, title = '' }) => {
+const NavBar = ({ can, session = {}, title = '', whatsappStatus }) => {
+
+  const { color } = WhatsAppStatuses[whatsappStatus]
+
   useEffect(() => {
     document.title = `${title} | Atalaya`
   }, [null])
@@ -93,10 +97,10 @@ const NavBar = ({ can, session = {}, title = '' }) => {
         </li> */}
 
         {can('whatsapp', 'root', 'all') && <li className="notification-list topbar-dropdown">
-          <a className="nav-link waves-effect waves-light">
+          <a className="nav-link waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#whatsapp-modal">
             <span className="position-relative">
               <i className="mdi mdi-whatsapp noti-icon"></i>
-              <span className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+              <span className={`position-absolute top-0 start-100 translate-middle p-1 bg-${color} rounded-circle`}>
                 <span className="visually-hidden">New alerts</span>
               </span>
 
