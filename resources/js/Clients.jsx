@@ -134,7 +134,17 @@ const Clients = ({ statuses, can }) => {
         },
         {
           dataField: 'tradename',
-          caption: 'Nombre comercial'
+          caption: 'Nombre comercial',
+          width: 250,
+          cellTemplate: (container, { data }) => {
+            // container.attr('style', 'display:flex; overflow: visible')
+            ReactAppend(container, <div className='d-flex align-items-center'>
+              {data.user_assigned.id && <Tippy content={`Atendido por ${data.user_assigned.name} ${data.user_assigned.lastname}`}>
+                <img className='avatar-xs rounded-circle me-1' src={`/api/profile/thumbnail/${data.user_assigned.relative_id}`} alt={data.user_assigned.name} />
+              </Tippy>}
+              <div>{data.contact_name}</div>
+            </div>)
+          }
         },
         {
           dataField: 'name',
