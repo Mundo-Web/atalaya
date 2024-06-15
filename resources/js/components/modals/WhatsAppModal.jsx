@@ -4,7 +4,7 @@ import '../../../css/qr-code.css'
 
 const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   const qrRef = useRef()
-  const whatsappIP = 'https://whatsapp.mundoweb.pe'
+  const whatsappIP = 'https://wajs.factusode.xyz'
 
   const { color, icon, text } = WhatsAppStatuses[whatsappStatus]
   const [percent, setPercent] = useState(0)
