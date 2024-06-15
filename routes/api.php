@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
 
     // Clients routes
     Route::post('/clients', [ClientController::class, 'save']);
+    Route::put('/clients/assign', [ClientController::class, 'assign']);
+    Route::delete('/clients/assign', [ClientController::class, 'assign']);
     Route::post('/clients/paginate', [ClientController::class, 'paginate']);
     Route::patch('/clients/status', [ClientController::class, 'status']);
     Route::patch('/clients/client-status', [ClientController::class, 'clientStatus']);
@@ -110,7 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tables/{id}', [TableController::class, 'delete']);
 
     Route::get('/profile/{uuid}', [ProfileController::class, 'full']);
-    Route::get('/profile/thumbnail/{uuid}', [ProfileController::class, 'full']);
+    Route::get('/profile/thumbnail/{uuid}', [ProfileController::class, 'thumbnail']);
     Route::post('/profile', [ProfileController::class, 'saveProfile']);
     Route::patch('/profile', [ProfileController::class, 'save']);
 

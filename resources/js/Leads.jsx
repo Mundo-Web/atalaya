@@ -14,8 +14,9 @@ import Dropdown from './components/dropdown/DropDown.jsx'
 import DropdownItem from './components/dropdown/DropdownItem.jsx'
 import Swal from 'sweetalert2'
 import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
+import Tippy from '@tippyjs/react'
 
-const Leads = ({ statuses, can }) => {
+const Leads = ({ statuses, session, can }) => {
   const gridRef = useRef()
   const modalLeadRef = useRef()
   const modalRef = useRef()
@@ -82,6 +83,12 @@ const Leads = ({ statuses, can }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
+  const onAssignLeadClicked = async (client_id, assign) => {
+    const result = await ClientsRest.assign(client_id, assign)
+    if (!result) return
+    $(gridRef.current).dxDataGrid('instance').refresh()
+  }
+
   return (<>
     <Table gridRef={gridRef} title='Leads' rest={ClientsRest}
       toolBar={(container) => {
@@ -106,7 +113,17 @@ const Leads = ({ statuses, can }) => {
       columns={[
         {
           dataField: 'contact_name',
-          caption: 'Cliente'
+          caption: 'Cliente',
+          width: 250,
+          cellTemplate: (container, { data }) => {
+            // container.attr('style', 'display:flex; overflow: visible')
+            ReactAppend(container, <div className='d-flex align-items-center'>
+              {data.user_assigned.id && <Tippy content={`Atendido por ${data.user_assigned.name} ${data.user_assigned.lastname}`}>
+                <img className='avatar-xs rounded-circle me-1' src={`/api/profile/thumbnail/${data.user_assigned.relative_id}`} alt={data.user_assigned.name} />
+              </Tippy>}
+              <div>{data.contact_name}</div>
+            </div>)
+          }
         },
         {
           dataField: 'contact_email',
@@ -159,6 +176,17 @@ const Leads = ({ statuses, can }) => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
+            if (!data.user_assigned.id) {
+              ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title="Atender lead"
+                onClick={() => onAssignLeadClicked(data.id, true)}>
+                <i className='fas fa-hands-helping'></i>
+              </TippyButton>)
+            } else if (data.user_assigned.id == session.id) {
+              ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title="Dejar de atender"
+                onClick={() => onAssignLeadClicked(data.id, false)}>
+                <i className='fas fa-hands-wash'></i>
+              </TippyButton>)
+            }
 
             can('leads', 'root', 'all', 'movetoclient') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Convertir en cliente' onClick={async () => {
               const { isConfirmed } = await Swal.fire({

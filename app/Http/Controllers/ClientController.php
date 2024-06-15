@@ -154,6 +154,28 @@ class ClientController extends Controller
         }
     }
 
+    static function assign(Request $request)
+    {
+        $response = new Response();
+        try {
+            Client::where('id', $request->id)
+                ->update([
+                    'assigned_to' => $request->method() == 'DELETE' ? null : Auth::user()->id
+                ]);
+
+            $response->status = 200;
+            $response->message = 'Operacion correcta';
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
     static function clientStatus(Request $request)
     {
         $response = new Response();

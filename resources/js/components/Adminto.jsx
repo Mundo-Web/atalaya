@@ -5,6 +5,8 @@ import Menu from './Menu'
 import Footer from './Footer'
 import WhatsAppModal from './modals/WhatsAppModal'
 
+moment.tz.setDefault('UTC');
+
 const Adminto = ({ session, children, title, can }) => {
 
   const [whatsappStatus, setWhatsappStatus] = useState('verifying')

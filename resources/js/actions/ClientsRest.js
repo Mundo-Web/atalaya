@@ -40,6 +40,34 @@ class ClientsRest {
     }
   }
 
+  static assign = async (client_id, assign) => {
+    try {
+      const { status: fetchStatus, result } = await Fetch('/api/clients/assign', {
+        method: assign ? 'PUT' : 'DELETE',
+        body: JSON.stringify({ id: client_id })
+      })
+      if (!fetchStatus) throw new Error(result?.message ?? 'Ocurrio un error inesperado')
+
+      Notify.add({
+        icon: '/assets/img/logo-login.svg',
+        title: 'Correcto',
+        body: result.message,
+        type: 'success'
+      })
+
+      return true
+    } catch (error) {
+      Notify.add({
+        icon: '/assets/img/logo-login.svg',
+        title: 'Error',
+        body: error.message,
+        type: 'danger'
+      })
+
+      return false
+    }
+  }
+
   static status = async ({ id, status }) => {
     try {
       const { status: fetchStatus, result } = await Fetch('/api/clients/status', {

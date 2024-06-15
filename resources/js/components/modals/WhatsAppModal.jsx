@@ -69,8 +69,6 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
     setStatus('verifying')
   }
 
-  console.log(sessionInfo)
-
   return (<div id="whatsapp-modal" className="modal fade" aria-hidden="true" data-bs-backdrop='static' >
     <div className="modal-dialog modal-sm modal-dialog-centered">
       <div className="modal-content">
