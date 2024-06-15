@@ -92,6 +92,12 @@ const Clients = ({ statuses, can }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
+  const onAssignLeadClicked = async (client_id, assign) => {
+    const result = await ClientsRest.assign(client_id, assign)
+    if (!result) return
+    $(gridRef.current).dxDataGrid('instance').refresh()
+  }
+
   return (<>
     <Table gridRef={gridRef} title='Clientes' rest={ClientsRest}
       toolBar={(container) => {
@@ -195,6 +201,18 @@ const Clients = ({ statuses, can }) => {
             can('clients', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
             </TippyButton>)
+
+            if (!data.user_assigned.id) {
+              ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title="Atender lead"
+                onClick={() => onAssignLeadClicked(data.id, true)}>
+                <i className='fas fa-hands-helping'></i>
+              </TippyButton>)
+            } else if (data.user_assigned.id == session.id) {
+              ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title="Dejar de atender"
+                onClick={() => onAssignLeadClicked(data.id, false)}>
+                <i className='fas fa-hands-wash'></i>
+              </TippyButton>)
+            }
 
             can('leads', 'root', 'all', 'addnotes') && ReactAppend(container, <TippyButton className="btn btn-xs btn-soft-primary position-relative" title="Ver/Agregar notas" onClick={() => setClientLoaded(data)}>
               <i className="fas fa-sticky-note" />
