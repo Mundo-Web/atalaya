@@ -78,6 +78,7 @@ const Clients = ({ statuses, can }) => {
       contact_phone: contactPhoneRef.current.value ?? '',
       contact_email: contactEmailRef.current.value ?? '',
       contact_address: contactAddressRef.current.value ?? '',
+      status_id: !idRef.current.value ? 12 : undefined
     }
 
     const result = await ClientsRest.save(request)
