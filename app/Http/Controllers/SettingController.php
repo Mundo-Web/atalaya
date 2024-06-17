@@ -38,9 +38,9 @@ class SettingController extends Controller
                     ->groupBy($selector);
             }
 
-            if (!Auth::user()->can('statuses.root')) {
-                $instance->whereNotNull('status');
-            }
+            // if (!Auth::user()->can('statuses.root')) {
+            //     $instance->whereNotNull('status');
+            // }
             if ($request->filter) {
                 $instance->where(function ($query) use ($request) {
                     dxDataGrid::filter($query, $request->filter ?? []);
