@@ -96,7 +96,10 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
       }
     }).dxDataGrid('instance')
 
-    $(dataGridRef.current).dxDataGrid('instance').state(Local.get('dxSettings')[location.pathname] || {})
+    const dxSettings = Local.get('dxSettings') || {}
+    if (dxSettings[location.pathname]) {
+      $(dataGridRef.current).dxDataGrid('instance').state(dxSettings[location.pathname])
+    }
   }, [null])
 
   return (
