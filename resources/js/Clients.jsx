@@ -52,7 +52,7 @@ const Clients = ({ statuses, can }) => {
     rucRef.current.value = data?.ruc || null
     nameRef.current.value = data?.name || null
     tradenameRef.current.value = data?.tradename || null
-    webUrlRef.current.value = data?.weburl || null
+    webUrlRef.current.value = data?.web_url || null
     messageRef.current.value = data?.message || 'Cliente creado desde Atalaya'
     // descriptionRef.current.value = data?.description || null
     contactNameRef.current.value = data?.contact_name || null
@@ -156,7 +156,7 @@ const Clients = ({ statuses, can }) => {
               {data.user_assigned.id && <Tippy content={`Atendido por ${data.user_assigned.name} ${data.user_assigned.lastname}`}>
                 <img className='avatar-xs rounded-circle me-1' src={`/api/profile/thumbnail/${data.user_assigned.relative_id}`} alt={data.user_assigned.name} />
               </Tippy>}
-              <div>{data.contact_name}</div>
+              <div>{data.tradename}</div>
             </div>)
           }
         },
