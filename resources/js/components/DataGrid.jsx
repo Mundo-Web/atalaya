@@ -3,6 +3,7 @@ import { Local } from 'sode-extend-react'
 
 const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, filterValue }) => {
   useEffect(() => {
+    DevExpress.localization.locale(navigator.language);
     $(dataGridRef.current).dxDataGrid({
       language: "es",
       dataSource: {
