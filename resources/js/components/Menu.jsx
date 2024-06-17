@@ -75,7 +75,7 @@ const Menu = ({ session, can }) => {
           <MenuItem href="/home" icon='mdi mdi-home'>Inicio</MenuItem>
           {
             (can('clients', 'root', 'all', 'list') || can('leads', 'root', 'all', 'list')) &&
-            <MenuItemContainer title='Personas' icon='mdi mdi-account-group'>
+            <MenuItemContainer title='Negocios' icon='mdi mdi-account-group'>
               {
                 can('clients', 'root', 'all', 'list') &&
                 <MenuItem href="/clients" icon='mdi mdi-account-group'>Clientes</MenuItem>

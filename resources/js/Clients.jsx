@@ -14,6 +14,7 @@ import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
+import Tippy from '@tippyjs/react'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -26,7 +27,7 @@ const Clients = ({ statuses, can }) => {
   const tradenameRef = useRef()
   const webUrlRef = useRef()
   const messageRef = useRef()
-  const descriptionRef = useRef()
+  // const descriptionRef = useRef()
   const contactNameRef = useRef()
   const contactPhoneRef = useRef()
   const contactEmailRef = useRef()
@@ -41,13 +42,19 @@ const Clients = ({ statuses, can }) => {
     if (data?.id) setIsEditing(true)
     else setIsEditing(false)
 
+    $('[href="#client-data"]').addClass('active')
+    $('[href="#contact-data"]').removeClass('active')
+
+    $('#client-data').addClass('active')
+    $('#contact-data').removeClass('active')
+
     idRef.current.value = data?.id || null
     rucRef.current.value = data?.ruc || null
     nameRef.current.value = data?.name || null
     tradenameRef.current.value = data?.tradename || null
     webUrlRef.current.value = data?.weburl || null
     messageRef.current.value = data?.message || 'Cliente creado desde Atalaya'
-    descriptionRef.current.value = data?.description || null
+    // descriptionRef.current.value = data?.description || null
     contactNameRef.current.value = data?.contact_name || null
     contactPhoneRef.current.value = data?.contact_phone || null
     contactEmailRef.current.value = data?.contact_email || null
@@ -66,7 +73,7 @@ const Clients = ({ statuses, can }) => {
       tradename: tradenameRef.current.value,
       web_url: webUrlRef.current.value,
       message: messageRef.current.value ?? 'Cliente creado desde Atalaya',
-      description: descriptionRef.current.value ?? '',
+      // description: descriptionRef.current.value ?? '',
       contact_name: contactNameRef.current.value ?? '',
       contact_phone: contactPhoneRef.current.value ?? '',
       contact_email: contactEmailRef.current.value ?? '',
@@ -109,14 +116,14 @@ const Clients = ({ statuses, can }) => {
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
-        // container.unshift({
-        //   widget: 'dxButton', location: 'after',
-        //   options: {
-        //     icon: 'plus',
-        //     hint: 'NUEVO REGISTRO',
-        //     onClick: () => onModalOpen()
-        //   }
-        // });
+        can('clients', 'root', 'all', 'create') && container.unshift({
+          widget: 'dxButton', location: 'after',
+          options: {
+            icon: 'plus',
+            hint: 'NUEVO REGISTRO',
+            onClick: () => onModalOpen()
+          }
+        });
       }}
       filterValue={['status_id', '=', 12]}
       columns={[
@@ -374,19 +381,42 @@ const Clients = ({ statuses, can }) => {
       }}
     />
     <Modal modalRef={modalRef} title={isEditing ? 'Editar cliente' : 'Agregar cliente'} onSubmit={onModalSubmit} size='md'>
-      <div className='row'>
-        <input ref={idRef} type='hidden' />
-        <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
-        <InputFormGroup eRef={tradenameRef} label='Nombre comercial' col='col-8' required />
-        <InputFormGroup eRef={nameRef} label='Razon social' col='col-md-6' required />
-        <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-md-6' />
-        <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required />
-        <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' />
-        <div className="col-12"><hr className='my-1' /></div>
-        <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
-        <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' col='col-6' />
-        <InputFormGroup eRef={contactEmailRef} label='Email de contacto' col='col-12' type='email' />
-        <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
+      <input ref={idRef} type='hidden' />
+      <ul className="nav nav-pills navtab-bg nav-justified">
+        <li className="nav-item">
+          <Tippy content='Datos del negocio'>
+            <a href="#client-data" data-bs-toggle="tab" aria-expanded="false" className="nav-link active">
+              Negocio
+            </a>
+          </Tippy>
+        </li>
+        <li className="nav-item">
+          <Tippy content='Datos de contacto'>
+            <a href="#contact-data" data-bs-toggle="tab" aria-expanded="true" className="nav-link">
+              Contacto
+            </a>
+          </Tippy>
+        </li>
+      </ul>
+      <div className="tab-content">
+        <div className="tab-pane active" id="client-data">
+          <div className="row">
+            <InputFormGroup eRef={rucRef} label='RUC' col='col-4' required />
+            <InputFormGroup eRef={tradenameRef} label='Nombre comercial' col='col-8' required />
+            <InputFormGroup eRef={nameRef} label='Razon social' col='col-md-6' required />
+            <InputFormGroup eRef={webUrlRef} label='URL Web' col='col-md-6' />
+            <TextareaFormGroup eRef={messageRef} label='Mensaje' col='col-12' required />
+            {/* <TextareaFormGroup eRef={descriptionRef} label='Descripcion' col='col-12' /> */}
+          </div>
+        </div>
+        <div className="tab-pane show" id="contact-data">
+          <div className="row">
+            <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
+            <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' col='col-6' />
+            <InputFormGroup eRef={contactEmailRef} label='Email de contacto' col='col-12' type='email' />
+            <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
+          </div>
+        </div>
       </div>
     </Modal>
 
