@@ -191,6 +191,7 @@ const Clients = ({ statuses, can }) => {
         },
         can('projects', 'root', 'all', 'list', 'update', 'changestatus', 'delete') ? {
           caption: 'Acciones',
+          width: 235,
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: visible')
 
