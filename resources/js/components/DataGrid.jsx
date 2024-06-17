@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Local } from 'sode-extend-react'
 
 const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, filterValue }) => {
   useEffect(() => {
@@ -16,6 +17,8 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
       },
       remoteOperations: true,
       columnResizingMode: "widget",
+      allowColumnResizing: true,
+      allowColumnReordering: true,
       columnAutoWidth: true,
       scrollbars: 'auto',
       filterPanel: { visible: true },
@@ -77,8 +80,23 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
         search: { enabled: true }
       },
       columns,
-      masterDetail
+      masterDetail,
+      onColumnsChanging: () => {
+        const dataGrid = $(dataGridRef.current).dxDataGrid('instance')
+        const state = dataGrid.state()
+
+        if (Object.keys(state) == 0) return
+
+        const path = location.pathname
+        const dxSettings = Local.get('dxSettings') || {}
+        if (JSON.stringify(dxSettings[path]) == JSON.stringify(state)) return
+        
+        dxSettings[path] = state
+        Local.set('dxSettings', dxSettings)
+      }
     }).dxDataGrid('instance')
+
+    $(dataGridRef.current).dxDataGrid('instance').state(Local.get('dxSettings')[location.pathname] || {})
   }, [null])
 
   return (
