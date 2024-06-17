@@ -11,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
@@ -118,4 +119,10 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/account/email', [AccountController::class, 'email']);
     Route::patch('/account/password', [AccountController::class, 'password']);
+
+    // Statuses routes
+    Route::post('/settings', [SettingController::class, 'save']);
+    Route::post('/settings/paginate', [SettingController::class, 'paginate']);
+    Route::patch('/settings/status', [SettingController::class, 'status']);
+    Route::delete('/settings/{id}', [SettingController::class, 'delete']);
 });

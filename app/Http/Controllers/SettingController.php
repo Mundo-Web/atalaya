@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Classes\dxResponse;
-use App\Jobs\SendNewLeadNotification;
 use App\Models\dxDataGrid;
-use App\Models\Client;
-use App\Models\ClientView;
+use App\Models\Setting;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -14,27 +12,34 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
-use SoDe\Extend\Trace;
 
-class ClientController extends Controller
+class SettingController extends Controller
 {
+
+    static function get($name)
+    {
+        $jpa = Setting::where('name', $name)->first();
+        if (!$jpa) return null;
+        return $jpa->value;
+    }
+
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();
         try {
-            $instance = ClientView::select();
+            $instance = Setting::select();
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = ClientView::select([
+                $instance = Setting::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);
             }
 
-            if (!Auth::user()->can('clients.root')) {
-                $instance->whereIn('status', [0, 1]);
+            if (!Auth::user()->can('statuses.root')) {
+                $instance->whereNotNull('status');
             }
             if ($request->filter) {
                 $instance->where(function ($query) use ($request) {
@@ -90,34 +95,11 @@ class ClientController extends Controller
         try {
 
             $body = $request->all();
-            $jpa = Client::find($request->id);
+            $jpa = Setting::find($request->id);
 
             if (!$jpa) {
-                $body['name'] = $body['name'] ?? $body['contact_name'];
-                $body['tradename'] = $body['tradename'] ?? $body['name'];
-                $body['web_url'] = $body['web_url'] ?? 'https://...';
-                $body['source'] = $body['source'] ?? 'Atalaya';
-                $body['origin'] = $body['origin'] ?? 'Interno';
-                $body['ip'] = request()->ip();
-                $body['date'] = Trace::getDate('date');
-                $body['time'] = Trace::getDate('time');
-                $body['status_id'] = $body['status_id'] ?? 10;
-                if (Auth::check()) {
-                    $body['created_by'] = Auth::user()->id;
-                    $body['updated_by'] = Auth::user()->id;
-                }
-                if ($body['source'] == 'whatsapp-web.js') {
-                    $exists = Client::where('contact_phone', $body['contact_phone'])
-                        ->exists();
-                    if (!$exists) {
-                        $client = Client::create($body);
-                    }
-                } else {
-                    $client = Client::create($body);
-                }
-                if (isset($client)) SendNewLeadNotification::dispatchAfterResponse($client);
+                Setting::create($body);
             } else {
-                $body['updated_by'] = Auth::user()->id;
                 $jpa->update($body);
             }
 
@@ -138,54 +120,9 @@ class ClientController extends Controller
     {
         $response = new Response();
         try {
-            Client::where('id', $request->id)
+            Setting::where('id', $request->id)
                 ->update([
                     'status' => $request->status ? 0 : 1
-                ]);
-
-            $response->status = 200;
-            $response->message = 'Operacion correcta';
-        } catch (\Throwable $th) {
-            $response->status = 400;
-            $response->message = $th->getMessage();
-        } finally {
-            return response(
-                $response->toArray(),
-                $response->status
-            );
-        }
-    }
-
-    static function assign(Request $request)
-    {
-        $response = new Response();
-        try {
-            Client::where('id', $request->id)
-                ->update([
-                    'assigned_to' => $request->method() == 'DELETE' ? null : Auth::user()->id
-                ]);
-
-            $response->status = 200;
-            $response->message = 'Operacion correcta';
-        } catch (\Throwable $th) {
-            $response->status = 400;
-            $response->message = $th->getMessage();
-        } finally {
-            return response(
-                $response->toArray(),
-                $response->status
-            );
-        }
-    }
-
-    static function clientStatus(Request $request)
-    {
-        $response = new Response();
-        try {
-            Client::where('id', $request->client)
-                ->update([
-                    'updated_by' => Auth::user()->id,
-                    'status_id' => $request->status
                 ]);
 
             $response->status = 200;
@@ -205,7 +142,7 @@ class ClientController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Client::where('id', $id)
+            $deleted = Setting::where('id', $id)
                 ->update(['status' => null]);
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');

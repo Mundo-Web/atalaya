@@ -17,6 +17,10 @@
     <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
 
+    {{-- QuillJs Styles --}}
+    <link href="/lte/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <link href="/lte/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+
     {{-- Bootstrap Styles --}}
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
       id="bs-default-stylesheet" />
@@ -56,6 +60,7 @@
     <!-- Vendor js -->
     <script src="/lte/assets/js/vendor.min.js"></script>
 
+    <script src="/lte/assets/libs/quill/quill.min.js"></script>
     <script src="/lte/assets/libs/select2/js/select2.full.min.js"></script>
 
     <!-- App js -->

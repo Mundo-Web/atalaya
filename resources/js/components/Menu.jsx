@@ -130,6 +130,10 @@ const Menu = ({ session, can }) => {
                   <MenuItem href="/types" icon='mdi mdi-format-list-text'>Tipos</MenuItem>
                 }
               </MenuItemContainer>
+              {
+                can('settings', 'root', 'all', 'list') &&
+                <MenuItem href='/settings' icon='mdi mdi-cogs'>Configuraciones</MenuItem>
+              }
             </>
           }
         </ul>

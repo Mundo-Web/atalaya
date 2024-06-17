@@ -90,5 +90,9 @@ class Router
       'component' => 'Account.jsx',
       'adminto-instance' => true
     ],
+    'settings' => [
+      'component' => 'Settings.jsx',
+      'adminto-instance' => true
+    ],
   ];
 }

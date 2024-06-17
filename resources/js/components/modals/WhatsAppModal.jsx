@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import WhatsAppStatuses from "../../Reutilizables/WhatsApp/WhatsAppStatuses";
 import '../../../css/qr-code.css'
+import Swal from "sweetalert2";
+import Tippy from "@tippyjs/react";
 
 const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   const qrRef = useRef()
+  const phoneRef = useRef()
+
   const whatsappIP = 'https://wajs.factusode.xyz'
 
   const { color, icon, text } = WhatsAppStatuses[whatsappStatus]
@@ -12,7 +16,12 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
 
   useEffect(() => {
     if (whatsappStatus == 'verifying') {
-      let eventSource = new EventSource(`${whatsappIP}/api/verify?session=atalaya`)
+      const searchParams = new URLSearchParams({
+        session: 'atalaya',
+        redirect_to: `${location.origin}/free/clients`
+      })
+
+      let eventSource = new EventSource(`${whatsappIP}/api/session/verify?${searchParams}`)
       eventSource.onmessage = ({ data }) => {
         if (data == 'ping') return console.log('Realtime active')
         const { status, qr, percent, info } = JSON.parse(data)
@@ -63,10 +72,33 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   }, [whatsappStatus])
 
   const onCloseClicked = async () => {
+    const { isConfirmed } = await Swal.fire({
+      title: "Estas seguro?",
+      text: `Se cerrara la sesion actual`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Continuar",
+      cancelButtonText: `Cancelar`
+    })
+    if (!isConfirmed) return
     await fetch(`${whatsappIP}/api/session/atalaya`, {
       method: 'DELETE'
     })
     setStatus('verifying')
+  }
+
+  const onPingClicked = async () => {
+    await fetch(`${whatsappIP}/api/send`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'atalaya',
+        to: [phoneRef.current.value],
+        content: 'Ping!\n> Mensaje automatico',
+      })
+    })
   }
 
   return (<div id="whatsapp-modal" className="modal fade" aria-hidden="true" data-bs-backdrop='static' >
@@ -84,6 +116,12 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
                 <b>{sessionInfo.pushname}</b>
                 <br />
                 <span className="text-muted">{sessionInfo?.me?.user}@{sessionInfo?.me?.server}</span>
+                <div class="input-group mt-2">
+                  <input ref={phoneRef} type="text" class="form-control form-control-sm" placeholder="Numero receptor" />
+                  <Tippy content="Enviar mensaje ping">
+                    <button class="btn btn-sm input-group-text btn-dark waves-effect waves-light" type="button" onClick={onPingClicked}>Ping</button>
+                  </Tippy>
+                </div>
               </div>
             }
             {whatsappStatus == 'ready' && <button type="button" className="btn btn-danger my-2" onClick={onCloseClicked}>Cerrar sesion</button>}
