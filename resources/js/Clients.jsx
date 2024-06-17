@@ -413,7 +413,7 @@ const Clients = ({ statuses, can }) => {
         <div className="tab-pane show" id="contact-data">
           <div className="row">
             <InputFormGroup eRef={contactNameRef} label='Nombre de contacto' col='col-6' />
-            <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' col='col-6' />
+            <InputFormGroup eRef={contactPhoneRef} label='Celular de contacto' type="tel" col='col-6' />
             <InputFormGroup eRef={contactEmailRef} label='Email de contacto' col='col-12' type='email' />
             <TextareaFormGroup eRef={contactAddressRef} label='Direccion de contacto' col='col-12' />
           </div>
