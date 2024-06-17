@@ -100,7 +100,7 @@ class ClientController extends Controller
                 $body['ip'] = request()->ip();
                 $body['date'] = Trace::getDate('date');
                 $body['time'] = Trace::getDate('time');
-                $body['status_id'] = 10;
+                $body['status_id'] = $body['status_id'] ?? 10;
                 if (Auth::check()) {
                     $body['created_by'] = Auth::user()->id;
                     $body['updated_by'] = Auth::user()->id;
