@@ -93,7 +93,7 @@ class ClientController extends Controller
 
             if (!$jpa) {
                 $body['name'] = $body['name'] ?? $body['contact_name'];
-                $body['tradename'] = $body['name'] ?? $body['contact_name'];
+                $body['tradename'] = $body['tradename'] ?? $body['name'];
                 $body['web_url'] = $body['web_url'] ?? 'https://...';
                 $body['source'] = $body['source'] ?? 'Atalaya';
                 $body['origin'] = $body['origin'] ?? 'Interno';
