@@ -359,7 +359,7 @@ const Home = () => {
                   </a>
                 </Tippy>
               </div>
-              <h4 className='header-title mt-0 mb-3'>Proyectos prontos a terminar</h4>
+              <h4 className='header-title mt-0 mb-0'>Proyectos prontos a terminar</h4>
             </div>
             <div className='card-body' style={{ height: '360px', overflow: 'auto' }}>
 
