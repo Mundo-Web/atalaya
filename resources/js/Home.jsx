@@ -381,8 +381,8 @@ const Home = () => {
                         return <tr key={`project-${i}`} className={`${moment(project.ends_at).isBefore(moment()) ? 'text-danger' : ''}`}>
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
-                          <td>{moment(project.starts_at, 'YYYY-MM-DD').format('DD/MM/YYYY')}</td>
-                          <td>{`${moment(project.ends_at, 'YYYY-MM-DD').format('DD/MM/YYYY')} (${moment(project.ends_at).fromNow()})`}</td>
+                          <td>{moment(project.starts_at + ' 00:00:00').format('DD/MM/YYYY')}</td>
+                          <td>{`${moment(project.ends_at + ' 00:00:00').format('DD/MM/YYYY')} (${moment(project.ends_at).fromNow()})`}</td>
                           <td><span className='badge' style={{ backgroundColor: project.project_status.color }}>{project.project_status.name}</span></td>
                           <td>-</td>
                         </tr>
