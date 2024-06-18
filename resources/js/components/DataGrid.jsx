@@ -15,6 +15,22 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
       onToolbarPreparing: (e) => {
         const { items } = e.toolbarOptions;
         toolBar(items)
+
+        // items.unshift({
+        //   widget: 'dxButton',
+        //   location: 'after',
+        //   options: {
+        //     icon: 'revert',
+        //     hint: 'RESTABLECER TABLA',
+        //     onClick: () => {
+        //       const path = location.pathname
+        //       const dxSettings = Local.get('dxSettings') || {}
+        //       delete dxSettings[path]
+        //       Local.set('dxSettings', dxSettings)
+        //       $(dataGridRef.current).dxDataGrid('instance').state({})
+        //     }
+        //   }
+        // });
       },
       remoteOperations: true,
       columnResizingMode: "widget",
@@ -82,25 +98,30 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
       },
       columns,
       masterDetail,
-      onColumnsChanging: () => {
-        const dataGrid = $(dataGridRef.current).dxDataGrid('instance')
-        const state = dataGrid.state()
+      // onColumnsChanging: () => {
+      //   const dataGrid = $(dataGridRef.current).dxDataGrid('instance')
+      //   const state = dataGrid.state()
 
-        if (Object.keys(state) == 0) return
+      //   if (Object.keys(state) == 0) return
 
-        const path = location.pathname
-        const dxSettings = Local.get('dxSettings') || {}
-        if (JSON.stringify(dxSettings[path]) == JSON.stringify(state)) return
-        
-        dxSettings[path] = state
-        Local.set('dxSettings', dxSettings)
-      }
+      //   const path = location.pathname
+      //   const dxSettings = Local.get('dxSettings') || {}
+      //   if (JSON.stringify(dxSettings[path]) == JSON.stringify(state)) return
+
+      //   dxSettings[path] = {}
+      //   dxSettings[path].columns = state.columns
+      //   dxSettings[path].masterDetail = state.masterDetail
+
+      //   Local.set('dxSettings', dxSettings)
+      // }
     }).dxDataGrid('instance')
 
-    const dxSettings = Local.get('dxSettings') || {}
-    if (dxSettings[location.pathname]) {
-      $(dataGridRef.current).dxDataGrid('instance').state(dxSettings[location.pathname])
-    }
+    tippy('.dx-button', { arrow: true })
+
+    // const dxSettings = Local.get('dxSettings') || {}
+    // if (dxSettings[location.pathname]) {
+    //   $(dataGridRef.current).dxDataGrid('instance').state(dxSettings[location.pathname])
+    // }
   }, [null])
 
   return (

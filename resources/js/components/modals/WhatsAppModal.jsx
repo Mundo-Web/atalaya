@@ -113,7 +113,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
       Notify.add({
         icon: '/assets/img/logo-login.svg',
         title: 'Operacion correcta',
-        body: `Se cerro la sesion de ${sessionInfo?.pushname || 'WhatsApp'}`
+        body: `Se envio el ping a ${phoneRef.current.value}`
       })
     } catch (error) {
       Notify.add({

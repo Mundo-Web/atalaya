@@ -15,6 +15,7 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
+import Swal from 'sweetalert2'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -80,6 +81,16 @@ const Projects = ({ statuses, can }) => {
   }
 
   const onDeleteClicked = async (id) => {
+    const { isConfirmed } = await Swal.fire({
+      title: "Estas seguro?",
+      text: `Esta acción no se puede deshacer`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Continuar",
+      cancelButtonText: `Cancelar`
+    })
+    if (!isConfirmed) return
+
     const result = await ProjectsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
@@ -124,19 +135,22 @@ const Projects = ({ statuses, can }) => {
         },
         {
           dataField: 'name',
-          caption: 'Proyecto'
+          caption: 'Proyecto',
+          visible: false
         },
         {
-          dataField: 'cost',
-          caption: 'Costo',
+          dataField: 'remaining_amount',
+          caption: 'Pagos',
           dataType: 'number',
-          width: 150,
+          width: 225,
           cellTemplate: (container, { data }) => {
             const percent = ((data.total_payments / data.cost) * 100).toFixed(2)
+            const payments = Number(data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+            const rest = Number(data.cost - data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
             ReactAppend(container, <>
-              <p className='mb-1 d-flex justify-content-between'>
-                <span>S/.{Number(data.total_payments).toFixed(2)}</span>
-                <b className='float-end'>S/.{Number(data.cost).toFixed(2)}</b>
+              <p className='mb-0 d-flex justify-content-between'>
+                <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
+                <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
               </p>
               <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0'>
                 <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
@@ -163,11 +177,12 @@ const Projects = ({ statuses, can }) => {
               $(gridRef.current).dxDataGrid('instance').refresh()
             }} />)
           }
-        }: null,
+        } : null,
         {
           dataField: 'status',
           caption: 'Estado',
           dataType: 'boolean',
+          visible: false,
           cellTemplate: (container, { data }) => {
             switch (data.status) {
               case 1:
@@ -184,8 +199,9 @@ const Projects = ({ statuses, can }) => {
         },
         {
           caption: 'Acciones',
+          width: 175,
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: visible')
+            container.attr('style', 'display: flex; gap: 4px;')
 
             can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
               <i className='fa fa-pen'></i>
@@ -195,15 +211,15 @@ const Projects = ({ statuses, can }) => {
               <i className='fas fa-money-check-alt'></i>
             </TippyButton>)
 
-            can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
-              {
-                data.status === 1
-                  ? <i className='fa fa-toggle-on text-success' />
-                  : data.status === 0 ?
-                    <i className='fa fa-toggle-off text-danger' />
-                    : <i className='fas fa-trash-restore' />
-              }
-            </TippyButton>)
+            // can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
+            //   {
+            //     data.status === 1
+            //       ? <i className='fa fa-toggle-on text-success' />
+            //       : data.status === 0 ?
+            //         <i className='fa fa-toggle-off text-danger' />
+            //         : <i className='fas fa-trash-restore' />
+            //   }
+            // </TippyButton>)
 
             can('projects', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
               <i className='fa fa-trash-alt'></i>
