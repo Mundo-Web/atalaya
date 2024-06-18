@@ -184,6 +184,8 @@ const Home = () => {
   const suposeToBe = lastRevenues.actual * totalDays / daysPassed
   const trending = (suposeToBe / lastRevenues.last) - 1
 
+  const totalRemaining = projectsRemaining.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0)
+
   return (
     <>
       <div className='row'>
@@ -309,7 +311,10 @@ const Home = () => {
         <div className='col-xl-7 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
-              <h4 className='header-title mb-0'>Pendientes de pago</h4>
+              <h4 className='header-title mb-0'>
+                <span className=" float-end">S/. {Number2Currency(totalRemaining)}</span>
+                Pendientes de pago
+              </h4>
             </div>
             <div className='card-body' style={{ height: '300px', overflow: 'auto' }}>
               <div className='table-responsive'>
@@ -318,8 +323,9 @@ const Home = () => {
                     <tr>
                       <th>Cliente</th>
                       <th>Tipo proyecto</th>
-                      <th>Debe</th>
+                      <th>Fecha fin</th>
                       <th>Costo total</th>
+                      <th>Debe</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -329,8 +335,8 @@ const Home = () => {
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
                           <td>{moment(ends_at).format('ll')}</td>
-                          <td>S/. {Number2Currency(remaining_amount)}</td>
                           <td>S/. {Number2Currency(cost)}</td>
+                          <td>S/. {Number2Currency(remaining_amount)}</td>
                         </tr>)
                       })
                     }
