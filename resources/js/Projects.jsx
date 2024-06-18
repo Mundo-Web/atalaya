@@ -16,6 +16,7 @@ import TippyButton from './components/form/TippyButton.jsx'
 import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
 import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 import Swal from 'sweetalert2'
+import Number2Currency from './Utils/Number2Currency.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -139,6 +140,14 @@ const Projects = ({ statuses, can }) => {
           visible: false
         },
         {
+          dataField: 'cost',
+          caption: 'Costo',
+          dataType: 'number',
+          cellTemplate: (container, { data }) => {
+            container.text(`S/. ${Number2Currency(data.cost)}`)
+          }
+        },
+        {
           dataField: 'remaining_amount',
           caption: 'Pagos',
           dataType: 'number',
@@ -157,6 +166,14 @@ const Projects = ({ statuses, can }) => {
                 </div>
               </div>
             </>)
+          }
+        },
+        {
+          dataField: 'starts_at',
+          caption: 'Fecha de inicio',
+          dataType: 'date',
+          cellTemplate: (container, { data }) => {
+            container.text(moment(data.starts_at).format('LL'))
           }
         },
         {

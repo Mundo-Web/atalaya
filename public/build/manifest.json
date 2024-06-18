@@ -64,6 +64,10 @@
     "file": "assets/JSEncrypt-D3I3x59l.js",
     "name": "JSEncrypt"
   },
+  "_Number2Currency-e57Tgsuk.js": {
+    "file": "assets/Number2Currency-e57Tgsuk.js",
+    "name": "Number2Currency"
+  },
   "_PasswordFormGroup-zFVO4Fqi.js": {
     "file": "assets/PasswordFormGroup-zFVO4Fqi.js",
     "name": "PasswordFormGroup",
@@ -161,7 +165,7 @@
     ]
   },
   "resources/js/Home.jsx": {
-    "file": "assets/Home-Cwa9E0PT.js",
+    "file": "assets/Home-BRitIpzn.js",
     "name": "Home",
     "src": "resources/js/Home.jsx",
     "isEntry": true,
@@ -170,7 +174,8 @@
       "_Adminto-ePd2h6in.js",
       "_DropdownEnd-BGPgPEIS.js",
       "_DropdownItem-mg3Fv28F.js",
-      "_ProjectsRest-Ct6mlSHF.js"
+      "_ProjectsRest-Ct6mlSHF.js",
+      "_Number2Currency-e57Tgsuk.js"
     ]
   },
   "resources/js/Leads.jsx": {
@@ -230,7 +235,7 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-5JpYgsSZ.js",
+    "file": "assets/Projects-C0b3-bAx.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
@@ -243,6 +248,7 @@
       "_InputFormGroup-BUOjBXeO.js",
       "_TextareaFormGroup-Ch_FAxDs.js",
       "_ProjectStatusDropdown-DiIbkYQq.js",
+      "_Number2Currency-e57Tgsuk.js",
       "_Dropdown-NV6AOgpq.js",
       "_DropdownItem-mg3Fv28F.js"
     ]

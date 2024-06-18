@@ -13,6 +13,7 @@ import Number2Currency from './Utils/Number2Currency';
 const Home = () => {
   const revenueRef = useRef();
   const chartRef = useRef(null); // Usar useRef para mantener la referencia del gráfico
+  const pieRef = useRef(null);
 
   const [revenuesTitle, setRevenuesTitle] = useState('Reporte mensual');
   const [revenuesRange, setRevenuesRange] = useState('monthly');
@@ -98,6 +99,7 @@ const Home = () => {
         }
       ],
       requireTotalCount: true,
+      isLoadingAll: true,
       filter: [
         // ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'and',
         // ['status', '<>', null], 'and',
@@ -111,10 +113,35 @@ const Home = () => {
       ]
     })
       .then(({ data, totalCount }) => {
+        let conteoEstados = {};
+        data.forEach(({ project_status: { name, color } }) => {
+          let key = name;
+          if (conteoEstados[key]) conteoEstados[key].cantidad++;
+          else conteoEstados[key] = { estado: name, color: color, cantidad: 1 };
+        });
+        let results = Object.values(conteoEstados);
+        new Chart(pieRef.current, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(conteoEstados),
+            datasets: [{
+              data: results.map(x => x.cantidad) || [],
+              backgroundColor: results.map(x => x.color) || [],
+              hoverOffset: 4
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        })
+
         setTotalProjects(totalCount)
         setProjects(data)
       })
-
 
     ProjectsRest.paginate({
       requireTotalCount: true,
@@ -151,10 +178,6 @@ const Home = () => {
             <div className='card-body'>
               <h4 className='header-title mt-0 mb-4'>Ingresos - Mes anterior</h4>
               <div className='widget-chart-1'>
-                {/* <div className='widget-chart-box-1 float-start' dir='ltr'>
-                  <div style={{ display: 'inline', width: '70px', height: '70px' }}><canvas width='62' height='62' style={{ width: '70px', height: '70px' }}></canvas><input data-plugin='knob' data-width='70' data-height='70' data-fgcolor='#f05050 ' data-bgcolor='#F9B9B9' value='58' data-skin='tron' data-angleoffset='180' data-readonly='true' data-thickness='.15' readOnly='readonly' style={{ width: '39px', height: '23px', position: 'absolute', verticalAlign: 'middle', marginTop: '23px', marginLeft: '-54px', border: '0px', background: 'none', font: 'bold 14px Arial', textAlign: 'center', color: 'rgb(240, 80, 80)', padding: '0px', appearance: 'none' }} /></div>
-                </div> */}
-
                 <div className='widget-detail-1 text-end'>
                   <h2 className='fw-normal pt-2 mb-1'> S/. {Number2Currency(lastRevenues?.last)} </h2>
                   <p className='text-muted mb-1'>{lastMonth}</p>
@@ -206,8 +229,8 @@ const Home = () => {
               <div className='widget-chart-1'>
                 <div className='widget-chart-box-1 float-start' dir='ltr'>
                   <div style={{ display: 'inline', width: '70px', height: '70px' }}>
-                    <canvas width='62' height='62' style={{ width: '70px', height: '70px' }}>
-                    </canvas><input data-plugin='knob' data-width='70' data-height='70' data-fgcolor='#ffbd4a' data-bgcolor='#FFE6BA' value='80' data-skin='tron' data-angleoffset='180' data-readonly='true' data-thickness='.15' readOnly='readonly' style={{ width: '39px', height: '23px', position: 'absolute', verticalAlign: 'middle', marginTop: '23px', marginLeft: '-54px', border: '0px', background: 'none', font: 'bold 14px Arial', textAlign: 'center', color: 'rgb(255, 189, 74)', padding: '0px', appearance: 'none' }} />
+                    <canvas ref={pieRef} width='62' height='62' style={{ width: '70px', height: '70px' }}>
+                    </canvas>
                   </div>
                 </div>
                 <div className='widget-detail-1 text-end'>
@@ -234,15 +257,15 @@ const Home = () => {
 
               <div className='widget-box-2'>
                 <div className='widget-detail-2 text-end'>
-                  <span className='badge bg-pink rounded-pill float-start mt-3'>32% <i className='mdi mdi-trending-up'></i> </span>
+                  {/* <span className='badge bg-pink rounded-pill float-start mt-3'>32% <i className='mdi mdi-trending-up'></i> </span> */}
                   <h2 className='fw-normal mb-1'> {totalProjectsThisMonth} </h2>
                   <p className='text-muted mb-3'> proyectos este mes</p>
                 </div>
-                <div className='progress progress-bar-alt-pink progress-sm'>
+                {/* <div className='progress progress-bar-alt-pink progress-sm'>
                   <div className='progress-bar bg-pink' role='progressbar' aria-valuenow='77' aria-valuemin='0' aria-valuemax='100' style={{ width: '77%' }}>
                     <span className='visually-hidden'>77% Complete</span>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
