@@ -8,6 +8,7 @@ import DropdownEnd from './components/dropdown/DropdownEnd';
 import DropdownItem from './components/dropdown/DropdownItem';
 import Tippy from '@tippyjs/react';
 import ProjectsRest from './actions/ProjectsRest';
+import Number2Currency from './Utils/Number2Currency';
 
 const Home = () => {
   const revenueRef = useRef();
@@ -79,7 +80,7 @@ const Home = () => {
         data.forEach(x => {
           if (x.month == moment().month() + 1) lastRevenues.actual = Number(x.total)
           else {
-            setLastMonth(moment({ month: x.month - 1 }).format('MMM Y'))
+            setLastMonth(moment({ month: x.month - 1 }).format('MMMM Y'))
             lastRevenues.last = Number(x.total)
           }
         })
@@ -138,7 +139,7 @@ const Home = () => {
                 </div> */}
 
                 <div className='widget-detail-1 text-end'>
-                  <h2 className='fw-normal pt-2 mb-1'> S/.{Number(lastRevenues?.last || 0).toFixed(2)} </h2>
+                  <h2 className='fw-normal pt-2 mb-1'> S/. {Number2Currency(lastRevenues?.last)} </h2>
                   <p className='text-muted mb-1'>{lastMonth}</p>
                 </div>
               </div>
@@ -153,16 +154,20 @@ const Home = () => {
               <div className='widget-box-2'>
                 <div className='widget-detail-2 text-end'>
                   <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% ${trending >= 0 ? 'mas' : 'menos'} de ingresos respecto al mes anterior`}>
-                    <span className={`badge bg-${trending > 0 ? 'success' : 'danger'} rounded-pill float-start mt-3`}>{Math.round(trending * 100)}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
+                    <span className={`badge bg-${trending > 0 ? 'success' : 'danger'} rounded-pill float-start mt-3`}>{Math.round(trending * 100) || 0}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
                   </Tippy>
-                  <h2 className='fw-normal mb-1'> S/.{Number(lastRevenues?.actual || 0).toFixed(2)} </h2>
+                  <h2 className='fw-normal mb-1'> S/. {Number2Currency(lastRevenues?.actual)} </h2>
                   <p className='text-muted mb-3'>{moment().format('MMMM Y')}</p>
                 </div>
-                <div className='progress progress-bar-alt-success progress-sm'>
-                  <div className='progress-bar bg-success' role='progressbar' aria-valuenow='77' aria-valuemin='0' aria-valuemax='100' style={{ width: '77%' }}>
-                    <span className='visually-hidden'>77% Complete</span>
+                <Tippy content={<p className='text-center mb-0'>
+                  Para este mes de {moment().format('MMMM Y')} se espera que tengamos S/. {Number2Currency(suposeToBe)}
+                </p>} allowHTML={true} arrow={true}>
+                  <div className={`progress progress-bar-alt-${trending > 0 ? 'success' : 'danger'} progress-sm`}>
+                    <div className={`progress-bar bg-${trending > 0 ? 'success' : 'danger'}`} role='progressbar' aria-valuenow={trending * 100} aria-valuemin='0' aria-valuemax='100' style={{ width: `${trending * 100}%` }}>
+                      <span className='visually-hidden'>{Math.round(trending * 100) || 0}%</span>
+                    </div>
                   </div>
-                </div>
+                </Tippy>
               </div>
             </div>
           </div>
