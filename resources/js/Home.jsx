@@ -163,7 +163,7 @@ const Home = () => {
                   Para este mes de {moment().format('MMMM Y')} se espera que tengamos S/. {Number2Currency(suposeToBe)}
                 </p>} allowHTML={true} arrow={true}>
                   <div className={`progress progress-bar-alt-${trending > 0 ? 'success' : 'danger'} progress-sm`}>
-                    <div className={`progress-bar bg-${trending > 0 ? 'success' : 'danger'}`} role='progressbar' aria-valuenow={trending * 100} aria-valuemin='0' aria-valuemax='100' style={{ width: `${trending * 100}%` }}>
+                    <div className={`progress-bar bg-${trending > 0 ? 'success' : 'danger'}`} role='progressbar' aria-valuenow={trending * 100} aria-valuemin='0' aria-valuemax='100' style={{ width: `${Math.abs(trending * 100)}%` }}>
                       <span className='visually-hidden'>{Math.round(trending * 100) || 0}%</span>
                     </div>
                   </div>
