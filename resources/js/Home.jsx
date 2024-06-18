@@ -378,7 +378,7 @@ const Home = () => {
                   <tbody>
                     {
                       projects.map((project, i) => {
-                        return <tr key={`project-${i}`} className={`${moment(ends_at).isBefore(moment()) ? 'bg-danger' : ''}`}>
+                        return <tr key={`project-${i}`} className={`${moment(project.ends_at).isBefore(moment()) ? 'bg-danger' : ''}`}>
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{moment(project.starts_at).format('LL')}</td>
