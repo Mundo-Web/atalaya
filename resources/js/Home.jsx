@@ -364,7 +364,7 @@ const Home = () => {
             <div className='card-body' style={{ height: '360px', overflow: 'auto' }}>
 
               <div className='table-responsive'>
-                <table className='table table-striped mb-0'>
+                <table className='table mb-0'>
                   <thead>
                     <tr>
                       <th>Cliente</th>
