@@ -312,7 +312,7 @@ const Home = () => {
           <div className='card'>
             <div className='card-header'>
               <h4 className='header-title'>
-                <span className=" float-end">S/. {Number2Currency(totalRemaining)}</span>
+                <span className="float-end text-danger"><small className='fa fa-arrow-circle-down'></small> S/. {Number2Currency(totalRemaining)}</span>
                 Pendientes de pago
               </h4>
             </div>
@@ -331,12 +331,12 @@ const Home = () => {
                   <tbody>
                     {
                       projectsRemaining.map(({ id, client, type, remaining_amount, cost, ends_at }) => {
-                        return (<tr key={`remaining-project-${id}`}>
+                        return (<tr key={`remaining-project-${id}`} className={`${moment(ends_at).isBefore(moment()) ? 'text-danger' : ''}`}>
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
                           <td>{moment(ends_at).format('DD/MM/YYYY')}</td>
-                          <td><div style={{width: 'max-content'}}>S/. {Number2Currency(cost)}</div></td>
-                          <td><div style={{width: 'max-content'}}>S/. {Number2Currency(remaining_amount)}</div></td>
+                          <td><div style={{ width: 'max-content' }}>S/. {Number2Currency(cost)}</div></td>
+                          <td><div className='text-danger' style={{ width: 'max-content' }}><small className='fa fa-arrow-circle-down'></small> S/. {Number2Currency(remaining_amount)}</div></td>
                         </tr>)
                       })
                     }
