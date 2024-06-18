@@ -331,7 +331,7 @@ const Home = () => {
                   <tbody>
                     {
                       projectsRemaining.map(({ id, client, type, remaining_amount, cost, ends_at }) => {
-                        return (<tr key={`remaining-project-${id}`} className={`${moment(ends_at).isBefore(moment()) ? 'text-danger' : ''}`}>
+                        return (<tr key={`remaining-project-${id}`}>
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
                           <td>{moment(ends_at).format('DD/MM/YYYY')}</td>
@@ -378,7 +378,7 @@ const Home = () => {
                   <tbody>
                     {
                       projects.map((project, i) => {
-                        return <tr key={`project-${i}`}>
+                        return <tr key={`project-${i}`} className={`${moment(ends_at).isBefore(moment()) ? 'bg-danger' : ''}`}>
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{moment(project.starts_at).format('LL')}</td>
