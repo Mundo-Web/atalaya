@@ -55,13 +55,20 @@ class ProjectController extends Controller
                 $instance->orderBy('id', 'DESC');
             }
 
-            $totalCount = $instance->count('*');
-            $jpas = $request->isLoadingAll
-                ? $instance->get()
-                : $instance
-                ->skip($request->skip ?? 0)
-                ->take($request->take ?? 10)
-                ->get();
+            $totalCount = 0;
+            if ($request->requireTotalCount) {
+                $totalCount = $instance->count('*');
+            }
+
+            $jpas = [];
+            if (!$request->ignoreData) {
+                $jpas = $request->isLoadingAll
+                    ? $instance->get()
+                    : $instance
+                    ->skip($request->skip ?? 0)
+                    ->take($request->take ?? 10)
+                    ->get();
+            }
 
             $results = [];
 

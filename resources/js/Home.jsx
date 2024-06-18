@@ -21,6 +21,8 @@ const Home = () => {
   const [lastRevenues, setLastRevenues] = useState({ last: 0, actual: 0 });
   const [lastMonth, setLastMonth] = useState(moment({ month: moment().month() - 1 }).format('MMMM Y'));
   const [projects, setProjects] = useState([]);
+  const [totalProjects, setTotalProjects] = useState(0)
+  const [totalProjectsThisMonth, setTotalProjectsThisMonth] = useState(0)
 
   useEffect(() => {
     if (chartRef.current) {
@@ -89,28 +91,43 @@ const Home = () => {
       })
 
     ProjectsRest.paginate({
-      'sort': [
+      sort: [
         {
-          'selector': 'ends_at',
-          'desc': false
+          selector: 'ends_at',
+          desc: false
         }
       ],
-      'skip': 0,
-      'take': 10,
-      'filter': [
-        ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'and',
-        ['status', '<>', null], 'and',
-        ['!',
-          [
-            ['project_status.name', '=', 8], 'or',
-            ['project_status.name', '=', 9]
-          ]
+      requireTotalCount: true,
+      filter: [
+        // ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'and',
+        // ['status', '<>', null], 'and',
+        // [
+        '!',
+        [
+          ['project_status.name', '=', 8], 'or',
+          ['project_status.name', '=', 9]
         ]
+        // ]
       ]
     })
-      .then(({ data }) => {
+      .then(({ data, totalCount }) => {
+        setTotalProjects(totalCount)
         setProjects(data)
       })
+
+
+    ProjectsRest.paginate({
+      requireTotalCount: true,
+      ignoreData: true,
+      filter: [
+        ['created_at', '>=', moment().format('YYYY-MM-[00]')], 'and',
+        ['created_at', '<=', moment().format('YYYY-MM-DD')]
+      ]
+    })
+      .then(({ totalCount }) => {
+        setTotalProjectsThisMonth(totalCount)
+      })
+
   }, [null])
 
   const onRevenueRangeChange = (e) => {
@@ -188,11 +205,14 @@ const Home = () => {
 
               <div className='widget-chart-1'>
                 <div className='widget-chart-box-1 float-start' dir='ltr'>
-                  <div style={{ display: 'inline', width: '70px', height: '70px' }}><canvas width='62' height='62' style={{ width: '70px', height: '70px' }}></canvas><input data-plugin='knob' data-width='70' data-height='70' data-fgcolor='#ffbd4a' data-bgcolor='#FFE6BA' value='80' data-skin='tron' data-angleoffset='180' data-readonly='true' data-thickness='.15' readOnly='readonly' style={{ width: '39px', height: '23px', position: 'absolute', verticalAlign: 'middle', marginTop: '23px', marginLeft: '-54px', border: '0px', background: 'none', font: 'bold 14px Arial', textAlign: 'center', color: 'rgb(255, 189, 74)', padding: '0px', appearance: 'none' }} /></div>
+                  <div style={{ display: 'inline', width: '70px', height: '70px' }}>
+                    <canvas width='62' height='62' style={{ width: '70px', height: '70px' }}>
+                    </canvas><input data-plugin='knob' data-width='70' data-height='70' data-fgcolor='#ffbd4a' data-bgcolor='#FFE6BA' value='80' data-skin='tron' data-angleoffset='180' data-readonly='true' data-thickness='.15' readOnly='readonly' style={{ width: '39px', height: '23px', position: 'absolute', verticalAlign: 'middle', marginTop: '23px', marginLeft: '-54px', border: '0px', background: 'none', font: 'bold 14px Arial', textAlign: 'center', color: 'rgb(255, 189, 74)', padding: '0px', appearance: 'none' }} />
+                  </div>
                 </div>
                 <div className='widget-detail-1 text-end'>
-                  <h2 className='fw-normal pt-2 mb-1'> 4569 </h2>
-                  <p className='text-muted mb-1'>Revenue today</p>
+                  <h2 className='fw-normal pt-2 mb-1'> {totalProjects} </h2>
+                  <p className='text-muted mb-1'>proyectos en curso</p>
                 </div>
               </div>
             </div>
@@ -203,15 +223,11 @@ const Home = () => {
           <div className='card'>
             <div className='card-body'>
               <div className='dropdown float-end'>
-                <a href='#' className='dropdown-toggle arrow-none card-drop' data-bs-toggle='dropdown' aria-expanded='false'>
-                  <i className='mdi mdi-dots-vertical'></i>
-                </a>
-                <div className='dropdown-menu dropdown-menu-end'>
-                  <a href='#' className='dropdown-item'>Action</a>
-                  <a href='#' className='dropdown-item'>Another action</a>
-                  <a href='#' className='dropdown-item'>Something else</a>
-                  <a href='#' className='dropdown-item'>Separated link</a>
-                </div>
+                <Tippy content='Ver proyectos' arrow={true}>
+                  <a href='/projects' className='arrow-none card-drop'>
+                    <i className='mdi mdi-arrow-top-right'></i>
+                  </a>
+                </Tippy>
               </div>
 
               <h4 className='header-title mt-0 mb-3'>Proyectos nuevos</h4>
@@ -219,8 +235,8 @@ const Home = () => {
               <div className='widget-box-2'>
                 <div className='widget-detail-2 text-end'>
                   <span className='badge bg-pink rounded-pill float-start mt-3'>32% <i className='mdi mdi-trending-up'></i> </span>
-                  <h2 className='fw-normal mb-1'> 158 </h2>
-                  <p className='text-muted mb-3'>Revenue today</p>
+                  <h2 className='fw-normal mb-1'> {totalProjectsThisMonth} </h2>
+                  <p className='text-muted mb-3'> proyectos este mes</p>
                 </div>
                 <div className='progress progress-bar-alt-pink progress-sm'>
                   <div className='progress-bar bg-pink' role='progressbar' aria-valuenow='77' aria-valuemin='0' aria-valuemax='100' style={{ width: '77%' }}>
@@ -272,6 +288,7 @@ const Home = () => {
                 <table className='table table-hover mb-0'>
                   <thead>
                     <tr>
+                      <th>Cliente</th>
                       <th>Proyecto</th>
                       <th>Fecha de inicio</th>
                       <th>Fecha de finalización</th>
@@ -283,6 +300,7 @@ const Home = () => {
                     {
                       projects.map((project, i) => {
                         return <tr key={`project-${i}`}>
+                          <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{moment(project.starts_at).format('LL')}</td>
                           <td>{moment(project.ends_at).format('LL')}</td>
