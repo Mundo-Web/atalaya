@@ -335,8 +335,8 @@ const Home = () => {
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
                           <td>{moment(ends_at).format('ll')}</td>
-                          <td>S/. {Number2Currency(cost)}</td>
-                          <td>S/. {Number2Currency(remaining_amount)}</td>
+                          <td><div style={{width: 'max-content'}}>S/. {Number2Currency(cost)}</div></td>
+                          <td><div style={{width: 'max-content'}}>S/. {Number2Currency(remaining_amount)}</div></td>
                         </tr>)
                       })
                     }
