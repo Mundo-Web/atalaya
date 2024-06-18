@@ -24,6 +24,7 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [totalProjects, setTotalProjects] = useState(0)
   const [totalProjectsThisMonth, setTotalProjectsThisMonth] = useState(0)
+  const [projectsRemaining, setProjectsRemaining] = useState([])
 
   useEffect(() => {
     if (chartRef.current) {
@@ -74,7 +75,8 @@ const Home = () => {
   }, [revenuesRange])
 
   useEffect(() => {
-    DashboardRest.lastRevenues()
+    DashboardRest
+      .lastRevenues()
       .then(data => {
         const lastRevenues = {
           last: 0,
@@ -91,27 +93,28 @@ const Home = () => {
         setLastRevenues(lastRevenues)
       })
 
-    ProjectsRest.paginate({
-      sort: [
-        {
-          selector: 'ends_at',
-          desc: false
-        }
-      ],
-      requireTotalCount: true,
-      isLoadingAll: true,
-      filter: [
-        // ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'and',
-        // ['status', '<>', null], 'and',
-        // [
-        '!',
-        [
-          ['status_id', '=', 8], 'or',
-          ['status_id', '=', 9]
+    ProjectsRest
+      .paginate({
+        sort: [
+          {
+            selector: 'ends_at',
+            desc: false
+          }
+        ],
+        requireTotalCount: true,
+        isLoadingAll: true,
+        filter: [
+          // ['ends_at', '>=', moment().format('YYYY-MM-DD')], 'and',
+          // ['status', '<>', null], 'and',
+          // [
+          '!',
+          [
+            ['status_id', '=', 8], 'or',
+            ['status_id', '=', 9]
+          ]
+          // ]
         ]
-        // ]
-      ]
-    })
+      })
       .then(({ data, totalCount }) => {
         let conteoEstados = {};
         data.forEach(({ project_status: { name, color } }) => {
@@ -153,6 +156,18 @@ const Home = () => {
     })
       .then(({ totalCount }) => {
         setTotalProjectsThisMonth(totalCount)
+      })
+
+    ProjectsRest.paginate({
+      sort: [{
+        selector: "remaining_amount",
+        desc: true
+      }],
+      isLoadingAll: true,
+      filter: ["remaining_amount", ">", 0]
+    })
+      .then(({ data }) => {
+        setProjectsRemaining(data)
       })
 
   }, [null])
@@ -275,7 +290,7 @@ const Home = () => {
       </div>
 
       <div className='row'>
-        <div className='col-12'>
+        <div className='col-xl-7 col-sm-6'>
           <div className='card'>
             <div className='card-header'>
               <DropdownEnd>
@@ -286,8 +301,39 @@ const Home = () => {
               </DropdownEnd>
               <h4 className='header-title mb-0'>Ingresos - {revenuesTitle}</h4>
             </div>
-            <div className='card-body'>
-              <canvas ref={revenueRef} height={80}></canvas>
+            <div className='card-body' style={{ height: '300px' }}>
+              <canvas ref={revenueRef}></canvas>
+            </div>
+          </div>
+        </div>
+        <div className='col-xl-5 col-sm-6'>
+          <div className='card'>
+            <div className='card-header'>
+              <h4 className='header-title mb-0'>Pendientes de pago</h4>
+            </div>
+            <div className='card-body' style={{ height: '300px', overflow: 'auto' }}>
+              <div className='table-responsive'>
+                <table className='table table-bordered table-sm table-striped mb-0'>
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Proyecto</th>
+                      <th>Monto</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      projectsRemaining.map(({ id, client, type, remaining_amount }) => {
+                        return (<tr key={`remaining-project-${id}`}>
+                          <td>{client.tradename}</td>
+                          <td>{type.name}</td>
+                          <td>${remaining_amount}</td>
+                        </tr>)
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -308,7 +354,7 @@ const Home = () => {
               <h4 className='header-title mt-0 mb-3'>Proyectos prontos a terminar</h4>
 
               <div className='table-responsive'>
-                <table className='table table-hover mb-0'>
+                <table className='table table-striped mb-0'>
                   <thead>
                     <tr>
                       <th>Cliente</th>
