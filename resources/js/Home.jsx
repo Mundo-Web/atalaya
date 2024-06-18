@@ -148,7 +148,7 @@ const Home = () => {
       ignoreData: true,
       filter: [
         ['created_at', '>=', moment().format('YYYY-MM-[01]')], 'and',
-        ['created_at', '<=', moment().add(1, 'month').format('YYYY-MM-[01]')]
+        ['created_at', '<', moment().add(1, 'month').format('YYYY-MM-[01]')]
       ]
     })
       .then(({ totalCount }) => {
