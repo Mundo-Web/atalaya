@@ -311,7 +311,7 @@ const Home = () => {
         <div className='col-xl-7 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
-              <h4 className='header-title mb-1'>
+              <h4 className='header-title'>
                 <span className=" float-end">S/. {Number2Currency(totalRemaining)}</span>
                 Pendientes de pago
               </h4>
