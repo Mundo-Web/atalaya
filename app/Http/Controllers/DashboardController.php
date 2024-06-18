@@ -23,6 +23,8 @@ class DashboardController
             DB::raw('SUM(amount) as total')
           ])
             ->groupBy(DB::raw('IFNULL(DATE(date), DATE(created_at))'))
+            ->orderBy(DB::raw('IFNULL(DATE(date), DATE(created_at))'), 'desc')
+            ->limit(30) // Máximo de 30 registros
             ->get();
           break;
         case 'weekly': // Semanal
@@ -31,14 +33,30 @@ class DashboardController
             DB::raw('SUM(amount) as total')
           ])
             ->groupBy(DB::raw('IFNULL(YEARWEEK(date), YEARWEEK(created_at))'))
+            ->orderBy(DB::raw('IFNULL(YEARWEEK(date), YEARWEEK(created_at))'), 'desc')
+            ->limit(16) // Máximo de 16 registros
+            ->get();
+          break;
+        case 'monthly': // Mensual
+          $data = Payment::select([
+            DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
+            DB::raw('IFNULL(MONTH(date), MONTH(created_at)) as month'),
+            DB::raw('SUM(amount) as total')
+          ])
+            ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), DB::raw('IFNULL(MONTH(date), MONTH(created_at))'))
+            ->orderBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), 'desc')
+            ->orderBy(DB::raw('IFNULL(MONTH(date), MONTH(created_at))'), 'desc')
+            ->limit(12) // Máximo de 12 registros
             ->get();
           break;
         case 'annually': // Anual
-          $data = Payment::select(
+          $data = Payment::select([
             DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
             DB::raw('SUM(amount) as total')
-          )
+          ])
             ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'))
+            ->orderBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), 'desc')
+            ->limit(6) // Máximo de 6 registros
             ->get();
           break;
         case 'last-revenues': // Últimos ingresos (dos últimos meses incluyendo el actual)
@@ -70,12 +88,15 @@ class DashboardController
             ->get();
           break;
         default: // Mensual
-          $data = Payment::select(
+          $data = Payment::select([
             DB::raw('IFNULL(YEAR(date), YEAR(created_at)) as year'),
             DB::raw('IFNULL(MONTH(date), MONTH(created_at)) as month'),
             DB::raw('SUM(amount) as total')
-          )
+          ])
             ->groupBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), DB::raw('IFNULL(MONTH(date), MONTH(created_at))'))
+            ->orderBy(DB::raw('IFNULL(YEAR(date), YEAR(created_at))'), 'desc')
+            ->orderBy(DB::raw('IFNULL(MONTH(date), MONTH(created_at))'), 'desc')
+            ->limit(12) // Máximo de 12 registros
             ->get();
           break;
       }
