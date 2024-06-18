@@ -290,7 +290,7 @@ const Home = () => {
       </div>
 
       <div className='row'>
-        <div className='col-xl-6 col-md-12 col-sm-12'>
+        <div className='col-xl-5 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
               <DropdownEnd>
@@ -302,11 +302,11 @@ const Home = () => {
               <h4 className='header-title mb-0'>Ingresos - {revenuesTitle}</h4>
             </div>
             <div className='card-body' style={{ height: '300px', width: '100%' }}>
-              <canvas ref={revenueRef} width={'100%'}></canvas>
+              <canvas ref={revenueRef} width='100%'></canvas>
             </div>
           </div>
         </div>
-        <div className='col-xl-6 col-md-12 col-sm-12'>
+        <div className='col-xl-7 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
               <h4 className='header-title mb-0'>Pendientes de pago</h4>
@@ -317,17 +317,20 @@ const Home = () => {
                   <thead>
                     <tr>
                       <th>Cliente</th>
-                      <th>Proyecto</th>
-                      <th>Monto</th>
+                      <th>Tipo proyecto</th>
+                      <th>Debe</th>
+                      <th>Costo total</th>
                     </tr>
                   </thead>
                   <tbody>
                     {
-                      projectsRemaining.map(({ id, client, type, remaining_amount }) => {
+                      projectsRemaining.map(({ id, client, type, remaining_amount, cost, ends_at }) => {
                         return (<tr key={`remaining-project-${id}`}>
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
+                          <td>{moment(ends_at).format('ll')}</td>
                           <td>S/. {Number2Currency(remaining_amount)}</td>
+                          <td>S/. {Number2Currency(cost)}</td>
                         </tr>)
                       })
                     }
