@@ -327,7 +327,7 @@ const Home = () => {
                         return (<tr key={`remaining-project-${id}`}>
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
-                          <td>${remaining_amount}</td>
+                          <td>S/. {Number2Currency(remaining_amount)}</td>
                         </tr>)
                       })
                     }
