@@ -364,7 +364,7 @@ const Home = () => {
             <div className='card-body' style={{ height: '360px', overflow: 'auto' }}>
 
               <div className='table-responsive'>
-                <table className='table mb-0'>
+                <table className='table table-sm table-bordered table-striped mb-0'>
                   <thead>
                     <tr>
                       <th>Cliente</th>
@@ -378,7 +378,7 @@ const Home = () => {
                   <tbody>
                     {
                       projects.map((project, i) => {
-                        return <tr key={`project-${i}`} className={`${moment(project.ends_at).isBefore(moment()) ? 'bg-danger text-white' : ''}`}>
+                        return <tr key={`project-${i}`} className={`${moment(project.ends_at).isBefore(moment()) ? 'text-danger' : ''}`}>
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{moment(project.starts_at).format('LL')}</td>
