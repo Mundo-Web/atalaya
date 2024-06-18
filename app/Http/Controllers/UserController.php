@@ -20,7 +20,7 @@ class UserController extends Controller
         $response =  new dxResponse();
         try {
             $instance = User::select([
-                'id', 'name', 'lastname', 'email', 'status'
+                'id', 'name', 'lastname', 'relative_id', 'email', 'status'
             ]);
 
             if ($request->group != null) {

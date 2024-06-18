@@ -124,6 +124,17 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
           caption: 'Apellidos'
         },
         {
+          dataField: 'email',
+          caption: 'Correo',
+          dataType: 'email',
+          cellTemplate: (container, { data }) => {
+            ReactAppend(container, <>
+              <img className='avatar-xs rounded-circle me-1' src={`/api/profile/thumbnail/${data.relative_id}`} alt={data.name} />
+              {data.email}
+            </>)
+          }
+        },
+        {
           dataField: 'status',
           caption: 'Estado',
           dataType: 'boolean',
