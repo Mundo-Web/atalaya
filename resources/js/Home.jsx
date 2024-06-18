@@ -334,7 +334,7 @@ const Home = () => {
                         return (<tr key={`remaining-project-${id}`}>
                           <td>{client.tradename}</td>
                           <td>{type.name}</td>
-                          <td>{moment(ends_at).format('ll')}</td>
+                          <td>{moment(ends_at).format('DD/MM/YYYY')}</td>
                           <td><div style={{width: 'max-content'}}>S/. {Number2Currency(cost)}</div></td>
                           <td><div style={{width: 'max-content'}}>S/. {Number2Currency(remaining_amount)}</div></td>
                         </tr>)
