@@ -382,7 +382,7 @@ const Home = () => {
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{moment(project.starts_at).format('DD/MM/YYYY')}</td>
-                          <td>{moment(project.ends_at).format('DD/MM/YYYY') (moment(project.starts_at).fromNow())}</td>
+                          <td>{`${moment(project.ends_at).format('DD/MM/YYYY')} (${moment(project.ends_at).fromNow()})`}</td>
                           <td><span className='badge' style={{ backgroundColor: project.project_status.color }}>{project.project_status.name}</span></td>
                           <td>-</td>
                         </tr>
