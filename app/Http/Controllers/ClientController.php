@@ -110,6 +110,8 @@ class ClientController extends Controller
                     $exists = Client::where('contact_phone', $body['contact_phone'])
                         ->exists();
                     if (!$exists) {
+                        $body['source'] = 'WhatsApp';
+                        $body['origin'] = 'Interno';
                         $client = Client::create($body);
                     }
                 } else {
