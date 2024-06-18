@@ -19,7 +19,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
     if (whatsappStatus == 'verifying') {
       const searchParams = new URLSearchParams({
         session: 'atalaya',
-        redirect_to: `${location.origin}/free/clients`
+        redirect_to: `https://atalaya.mundoweb.pe/free/clients`
       })
 
       let eventSource = new EventSource(`${whatsappIP}/api/session/verify?${searchParams}`)
