@@ -351,7 +351,7 @@ const Home = () => {
       <div className='row'>
         <div className='col-12'>
           <div className='card'>
-            <div className='card-body'>
+            <div className="card-header">
               <div className='dropdown float-end'>
                 <Tippy content='Ver proyectos' arrow={true}>
                   <a href='/projects' className='arrow-none card-drop'>
@@ -359,8 +359,9 @@ const Home = () => {
                   </a>
                 </Tippy>
               </div>
-
               <h4 className='header-title mt-0 mb-3'>Proyectos prontos a terminar</h4>
+            </div>
+            <div className='card-body' style={{ height: '360px', overflow: 'auto' }}>
 
               <div className='table-responsive'>
                 <table className='table table-striped mb-0'>
