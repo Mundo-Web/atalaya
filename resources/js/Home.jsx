@@ -25,6 +25,7 @@ const Home = () => {
   const [totalProjects, setTotalProjects] = useState(0)
   const [totalProjectsThisMonth, setTotalProjectsThisMonth] = useState(0)
   const [projectsRemaining, setProjectsRemaining] = useState([])
+  const [totalRemaining, setTotalRemaining] = useState(0)
 
   useEffect(() => {
     if (chartRef.current) {
@@ -167,6 +168,7 @@ const Home = () => {
       filter: ["remaining_amount", ">", 0]
     })
       .then(({ data }) => {
+        setTotalRemaining(projectsRemaining.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0))
         setProjectsRemaining(data)
       })
 
@@ -183,8 +185,6 @@ const Home = () => {
   const daysPassed = moment().format('DD')
   const suposeToBe = lastRevenues.actual * totalDays / daysPassed
   const trending = (suposeToBe / lastRevenues.last) - 1
-
-  const totalRemaining = projectsRemaining.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0)
 
   return (
     <>
