@@ -301,7 +301,7 @@ const Home = () => {
               </DropdownEnd>
               <h4 className='header-title mb-0'>Ingresos - {revenuesTitle}</h4>
             </div>
-            <div className='card-body' style={{ height: '300px' }}>
+            <div className='card-body' style={{ height: '300px', width: '100%' }}>
               <canvas ref={revenueRef} width={'100%'}></canvas>
             </div>
           </div>
