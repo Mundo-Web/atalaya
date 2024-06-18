@@ -168,8 +168,8 @@ const Home = () => {
       filter: ["remaining_amount", ">", 0]
     })
       .then(({ data }) => {
-        setTotalRemaining(data.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0))
         setProjectsRemaining(data)
+        setTotalRemaining(data.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0))
       })
 
   }, [null])
