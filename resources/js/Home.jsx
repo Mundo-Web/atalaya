@@ -290,7 +290,7 @@ const Home = () => {
       </div>
 
       <div className='row'>
-        <div className='col-xl-7 col-sm-6'>
+        <div className='col-xl-7 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
               <DropdownEnd>
@@ -306,7 +306,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className='col-xl-5 col-sm-6'>
+        <div className='col-xl-5 col-md-6 col-sm-12'>
           <div className='card'>
             <div className='card-header'>
               <h4 className='header-title mb-0'>Pendientes de pago</h4>
