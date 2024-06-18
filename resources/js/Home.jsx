@@ -169,7 +169,9 @@ const Home = () => {
     })
       .then(({ data }) => {
         setProjectsRemaining(data)
-        setTotalRemaining(data.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0))
+        const total_remaining = data.reduce((acc, { remaining_amount }) => acc + remaining_amount, 0)
+        console.log(total_remaining)
+        setTotalRemaining(total_remaining)
       })
 
   }, [null])
