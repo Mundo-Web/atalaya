@@ -104,8 +104,8 @@ const Home = () => {
         // [
         '!',
         [
-          ['project_status.name', '=', 8], 'or',
-          ['project_status.name', '=', 9]
+          ['status_id', '=', 8], 'or',
+          ['status_id', '=', 9]
         ]
         // ]
       ]
