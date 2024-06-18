@@ -45,7 +45,9 @@ Route::middleware('auth')->group(function () {
                     'PUBLIC_RSA_KEY' => Controller::$PUBLIC_RSA_KEY,
                     'token' => csrf_token(),
                     'session' => Auth::user(),
-                    'permissions' => Auth::user()->getAllPermissions()
+                    'permissions' => Auth::user()->getAllPermissions(),
+                    'WA_URL' => env('WA_URL'),
+                    'APP_URL' => env('APP_URL')
                 ];
                 if (isset($page['compact'])) {
                     foreach ($page['compact'] as $key => $compact) {

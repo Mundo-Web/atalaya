@@ -7,7 +7,7 @@ import WhatsAppModal from './modals/WhatsAppModal'
 
 moment.tz.setDefault('UTC');
 
-const Adminto = ({ session, children, title, can }) => {
+const Adminto = ({ session, children, title, can, WA_URL, APP_URL }) => {
 
   const [whatsappStatus, setWhatsappStatus] = useState('verifying')
 
@@ -24,7 +24,7 @@ const Adminto = ({ session, children, title, can }) => {
         <Footer />
       </div>
     </div>
-    {can('whatsapp', 'all') && <WhatsAppModal session={session} status={whatsappStatus} setStatus={setWhatsappStatus} />}
+    {can('whatsapp', 'all') && <WhatsAppModal session={session} status={whatsappStatus} setStatus={setWhatsappStatus} WA_URL={WA_URL} APP_URL={APP_URL} />}
     <RigthBar />
     <div className="rightbar-overlay"></div>
   </>)

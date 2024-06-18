@@ -5,11 +5,9 @@ import Swal from "sweetalert2";
 import Tippy from "@tippyjs/react";
 import { Notify } from "sode-extend-react";
 
-const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
+const WhatsAppModal = ({ status: whatsappStatus, setStatus, WA_URL, APP_URL }) => {
   const qrRef = useRef()
   const phoneRef = useRef()
-
-  const whatsappIP = 'https://wajs.factusode.xyz'
 
   const { color, icon, text } = WhatsAppStatuses[whatsappStatus]
   const [percent, setPercent] = useState(0)
@@ -19,10 +17,10 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
     if (whatsappStatus == 'verifying') {
       const searchParams = new URLSearchParams({
         session: 'atalaya',
-        redirect_to: `https://atalaya.mundoweb.pe/free/clients`
+        redirect_to: APP_URL
       })
 
-      let eventSource = new EventSource(`${whatsappIP}/api/session/verify?${searchParams}`)
+      let eventSource = new EventSource(`${WA_URL}/api/session/verify?${searchParams}`)
       eventSource.onmessage = ({ data }) => {
         if (data == 'ping') return console.log('Realtime active')
         const { status, qr, percent, info } = JSON.parse(data)
@@ -82,7 +80,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
       cancelButtonText: `Cancelar`
     })
     if (!isConfirmed) return
-    await fetch(`${whatsappIP}/api/session/atalaya`, {
+    await fetch(`${WA_URL}/api/session/atalaya`, {
       method: 'DELETE'
     })
     Notify.add({
@@ -96,7 +94,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
 
   const onPingClicked = async () => {
     try {
-      const res = await fetch(`${whatsappIP}/api/send`, {
+      const res = await fetch(`${WA_URL}/api/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
