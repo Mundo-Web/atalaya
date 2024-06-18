@@ -28,7 +28,7 @@ class SendNewLeadNotification implements ShouldQueue
   {
     $client = $this->client;
     try {
-      $to = Text::keep(SettingController::get('whatsapp-new-lead-notification-waid'), '0123456789@.');
+      $to = Text::keep(SettingController::get('whatsapp-new-lead-notification-waid'), '0123456789@gc.us');
       $content = SettingController::get('whatsapp-new-lead-notification-message');
 
       foreach ($client->toArray() as $key => $value) {

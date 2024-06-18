@@ -3,6 +3,7 @@ import WhatsAppStatuses from "../../Reutilizables/WhatsApp/WhatsAppStatuses";
 import '../../../css/qr-code.css'
 import Swal from "sweetalert2";
 import Tippy from "@tippyjs/react";
+import { Notify } from "sode-extend-react";
 
 const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
   const qrRef = useRef()
@@ -84,21 +85,44 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
     await fetch(`${whatsappIP}/api/session/atalaya`, {
       method: 'DELETE'
     })
+    Notify.add({
+      icon: '/assets/img/logo-login.svg',
+      title: 'Operacion correcta',
+      body: `Se cerro la sesion de ${sessionInfo?.pushname || 'WhatsApp'}`
+    })
+    setSessionInfo({})
     setStatus('verifying')
   }
 
   const onPingClicked = async () => {
-    await fetch(`${whatsappIP}/api/send`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'atalaya',
-        to: [phoneRef.current.value],
-        content: 'Ping!\n> Mensaje automatico',
+    try {
+      const res = await fetch(`${whatsappIP}/api/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'atalaya',
+          to: [phoneRef.current.value],
+          content: 'Ping!\n> Mensaje automatico',
+        })
       })
-    })
+
+      if (!res.ok) throw new Error('No se pudo enviar el ping');
+
+      Notify.add({
+        icon: '/assets/img/logo-login.svg',
+        title: 'Operacion correcta',
+        body: `Se cerro la sesion de ${sessionInfo?.pushname || 'WhatsApp'}`
+      })
+    } catch (error) {
+      Notify.add({
+        icon: '/assets/img/logo-login.svg',
+        title: 'Error',
+        body: error.message,
+        type: 'danger'
+      })
+    }
   }
 
   return (<div id="whatsapp-modal" className="modal fade" aria-hidden="true" data-bs-backdrop='static' >
@@ -113,13 +137,13 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus }) => {
             </div>
             {
               whatsappStatus == 'ready' && <div className="d-block py-2">
-                <b>{sessionInfo.pushname}</b>
+                <b>{sessionInfo?.pushname}</b>
                 <br />
                 <span className="text-muted">{sessionInfo?.me?.user}@{sessionInfo?.me?.server}</span>
-                <div class="input-group mt-2">
-                  <input ref={phoneRef} type="text" class="form-control form-control-sm" placeholder="Numero receptor" />
+                <div className="input-group mt-2">
+                  <input ref={phoneRef} type="text" className="form-control form-control-sm" placeholder="Numero receptor" />
                   <Tippy content="Enviar mensaje ping">
-                    <button class="btn btn-sm input-group-text btn-dark waves-effect waves-light" type="button" onClick={onPingClicked}>Ping</button>
+                    <button className="btn btn-sm input-group-text btn-dark waves-effect waves-light" type="button" onClick={onPingClicked}>Ping</button>
                   </Tippy>
                 </div>
               </div>
