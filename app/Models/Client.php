@@ -20,6 +20,7 @@ class Client extends Model
         'tradename',
         'message',
         'web_url',
+        'sector',
         'description',
         'contact_name',
         'contact_phone',
