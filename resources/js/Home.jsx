@@ -134,7 +134,8 @@ const Home = () => {
               data: results.map(x => x.cantidad) || [],
               backgroundColor: results.map(x => x.color) || [],
               hoverOffset: 4
-            }]
+            }],
+            backgroundColor: 'transparent'
           },
           options: {
             plugins: {
