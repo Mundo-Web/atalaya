@@ -78,7 +78,7 @@
   @else
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="/assets/js/yeti.js"></script>
+    <script src="/assets/js/yeti.js?v=06d3ebc8-645c-4d80-a600-c9652743c426"></script>
   @endif
 </body>
 
