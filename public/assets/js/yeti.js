@@ -244,8 +244,8 @@ const StartYeti = () => {
   email.addEventListener('blur', onEmailBlur);
   email.addEventListener('input', onEmailInput);
   password.addEventListener('focus', onPasswordFocus);
-  // password.addEventListener('focus', onPasswordFocus);
-  password.addEventListener('change', onPasswordBlur);
+  password.addEventListener('keyup', onPasswordFocus)
+  password.addEventListener('blur', onPasswordBlur);
   gsap.set(armL, { x: -93, y: 220, rotation: 105, transformOrigin: "top left" });
   gsap.set(armR, { x: -93, y: 220, rotation: -105, transformOrigin: "top right" });
 }
