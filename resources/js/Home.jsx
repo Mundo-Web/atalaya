@@ -151,6 +151,7 @@ const Home = () => {
       requireTotalCount: true,
       ignoreData: true,
       filter: [
+        ['status', '<>', null], 'and',
         ['ends_at', '>=', moment().format('YYYY-MM-[01]')], 'and',
         ['ends_at', '<', moment().add(1, 'month').format('YYYY-MM-[01]')]
       ]

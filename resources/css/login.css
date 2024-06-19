@@ -129,7 +129,7 @@ body {
   padding: 10px;
 }
 
-.form-header .form-img img {
+.form-header .form-img .logo-img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -188,7 +188,8 @@ body {
 }
 
 .form-body .form-control:focus+.form-label,
-.form-body .form-control:valid+.form-label {
+.form-body .form-control:valid+.form-label,
+.form-body .form-control:-webkit-autofill+.form-label {
   cursor: unset;
   color: var(--lbl-primary);
   font-size: small;

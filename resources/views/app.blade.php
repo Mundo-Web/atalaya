@@ -72,6 +72,10 @@
     <script src="/lte/assets/libs/moment/min/moment.min.js"></script>
     <script src="/lte/assets/libs/moment/moment-timezone.js"></script>
     <script src="/lte/assets/libs/moment/locale/es.js"></script>
+  @else
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="/assets/js/yeti.js"></script>
   @endif
 </body>
 

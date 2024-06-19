@@ -165,7 +165,7 @@
     ]
   },
   "resources/js/Home.jsx": {
-    "file": "assets/Home-Dp8nYGPE.js",
+    "file": "assets/Home-BOQ4oQZv.js",
     "name": "Home",
     "src": "resources/js/Home.jsx",
     "isEntry": true,
@@ -197,7 +197,7 @@
     ]
   },
   "resources/js/Login.jsx": {
-    "file": "assets/Login-DzgWoJVN.js",
+    "file": "assets/Login-B9Chf3f3.js",
     "name": "Login",
     "src": "resources/js/Login.jsx",
     "isEntry": true,
@@ -206,7 +206,7 @@
       "_JSEncrypt-D3I3x59l.js"
     ],
     "css": [
-      "assets/Login-Bcii1rmp.css"
+      "assets/Login-Bp_L2abo.css"
     ]
   },
   "resources/js/Permissions.jsx": {
