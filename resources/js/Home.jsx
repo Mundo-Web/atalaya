@@ -14,6 +14,7 @@ const Home = () => {
   const revenueRef = useRef();
   const chartRef = useRef(null); // Usar useRef para mantener la referencia del gráfico
   const pieRef = useRef(null);
+  const remainingInput = useRef(null);
 
   const [revenuesTitle, setRevenuesTitle] = useState('Reporte mensual');
   const [revenuesRange, setRevenuesRange] = useState('monthly');
@@ -26,6 +27,7 @@ const Home = () => {
   const [totalProjectsThisMonth, setTotalProjectsThisMonth] = useState(0)
   const [projectsRemaining, setProjectsRemaining] = useState([])
   const [totalRemaining, setTotalRemaining] = useState(0)
+  const [totalCost, setTotalCost] = useState(0)
 
   useEffect(() => {
     if (chartRef.current) {
@@ -151,7 +153,7 @@ const Home = () => {
       requireTotalCount: true,
       ignoreData: true,
       filter: [
-        ['status', '<>', null], 'and',
+        ['status', '=', '1'], 'and',
         ['ends_at', '>=', moment().format('YYYY-MM-[01]')], 'and',
         ['ends_at', '<', moment().add(1, 'month').format('YYYY-MM-[01]')]
       ]
@@ -170,10 +172,19 @@ const Home = () => {
     })
       .then(({ data }) => {
         setProjectsRemaining(data)
+        setTotalCost(data.reduce((acc, { cost }) => acc + Number(cost), 0))
         setTotalRemaining(data.reduce((acc, { remaining_amount }) => acc + Number(remaining_amount), 0))
       })
 
   }, [null])
+
+  useEffect(() => {
+    const percent = Math.round(totalRemaining / totalCost * 100) || 0
+    remainingInput.current.value = percent
+    if (percent) {
+      $(remainingInput.current).knob()
+    }
+  }, [totalRemaining, totalCost])
 
   const onRevenueRangeChange = (e) => {
     const range = e.target.getAttribute('data-value')
@@ -253,7 +264,7 @@ const Home = () => {
                 </div>
                 <div className='widget-detail-1 text-end'>
                   <h2 className='fw-normal pt-2 mb-1'> {totalProjects} </h2>
-                  <p className='text-muted mb-1'>proyectos en curso</p>
+                  <p className='text-muted mb-1'>{totalProjectsThisMonth} proyectos este mes</p>
                 </div>
               </div>
             </div>
@@ -271,13 +282,26 @@ const Home = () => {
                 </Tippy>
               </div>
 
-              <h4 className='header-title mt-0 mb-3'>Proyectos nuevos</h4>
+              <h4 className='header-title mt-0 mb-3'>Deuda al 01 Junio</h4>
 
               <div className='widget-box-2'>
+                <Tippy content={<>
+                  Deuda pagada al {Number(totalRemaining / totalCost * 100).toFixed(2)}%
+                  <p className='mb-0'><b>Deuda total</b>: S/. {Number2Currency(totalRemaining)}</p>
+                  <p className='mb-0'><b>Costo total</b>: S/. {Number2Currency(totalCost)}</p>
+                  </>} arrow={true} allowHTML={true}>
+                  <div className="float-start" dir="ltr">
+                    <input ref={remainingInput} data-plugin="knob" data-width="70" data-height="70"
+                      data-fgcolor="#f05050" data-bgcolor="#f0505033" defaultValue={String(Math.round(totalRemaining / totalCost * 100) || 0)}
+                      data-skin="tron" data-angleloffset="180" data-readonly={true}
+                      data-thickness=".15" style={{ outline: 'none', border: 'none' }} />
+                  </div>
+                </Tippy>
                 <div className='widget-detail-2 text-end'>
+
                   {/* <span className='badge bg-pink rounded-pill float-start mt-3'>32% <i className='mdi mdi-trending-up'></i> </span> */}
-                  <h2 className='fw-normal mb-1'> {totalProjectsThisMonth} </h2>
-                  <p className='text-muted mb-3'> proyectos este mes</p>
+                  <h2 className='fw-normal mb-1'> S/. {Number2Currency(totalRemaining)} </h2>
+                  <p className='text-muted mb-3'> S/. {Number2Currency(totalRemaining)} en total</p>
                 </div>
                 {/* <div className='progress progress-bar-alt-pink progress-sm'>
                   <div className='progress-bar bg-pink' role='progressbar' aria-valuenow='77' aria-valuemin='0' aria-valuemax='100' style={{ width: '77%' }}>
@@ -290,7 +314,7 @@ const Home = () => {
 
         </div>
 
-      </div>
+      </div >
 
       <div className='row'>
         <div className='col-xl-5 col-md-6 col-sm-12'>
@@ -402,7 +426,7 @@ const Home = () => {
 
 CreateReactScript((el, properties) => {
   createRoot(el).render(
-    <Adminto {...properties} title='Inicio'>
+    <Adminto {...properties} title={`Dashboard - ${moment().format('MMMM YYYY')}`}>
       <Home {...properties} />
     </Adminto>
   );

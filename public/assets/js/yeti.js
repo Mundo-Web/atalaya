@@ -28,8 +28,6 @@ const StartYeti = () => {
   var hair = document.querySelector('.hair');
   var caretPos, curEmailIndex, screenCenter, svgCoords, eyeMaxHorizD = 20, eyeMaxVertD = 10, noseMaxHorizD = 23, noseMaxVertD = 10, dFromC, eyeDistH, eyeLDistV, eyeRDistV, eyeDistR, mouthStatus = "small";
 
-  console.log(email, password, mySVG);
-
   function getCoord(e) {
     var carPos = email.selectionEnd,
       div = document.createElement('div'),
@@ -185,9 +183,9 @@ const StartYeti = () => {
   }
 
   function onPasswordBlur(e) {
-    if (e.target.value == "") {
+    // if (e.target.value == "") {
       uncoverEyes();
-    }
+    // }
   }
 
   function coverEyes() {

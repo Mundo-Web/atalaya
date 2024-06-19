@@ -60,6 +60,9 @@
     <!-- Vendor js -->
     <script src="/lte/assets/js/vendor.min.js"></script>
 
+    @if ($route == 'home')
+      <script src="/lte/assets/libs/jquery-knob/jquery.knob.min.js"></script>
+    @endif
     <script src="/lte/assets/libs/quill/quill.min.js"></script>
     <script src="/lte/assets/libs/select2/js/select2.full.min.js"></script>
 

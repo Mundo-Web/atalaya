@@ -214,6 +214,9 @@ const Leads = ({ statuses, session, can }) => {
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-info' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
               <i className='fa fa-comment'></i>
             </TippyButton>)
+            can('leads', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar lead' onClick={() => onDeleteClicked(data.id)}>
+              <i className='fa fa-trash'></i>
+            </TippyButton>)
           },
           allowFiltering: false,
           allowExporting: false
