@@ -13,8 +13,8 @@
       "assets/Adminto-BfiZgK1t.css"
     ]
   },
-  "_AssignUsersModal-CIofDw5N.js": {
-    "file": "assets/AssignUsersModal-CIofDw5N.js",
+  "_AssignUsersModal-CmDh1hif.js": {
+    "file": "assets/AssignUsersModal-CmDh1hif.js",
     "name": "AssignUsersModal",
     "imports": [
       "_CreateReactScript-BZNFBiYC.js",
@@ -24,12 +24,12 @@
       "_TippyButton-CmK-eco3.js",
       "_Dropdown-Bjfbcv4z.js",
       "_DropdownItem-mg3Fv28F.js",
-      "_Assigneds-CCfNPX-v.js",
+      "_Assigneds-df-xSQrz.js",
       "_SetSelectValue-TcZeamg_.js"
     ]
   },
-  "_Assigneds-CCfNPX-v.js": {
-    "file": "assets/Assigneds-CCfNPX-v.js",
+  "_Assigneds-df-xSQrz.js": {
+    "file": "assets/Assigneds-df-xSQrz.js",
     "name": "Assigneds",
     "imports": [
       "_CreateReactScript-BZNFBiYC.js",
@@ -171,7 +171,7 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-C4Wai19-.js",
+    "file": "assets/Clients-Dhap7nOJ.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
@@ -179,9 +179,9 @@
       "_Adminto-98sYPb9M.js",
       "_CreateReactScript-BZNFBiYC.js",
       "_ClientsRest-BzwWA7Kj.js",
-      "_AssignUsersModal-CIofDw5N.js",
+      "_AssignUsersModal-CmDh1hif.js",
       "_Table-7H_SmTdZ.js",
-      "_Assigneds-CCfNPX-v.js",
+      "_Assigneds-df-xSQrz.js",
       "_InputFormGroup-BUOjBXeO.js",
       "_TextareaFormGroup-Ch_FAxDs.js",
       "_TippyButton-CmK-eco3.js",
@@ -194,7 +194,7 @@
     ]
   },
   "resources/js/Home.jsx": {
-    "file": "assets/Home-BZ1lgovD.js",
+    "file": "assets/Home-Cpt3CC1o.js",
     "name": "Home",
     "src": "resources/js/Home.jsx",
     "isEntry": true,
@@ -203,7 +203,7 @@
       "_Adminto-98sYPb9M.js",
       "_DropdownEnd-BGPgPEIS.js",
       "_DropdownItem-mg3Fv28F.js",
-      "_Assigneds-CCfNPX-v.js",
+      "_Assigneds-df-xSQrz.js",
       "_server.browser-B4QJrVD-.js"
     ]
   },
@@ -266,15 +266,15 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-CbDTs17j.js",
+    "file": "assets/Projects-BHvDPyko.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-BZNFBiYC.js",
       "_Adminto-98sYPb9M.js",
-      "_AssignUsersModal-CIofDw5N.js",
-      "_Assigneds-CCfNPX-v.js",
+      "_AssignUsersModal-CmDh1hif.js",
+      "_Assigneds-df-xSQrz.js",
       "_Table-7H_SmTdZ.js",
       "_SetSelectValue-TcZeamg_.js",
       "_DxButton-CsjWvhyj.js",

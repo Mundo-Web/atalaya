@@ -35,7 +35,7 @@ const Assigneds = (relatives) => {
             <img
               className='avatar-group-item avatar-xs rounded-circle mb-0'
               src={`/api/profile/thumbnail/${relative_id}`}
-              style={{ backdropFilter: 'blur(40px)' }}
+              style={{ backdropFilter: 'blur(40px)', marginRight: '6px' }}
             />
           </Tippy>)
         }
