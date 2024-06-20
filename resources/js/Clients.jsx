@@ -21,6 +21,7 @@ import DxButton from './components/dx/DxButton.jsx'
 import AssignUsersModal from './Reutilizables/Projects/AssignUsersModal.jsx'
 import UsersByProjectsRest from './actions/UsersByProjectsRest.js'
 import { renderToString } from 'react-dom/server'
+import DateRange from './Reutilizables/Projects/DateRange.jsx'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -296,31 +297,6 @@ const Clients = ({ statuses, can }) => {
                       const rest = Number(project.cost - project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
                       const relatives = (project.users || '').split('|').filter(Boolean)
 
-                      const startDate = moment(project.starts_at);
-                      const endDate = moment(project.ends_at);
-                      const currentDate = moment();
-
-                      let dateElement = <></>
-                      if (currentDate.isBefore(startDate)) {
-                        dateElement = <i className='text-muted'>El proyecto aún no comienza</i>
-                      } else if (currentDate.isAfter(endDate)) {
-                        dateElement = <i className='text-muted'>El proyecto ya terminó</i>
-                      } else {
-                        const totalDuration = endDate.diff(startDate);
-                        const elapsedDuration = currentDate.diff(startDate);
-                        const percentageElapsed = (elapsedDuration / totalDuration) * 100;
-
-                        dateElement = <div style={{ width: '200px' }}>
-                          <p className='mb-0 d-flex justify-content-between'>
-                            <span>{moment(project.starts_at).format('DD MMM YYYY')}</span>
-                            <span className='float-end'>{moment(project.ends_at).format('DD MMM YYYY')}</span>
-                          </p>
-                          <div className="progress progress-bar-alt-primary progress-xl mb-0 mt-0">
-                            <div className="progress-bar progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
-                          </div>
-                        </div>
-                      }
-
                       return <tr key={`project-${project.id}`}>
                         <td valign='middle'>{project.type.name}</td>
                         <td valign='middle'>
@@ -373,9 +349,7 @@ const Clients = ({ statuses, can }) => {
                             </div>
                           </div>
                         </td>
-                        <td valign='middle'>
-                          {dateElement}
-                        </td>
+                        <td valign='middle'>{DateRange(project.start_date, project.end_date)}</td>
                         <td valign='middle'>
                           <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
                             $(gridRef.current).dxDataGrid('instance').refresh()
