@@ -19,11 +19,9 @@ import InputFormGroup from './components/form/InputFormGroup.jsx'
 import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import DxBox from './components/dx/DxBox.jsx'
-import Tippy from '@tippyjs/react'
-import { renderToString } from 'react-dom/server'
-import UsersByProjectsRest from './actions/UsersByProjectsRest.js'
 import AssignUsersModal from './Reutilizables/Projects/AssignUsersModal.jsx'
 import DateRange from './Reutilizables/Projects/DateRange.jsx'
+import Assigneds from './Reutilizables/Projects/Assigneds.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -156,43 +154,7 @@ const Projects = ({ statuses, can }) => {
           dataType: 'string',
           cellTemplate: (container, { data }) => {
             const relatives = (data.users || '').split('|').filter(Boolean)
-            container.append(DxBox([
-              <div className='avatar-group m-0'>
-                {
-                  relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
-                    const user = await UsersByProjectsRest.getUser(relative_id)
-                    const userDate = moment(user.created_at)
-                    const now = moment()
-                    const diffHours = now.diff(userDate, 'hours')
-                    const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
-
-                    $(instance.popper).find('.tippy-content').addClass('p-0')
-                    instance.setContent(renderToString(<div className="card mb-0" style={{
-                      boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
-                    }}>
-                      <div className="card-body widget-user p-2">
-                        <div className="d-flex align-items-center">
-                          <div className="avatar-lg me-3 flex-shrink-0">
-                            <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
-                          </div>
-                          <div className="flex-grow-1 overflow-hidden">
-                            <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
-                            <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
-                            <small className='text-muted'>Asignado: <b>{time}</b></small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>))
-                  }}>
-                    <img
-                      className='avatar-group-item avatar-xs rounded-circle mb-0'
-                      src={`/api/profile/thumbnail/${relative_id}`}
-                      style={{ backdropFilter: 'blur(40px)' }}
-                    />
-                  </Tippy>)
-                }
-              </div>
-            ]))
+            container.append(DxBox([Assigneds(relatives)]))
           }
         },
         {

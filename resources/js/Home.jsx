@@ -11,6 +11,7 @@ import ProjectsRest from './actions/ProjectsRest';
 import Number2Currency from './Utils/Number2Currency';
 import RemainingsHistoryRest from './actions/RemainingsHistoryRest';
 import DateRange from './Reutilizables/Projects/DateRange';
+import Assigneds from './Reutilizables/Projects/Assigneds';
 
 const Home = () => {
   const revenueRef = useRef();
@@ -411,49 +412,12 @@ const Home = () => {
                     {
                       projects.map((project, i) => {
                         const relatives = (project.users || '').split('|').filter(Boolean)
-
                         return <tr key={`project-${i}`} className={`${moment(project.ends_at).isBefore(moment()) ? 'text-danger' : ''}`}>
                           <td>{project.client.tradename}</td>
                           <td>{project.name}</td>
                           <td>{DateRange(project.starts_at, project.ends_at)}</td>
                           <td><span className='badge' style={{ backgroundColor: project.project_status.color }}>{project.project_status.name}</span></td>
-                          <td>
-                            <div className='avatar-group m-0'>
-                            {
-                              relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
-                                const user = await UsersByProjectsRest.getUser(relative_id)
-                                const userDate = moment(user.created_at)
-                                const now = moment()
-                                const diffHours = now.diff(userDate, 'hours')
-                                const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
-
-                                $(instance.popper).find('.tippy-content').addClass('p-0')
-                                instance.setContent(renderToString(<div className="card mb-0" style={{
-                                  boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
-                                }}>
-                                  <div className="card-body widget-user p-2">
-                                    <div className="d-flex align-items-center">
-                                      <div className="avatar-lg me-3 flex-shrink-0">
-                                        <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
-                                      </div>
-                                      <div className="flex-grow-1 overflow-hidden">
-                                        <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
-                                        <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
-                                        <small className='text-muted'>Asignado: <b>{time}</b></small>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>))
-                              }}>
-                                <img
-                                  className='avatar-group-item avatar-xs rounded-circle mb-0'
-                                  src={`/api/profile/thumbnail/${relative_id}`}
-                                  style={{ backdropFilter: 'blur(40px)' }}
-                                />
-                              </Tippy>)
-                            }
-                          </div>
-                          </td>
+                          <td>{Assigneds(relatives)}</td>
                         </tr>
                       })
                     }
