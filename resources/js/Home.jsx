@@ -9,6 +9,7 @@ import DropdownItem from './components/dropdown/DropdownItem';
 import Tippy from '@tippyjs/react';
 import ProjectsRest from './actions/ProjectsRest';
 import Number2Currency from './Utils/Number2Currency';
+import RemainingsHistoryRest from './actions/RemainingsHistoryRest';
 
 const Home = () => {
   const revenueRef = useRef();
@@ -28,6 +29,7 @@ const Home = () => {
   const [projectsRemaining, setProjectsRemaining] = useState([])
   const [totalRemaining, setTotalRemaining] = useState(0)
   const [totalCost, setTotalCost] = useState(0)
+  const [lastRemaining, setLastRemaining] = useState(0)
 
   useEffect(() => {
     if (chartRef.current) {
@@ -177,6 +179,10 @@ const Home = () => {
         setTotalRemaining(data.reduce((acc, { remaining_amount }) => acc + Number(remaining_amount), 0))
       })
 
+    RemainingsHistoryRest.get(moment().format('MM-YYYY'))
+    .then(data => {
+      setLastRemaining(data.remaining_amount)
+    })
   }, [null])
 
   useEffect(() => {
@@ -209,7 +215,7 @@ const Home = () => {
               <h4 className='header-title mt-0 mb-4'>Ingresos - Mes anterior</h4>
               <div className='widget-chart-1'>
                 <div className='widget-detail-1 text-end'>
-                  <h2 className='fw-normal pt-2 mb-1'> S/. {Number2Currency(lastRevenues?.last)} </h2>
+                  <h2 className='fw-normal pt-1 mb-1'> S/. {Number2Currency(lastRevenues?.last)} </h2>
                   <p className='text-muted mb-1'>{lastMonth}</p>
                 </div>
               </div>
@@ -226,7 +232,7 @@ const Home = () => {
                   <Tippy content={`Es probable que tengamos ${(Math.abs(trending) * 100).toFixed(2)}% ${trending >= 0 ? 'mas' : 'menos'} de ingresos respecto al mes anterior`}>
                     <span className={`badge bg-${trending > 0 ? 'success' : 'danger'} rounded-pill float-start mt-3`}>{Math.round(trending * 100) || 0}% <i className={`mdi mdi-trending-${trending > 0 ? 'up' : 'down'}`}></i> </span>
                   </Tippy>
-                  <h2 className='fw-normal mb-1'> S/. {Number2Currency(lastRevenues?.actual)} </h2>
+                  <h3 className='fw-normal mt-1 mb-1'> S/. {Number2Currency(lastRevenues?.actual)} </h3>
                   <p className='text-muted mb-3'>{moment().format('MMMM Y')}</p>
                 </div>
                 <Tippy content={<p className='text-center mb-0'>
@@ -264,8 +270,8 @@ const Home = () => {
                   </div>
                 </div>
                 <div className='widget-detail-1 text-end'>
-                  <h2 className='fw-normal pt-2 mb-1'> {totalProjects} </h2>
-                  <p className='text-muted mb-1'>{totalProjectsThisMonth} proyectos este mes</p>
+                  <h2 className='fw-normal pt-0 mb-1'> {totalProjects} </h2>
+                  <p className='text-muted mb-1'>{totalProjectsThisMonth} nuevos este mes</p>
                 </div>
               </div>
             </div>
@@ -283,7 +289,7 @@ const Home = () => {
                 </Tippy>
               </div>
 
-              <h4 className='header-title mt-0 mb-3'>Deuda al 01 Junio</h4>
+              <h4 className='header-title mt-0 mb-3'>Deuda al {moment().startOf('month').format('D [de] MMMM')}</h4>
 
               <div className='widget-box-2'>
                 <Tippy content={<>
@@ -301,8 +307,8 @@ const Home = () => {
                 <div className='widget-detail-2 text-end'>
 
                   {/* <span className='badge bg-pink rounded-pill float-start mt-3'>32% <i className='mdi mdi-trending-up'></i> </span> */}
-                  <h2 className='fw-normal mb-1'> S/. {Number2Currency(totalRemaining)} </h2>
-                  <p className='text-muted mb-3'> S/. {Number2Currency(totalRemaining)} en total</p>
+                  <h3 className='fw-normal pt-1 mb-1'> S/. {Number2Currency(lastRemaining)} </h3>
+                  <p className='text-muted mb-3'> S/. {Number2Currency(totalRemaining)} hasta hoy</p>
                 </div>
                 {/* <div className='progress progress-bar-alt-pink progress-sm'>
                   <div className='progress-bar bg-pink' role='progressbar' aria-valuenow='77' aria-valuemin='0' aria-valuemax='100' style={{ width: '77%' }}>

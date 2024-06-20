@@ -207,8 +207,16 @@ class ClientController extends Controller
     {
         $response = new Response();
         try {
-            $deleted = Client::where('id', $id)
-                ->update(['status' => null]);
+            $client = Client::find($id);
+            if (!$client) throw new Exception('No se ha encontrado ningun registro');
+
+            if ($client->status_id == 12) {
+                $deleted = Client::where('id', $id)
+                    ->update(['status' => null]);
+            } else {
+                $deleted = Client::where('id', $id)
+                    ->delete();
+            }
 
             if (!$deleted) throw new Exception('No se ha eliminado ningun registro');
 

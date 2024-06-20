@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
-use Spatie\Permission\Contracts\Role;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller

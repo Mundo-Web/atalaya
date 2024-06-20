@@ -169,7 +169,7 @@ const Leads = ({ statuses, session, can }) => {
         },
         {
           caption: 'Acciones',
-          width: 200,
+          width: 240,
           cellTemplate: (container, { data }) => {
             container.attr('style', 'display: flex; gap: 4px; overflow: visible')
 
@@ -214,7 +214,19 @@ const Leads = ({ statuses, session, can }) => {
             ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-info' title='Ver lead' onClick={() => onModalLeadOpen(data)}>
               <i className='fa fa-comment'></i>
             </TippyButton>)
-            can('leads', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar lead' onClick={() => onDeleteClicked(data.id)}>
+            can('leads', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar lead' onClick={async () => {
+              const { isConfirmed } = await Swal.fire({
+                title: "Estas seguro de eliminar este lead?",
+                text: `No podras revertir esta accion!`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Continuar",
+                cancelButtonText: `Cancelar`
+              })
+              if (!isConfirmed) return
+              await ClientsRest.delete(data.id)
+              $(gridRef.current).dxDataGrid('instance').refresh()
+            }}>
               <i className='fa fa-trash'></i>
             </TippyButton>)
           },
