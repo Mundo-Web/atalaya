@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use SoDe\Extend\Crypto;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
@@ -96,6 +97,7 @@ class UserController extends Controller
             if (!$jpa) {
                 if (!isset($request->password) || !isset($request->confirm)) throw new Exception('Debes ingresar una contraseña para el nuevo usuario');
                 $jpa = new User();
+                $jpa->relative_id = Crypto::randomUUID();
             }
             $jpa->name = $request->name;
             $jpa->lastname = $request->lastname;

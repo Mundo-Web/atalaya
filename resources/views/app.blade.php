@@ -15,11 +15,16 @@
 
   @if ($admintoInstance)
     <link href="/lte/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-    <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
 
     {{-- QuillJs Styles --}}
     <link href="/lte/assets/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
     <link href="/lte/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+
+    {{-- DxDataGrid Styles --}}
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
+      rel="stylesheet" type="text/css" id="dg-default-stylesheet" />
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
+      rel="stylesheet" type="text/css" id="dg-dark-stylesheet" disabled="disabled" />
 
     {{-- Bootstrap Styles --}}
     <link href="/lte/assets/css/config/default/bootstrap.min.css" rel="stylesheet" type="text/css"
@@ -34,16 +39,16 @@
 
     {{-- icons --}}
     <link href="/lte/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-
-    {{-- DxDataGrid Styles --}}
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
-      rel="stylesheet" type="text/css" id="dg-default-stylesheet" />
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
-      rel="stylesheet" type="text/css" id="dg-dark-stylesheet" disabled="disabled" />
   @endif
 
   @vite('resources/js/' . $component['component'])
   @inertiaHead
+
+  <style>
+    .tippy-tooltip {
+      padding: 0;
+    }
+  </style>
 </head>
 
 <body class="loading"
@@ -65,6 +70,7 @@
     @endif
     <script src="/lte/assets/libs/quill/quill.min.js"></script>
     <script src="/lte/assets/libs/select2/js/select2.full.min.js"></script>
+    <script src="/lte/assets/libs/tippy.js/tippy.all.min.js"></script>
 
     <!-- App js -->
     <script src="/lte/assets/js/app.js?v={{ uniqid() }}"></script>

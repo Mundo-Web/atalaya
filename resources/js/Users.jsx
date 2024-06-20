@@ -1,21 +1,23 @@
 
+import JSEncrypt from 'jsencrypt'
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
-import PasswordFormGroup from './components/form/PasswordFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import JSEncrypt from 'jsencrypt'
-import UsersRest from './actions/UsersRest.js'
-import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import SetSelectValue from './Utils/SetSelectValue.jsx'
 import RolesRest from './actions/RolesRest.js'
+import UsersRest from './actions/UsersRest.js'
+import Adminto from './components/Adminto'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
+import PasswordFormGroup from './components/form/PasswordFormGroup.jsx'
+import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
+import DxBox from './components/dx/DxBox.jsx'
+import DxButton from './components/dx/DxButton.jsx'
 
-const Users = ({ PUBLIC_RSA_KEY }) => {
+const Users = ({ can, PUBLIC_RSA_KEY }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -95,7 +97,7 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -103,7 +105,7 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });
@@ -128,10 +130,14 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
           caption: 'Correo',
           dataType: 'email',
           cellTemplate: (container, { data }) => {
-            ReactAppend(container, <>
-              <img className='avatar-xs rounded-circle me-1' src={`/api/profile/thumbnail/${data.relative_id}`} alt={data.name} />
-              {data.email}
-            </>)
+            container.append(DxBox([
+              <img
+                className='avatar-xs rounded-circle'
+                src={`/api/profile/thumbnail/${data.relative_id}`}
+                alt={data.name}
+              />,
+              <p className='mb-0' style={{ fontSize: "14px" }}>{data.email}</p>
+            ], false))
           }
         },
         {
@@ -155,25 +161,30 @@ const Users = ({ PUBLIC_RSA_KEY }) => {
         {
           caption: 'Acciones',
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px; overflow: unset')
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
-              <i className='fa fa-pen'></i>
-            </TippyButton>)
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
-              {
-                data.status === 1
-                  ? <i className='fa fa-toggle-on text-success' />
-                  : data.status === 0 ?
-                    <i className='fa fa-toggle-off text-danger' />
-                    : <i className='fas fa-trash-restore' />
-              }
-            </TippyButton>)
-
-            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
-              <i className='fa fa-trash-alt'></i>
-            </TippyButton>)
+            can('users', 'root', 'all', 'update') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-primary',
+              title: 'Editar',
+              icon: 'fa fa-pen',
+              onClick: () => onModalOpen(data)
+            }))
+            can('projects', 'root', 'all', 'assignUsers') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-info',
+              title: 'Asignar proyectos',
+              icon: 'fas fa-folder-plus',
+              onClick: () => onAssignProjects()
+            }))
+            can('users', 'root', 'all', 'update') && container.append(DxButton({
+              className: 'btn btn-xs btn-light',
+              title: data.status === null ? 'Restaurar' : 'Cambiar estado',
+              icon: data.status === 1 ? 'fa fa-toggle-on text-success' : data.status === 0 ? 'fa fa-toggle-off text-danger' : 'fas fa-trash-restore',
+              onClick: () => onStatusChange(data)
+            }))
+            can('users', 'root', 'all', 'delete') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-danger',
+              title: 'Eliminar',
+              icon: 'fa fa-trash-alt',
+              onClick: () => onDeleteClicked(data.id)
+            }))
           },
           allowFiltering: false,
           allowExporting: false

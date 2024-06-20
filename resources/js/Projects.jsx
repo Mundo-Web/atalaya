@@ -2,21 +2,28 @@
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { GET } from 'sode-extend-react'
+import Swal from 'sweetalert2'
+import 'tippy.js/dist/tippy.css'
+import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
+import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
+import Number2Currency from './Utils/Number2Currency.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
 import SetSelectValue from './Utils/SetSelectValue.jsx'
 import ProjectsRest from './actions/ProjectsRest.js'
 import Adminto from './components/Adminto.jsx'
 import Modal from './components/Modal.jsx'
 import Table from './components/Table.jsx'
+import DxButton from './components/dx/DxButton.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
-import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
-import Swal from 'sweetalert2'
-import Number2Currency from './Utils/Number2Currency.jsx'
+import DxBox from './components/dx/DxBox.jsx'
+import Tippy from '@tippyjs/react'
+import { renderToString } from 'react-dom/server'
+import UsersRest from './actions/UsersRest.js'
+import ProfileRest from './actions/ProfileRest.js'
+import UsersByProjectsRest from './actions/UsersByProjectsRest.js'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -32,6 +39,11 @@ const Projects = ({ statuses, can }) => {
   const signAtRef = useRef()
   const startsAtRef = useRef()
   const endsAtRef = useRef()
+
+  const assignModalRef = useRef()
+  const projectToAssignRef = useRef()
+  const assignIdRef = useRef()
+  const assignUsersRef = useRef()
 
   const [isEditing, setIsEditing] = useState(false)
   const [dataLoaded, setDataLoaded] = useState({})
@@ -97,6 +109,11 @@ const Projects = ({ statuses, can }) => {
     $(gridRef.current).dxDataGrid('instance').refresh()
   }
 
+  const onAssignClicked = async (id) => {
+    assignIdRef.current.value = id
+    $(assignModalRef.current).modal('show')
+  }
+
   return (<>
     <Table gridRef={gridRef} title='Proyectos' rest={ProjectsRest}
       toolBar={(container) => {
@@ -104,7 +121,7 @@ const Projects = ({ statuses, can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -112,7 +129,7 @@ const Projects = ({ statuses, can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });
@@ -123,12 +140,15 @@ const Projects = ({ statuses, can }) => {
           dataField: 'id',
           caption: 'ID',
           dataType: 'number',
-          sortOrder: 'asc'
+          sortOrder: 'asc',
+          visible: false
         },
         {
           dataField: 'client.tradename',
           caption: 'Nombre comercial',
-          filterValue: GET.client || undefined
+          filterValue: GET.client || undefined,
+          fixed: true,
+          fixedPosition: 'left'
         },
         {
           dataField: 'type.name',
@@ -151,21 +171,24 @@ const Projects = ({ statuses, can }) => {
           dataField: 'remaining_amount',
           caption: 'Pagos',
           dataType: 'number',
-          width: 225,
           cellTemplate: (container, { data }) => {
             const percent = ((data.total_payments / data.cost) * 100).toFixed(2)
             const payments = Number(data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
             const rest = Number(data.cost - data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
-            ReactAppend(container, <>
-              <p className='mb-0 d-flex justify-content-between'>
-                <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
-                <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
-              </p>
-              <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0'>
-                <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+            container.append(DxBox([
+              <>
+                <p className='mb-0 d-flex justify-content-between'>
+                  <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
+                  <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
+                </p>
+                <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
+                  width: '200px'
+                }}>
+                  <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                  </div>
                 </div>
-              </div>
-            </>)
+              </>
+            ], false))
           }
         },
         {
@@ -190,11 +213,61 @@ const Projects = ({ statuses, can }) => {
           dataType: 'string',
           cellTemplate: (container, { data }) => {
             container.attr('style', 'overflow: visible')
-            ReactAppend(container, <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={() => {
-              $(gridRef.current).dxDataGrid('instance').refresh()
-            }} />)
+            container.append(DxBox([
+              {
+                height: '0',
+                children: <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={() => {
+                  $(gridRef.current).dxDataGrid('instance').refresh()
+                }} />
+              }
+            ]))
           }
         } : null,
+        {
+          dataField: 'users',
+          caption: 'Asignados',
+          dataType: 'string',
+          cellTemplate: (container, { data }) => {
+            const relatives = (data.users || '').split('|').filter(Boolean)
+            container.append(DxBox([
+              <div className='avatar-group m-0'>
+                {
+                  relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
+                    const user = await UsersByProjectsRest.getUser(relative_id)
+                    const userDate = moment(user.created_at).add(5, 'hours')
+                    const now = moment()
+                    const diffHours = now.diff(userDate, 'hours')
+                    const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
+
+                    $(instance.popper).find('.tippy-content').addClass('p-0')
+                    instance.setContent(renderToString(<div className="card mb-0" style={{
+                      boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
+                    }}>
+                      <div className="card-body widget-user p-2">
+                        <div className="d-flex align-items-center">
+                          <div className="avatar-lg me-3 flex-shrink-0">
+                            <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
+                          </div>
+                          <div className="flex-grow-1 overflow-hidden">
+                            <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
+                            <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
+                            <small className='text-muted'>Asignado: <b>{time}</b></small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>))
+                  }}>
+                    <img
+                      className='avatar-group-item avatar-xs rounded-circle mb-0'
+                      src={`/api/profile/thumbnail/${relative_id}`}
+                      style={{ backdropFilter: 'blur(40px)' }}
+                    />
+                  </Tippy>)
+                }
+              </div>
+            ]))
+          }
+        },
         {
           dataField: 'status',
           caption: 'Estado',
@@ -216,17 +289,36 @@ const Projects = ({ statuses, can }) => {
         },
         {
           caption: 'Acciones',
-          width: 175,
+          // width: 175,
           cellTemplate: (container, { data }) => {
-            container.attr('style', 'display: flex; gap: 4px;')
+            // container.attr('style', 'display: flex; gap: 4px;')
 
-            can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
-              <i className='fa fa-pen'></i>
-            </TippyButton>)
+            // can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-primary' title='Editar' onClick={() => onModalOpen(data)}>
+            //   <i className='fa fa-pen'></i>
+            // </TippyButton>)
+            can('projects', 'root', 'all', 'update') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-primary',
+              title: 'Editar',
+              icon: 'fa fa-pen',
+              onClick: () => onModalOpen(data)
+            }))
 
-            can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
-              <i className='fas fa-money-check-alt'></i>
-            </TippyButton>)
+            can('projects', 'root', 'all', 'assignUsers') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-info',
+              title: 'Asignar usuarios',
+              icon: 'fa fa-user-plus',
+              onClick: () => onAssignClicked()
+            }))
+
+            // can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
+            //   <i className='fas fa-money-check-alt'></i>
+            // </TippyButton>)
+            can('projects', 'root', 'all', 'addpayment') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-success',
+              title: 'Ver/Agregar pagos',
+              icon: 'fas fa-money-check-alt',
+              onClick: () => setDataLoaded(data)
+            }))
 
             // can('projects', 'root', 'all', 'update') && ReactAppend(container, <TippyButton className='btn btn-xs btn-light' title={data.status === null ? 'Restaurar' : 'Cambiar estado'} onClick={() => onStatusChange(data)}>
             //   {
@@ -238,9 +330,15 @@ const Projects = ({ statuses, can }) => {
             //   }
             // </TippyButton>)
 
-            can('projects', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
-              <i className='fa fa-trash-alt'></i>
-            </TippyButton>)
+            // can('projects', 'root', 'all', 'delete') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-danger' title='Eliminar' onClick={() => onDeleteClicked(data.id)}>
+            //   <i className='fa fa-trash-alt'></i>
+            // </TippyButton>)
+            can('projects', 'root', 'all', 'delete') && container.append(DxButton({
+              className: 'btn btn-xs btn-soft-danger',
+              title: 'Eliminar',
+              icon: 'fa fa-trash-alt',
+              onClick: () => onDeleteClicked(data.id)
+            }))
           },
           allowFiltering: false,
           allowExporting: false
@@ -261,6 +359,16 @@ const Projects = ({ statuses, can }) => {
     </Modal>
 
     <PaymentModal can={can} dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
+
+    <Modal modalRef={assignModalRef} title='Asignar usuarios al proyecto' onSubmit={onModalSubmit}>
+      <div id='assign-users-container'>
+        <p>
+          Que usuarios deseas asignar al proyecto <b ref={projectToAssignRef}>X</b>
+        </p>
+        <input ref={assignIdRef} type='hidden' />
+        <SelectAPIFormGroup eRef={assignUsersRef} label='Usuarios a asignar' col='col-12' dropdownParent='#assign-users-container' searchAPI='/api/users/paginate' searchBy='name' />
+      </div>
+    </Modal>
   </>
   )
 };

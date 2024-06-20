@@ -16,6 +16,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\UserByProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -128,4 +129,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/settings/{id}', [SettingController::class, 'delete']);
 
     Route::get('/remainings-history/{month}', [RemainingHistoryController::class, 'get']);
+
+    Route::get('/users-by-projects/{relative_id}', [UserByProjectController::class, 'getUser']);
 });

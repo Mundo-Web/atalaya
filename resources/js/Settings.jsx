@@ -1,16 +1,16 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import SettingsRest from './actions/SettingsRest.js'
-import QuillFormGroup from './components/form/QuillFormGroup.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import SetQuillValue from './Utils/SetQuillValue.jsx'
+import SettingsRest from './actions/SettingsRest.js'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
+import QuillFormGroup from './components/form/QuillFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
 
 const Settings = ({ can }) => {
   const gridRef = useRef()
@@ -75,7 +75,7 @@ const Settings = ({ can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -83,7 +83,7 @@ const Settings = ({ can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });

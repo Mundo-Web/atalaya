@@ -1,17 +1,17 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import TypesRest from './actions/TypesRest.js'
-import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import SetSelectValue from './Utils/SetSelectValue.jsx'
+import TypesRest from './actions/TypesRest.js'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
 import SelectAPIFormGroup from './components/form/SelectAPIFormGroup.jsx'
+import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
 
 const Types = () => {
   const gridRef = useRef()
@@ -73,7 +73,7 @@ const Types = () => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -81,7 +81,7 @@ const Types = () => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });

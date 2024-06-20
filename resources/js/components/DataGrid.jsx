@@ -98,6 +98,9 @@ const DataGrid = ({ gridRef: dataGridRef, rest, columns, toolBar, masterDetail, 
       },
       columns,
       masterDetail,
+      onContentReady: (...props) => {
+        tippy('.tippy-here', { arrow: true, animation: 'scale' })
+      }
       // onColumnsChanging: () => {
       //   const dataGrid = $(dataGridRef.current).dxDataGrid('instance')
       //   const state = dataGrid.state()

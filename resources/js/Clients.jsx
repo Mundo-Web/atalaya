@@ -1,6 +1,10 @@
 
+import Tippy from '@tippyjs/react'
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
+import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
+import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
 import ReactAppend from './Utils/ReactAppend.jsx'
 import ClientsRest from './actions/ClientsRest.js'
@@ -11,10 +15,6 @@ import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
-import PaymentModal from './Reutilizables/Payments/PaymentModal.jsx'
-import ProjectStatusDropdown from './Reutilizables/Projects/ProjectStatusDropdown.jsx'
-import ClientNotesModal from './Reutilizables/ClientNotes/ClientNotesModal.jsx'
-import Tippy from '@tippyjs/react'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -113,7 +113,7 @@ const Clients = ({ statuses, can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -121,7 +121,7 @@ const Clients = ({ statuses, can }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });

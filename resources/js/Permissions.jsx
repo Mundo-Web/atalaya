@@ -1,17 +1,17 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import PermissionsRest from './actions/PermissionsRest.js'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
 
-const Permissions = ({can}) => {
+const Permissions = ({ can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
@@ -62,7 +62,7 @@ const Permissions = ({can}) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -70,7 +70,7 @@ const Permissions = ({can}) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });
@@ -126,7 +126,7 @@ const Permissions = ({can}) => {
     <Modal modalRef={modalRef} title={isEditing ? 'Editar permiso' : 'Agregar permiso'} onSubmit={onModalSubmit}>
       <div className='row'>
         <p>
-          Intenta con el formato <code>ventana.permiso</code>. Ej: <code>clients.create</code>, <code>clients.read</code>, <code>clients.update</code>, <code>clients.delete</code>
+          Intenta con el formato <code>ventana.permiso</code>. Ej: <code>clients.create</code>, <code>clients.list</code>, <code>clients.update</code>, <code>clients.delete</code>
         </p>
         <input ref={idRef} type='hidden' />
         <InputFormGroup eRef={nameRef} label='Permiso' col='col-12' required disabled={isEditing} />

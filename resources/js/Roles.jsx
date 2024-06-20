@@ -1,19 +1,19 @@
 
 import React, { useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import Adminto from './components/Adminto.jsx'
-import Table from './components/Table.jsx'
-import Modal from './components/Modal.jsx'
-import ReactAppend from './Utils/ReactAppend.jsx'
-import TippyButton from './components/form/TippyButton.jsx'
-import InputFormGroup from './components/form/InputFormGroup.jsx'
 import CreateReactScript from './Utils/CreateReactScript.jsx'
-import RolesRest from './actions/RolesRest.js'
-import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import ReactAppend from './Utils/ReactAppend.jsx'
 import PermissionsRest from './actions/PermissionsRest.js'
-import CheckboxFormGroup from './components/form/CheckboxFormGroup.jsx'
+import RolesRest from './actions/RolesRest.js'
+import Adminto from './components/Adminto.jsx'
+import Modal from './components/Modal.jsx'
+import Table from './components/Table.jsx'
 import Accordion from './components/accordion/Accordion.jsx'
 import AccordionCard from './components/accordion/AccordionCard.jsx'
+import CheckboxFormGroup from './components/form/CheckboxFormGroup.jsx'
+import InputFormGroup from './components/form/InputFormGroup.jsx'
+import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
+import TippyButton from './components/form/TippyButton.jsx'
 
 const Roles = ({ permissions }) => {
   permissions = Object.values(permissions.map((x) => {
@@ -31,7 +31,7 @@ const Roles = ({ permissions }) => {
   const modalRef = useRef()
   const modalPermissionRef = useRef()
   const permissionsRef = useRef()
-  const buttonPermissionsRef = useRef()
+  // const buttonPermissionsRef = useRef()
 
   // Form elements ref
   const idRef = useRef()
@@ -53,13 +53,13 @@ const Roles = ({ permissions }) => {
   }
 
   const onPermissionsModalOpen = async (data) => {
-    buttonPermissionsRef.current.disabled = true
+    // buttonPermissionsRef.current.disabled = true
     setRolActive(data)
     const userPermissions = await PermissionsRest.byRole(data.id)
-    buttonPermissionsRef.current.disabled = false
+    // buttonPermissionsRef.current.disabled = false
 
     $('#permissions input').prop('checked', false)
-    userPermissions.forEach(({name}) => {
+    userPermissions.forEach(({ name }) => {
       $(`[name="${name}"]`).prop('checked', true)
     })
 
@@ -111,7 +111,7 @@ const Roles = ({ permissions }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'refresh',
-            hint: 'REFRESCAR TABLA',
+            hint: 'Refrescar tabla',
             onClick: () => $(gridRef.current).dxDataGrid('instance').refresh()
           }
         });
@@ -119,7 +119,7 @@ const Roles = ({ permissions }) => {
           widget: 'dxButton', location: 'after',
           options: {
             icon: 'plus',
-            hint: 'NUEVO REGISTRO',
+            hint: 'Nuevo registro',
             onClick: () => onModalOpen()
           }
         });
@@ -164,7 +164,7 @@ const Roles = ({ permissions }) => {
               <i className='fa fa-pen'></i>
             </TippyButton>)
 
-            ReactAppend(container, <TippyButton eRef={buttonPermissionsRef} className='btn btn-xs btn-soft-dark' title='Modificar permisos' onClick={() => onPermissionsModalOpen(data)} data-loading-text='<i class="fa fa-spinner fa-spin"></i>'>
+            ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-dark' title='Modificar permisos' onClick={() => onPermissionsModalOpen(data)} data-loading-text='<i class="fa fa-spinner fa-spin"></i>'>
               <i className='fas fa-th-list'></i>
             </TippyButton>)
 

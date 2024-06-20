@@ -1,22 +1,15 @@
-import Tippy from "@tippyjs/react";
-import React, { useEffect, useRef } from "react";
-
-const DxButton = ({ eRef, className, title, children, onClick, ...props }) => {
-
-  eRef.current = $('<div>')
-    .dxButton({
-      icon: 'fa fa-pen',
-      elementAttr: {
-        class: className,
-        title: title,
-        ...props
-      },
-      onClick: onClick
-    }).html(children)
-
-
-    return eRef.current
-  //   .appendTo(container);
+const DxButton = ({ className, title, icon, onClick, ...props }) => {
+  return $("<div>").dxButton({
+    hint: title,
+    template: (element, content) => {
+      content.addClass(`${icon} d-block`)
+    },
+    elementAttr: {
+      class: `${className} position-relative me-1 px-1 py-0 tippy-here`,
+      ...props
+    },
+    onClick
+  })
 }
 
 export default DxButton
