@@ -272,110 +272,115 @@ const Clients = ({ statuses, can }) => {
           })
 
           container.append(DxBox([
-            <table className='table table-dark table-sm table-bordered mb-0' style={{ width: '100%' }}>
-              <thead>
-                <tr>
-                  <th scope='col'>Tipo</th>
-                  <th scope='col'>Asignados</th>
-                  <th scope='col'>Costo</th>
-                  <th scope='col'>Pagos</th>
-                  <th scope='col'>Fecha de inicio</th>
-                  <th scope='col'>Fecha de finalización</th>
-                  <th scope='col'>Estado del proyecto</th>
-                  <th scope='col'>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  dataSource.map(project => {
-                    const percent = ((project.total_payments / project.cost) * 100).toFixed(2)
-                    const payments = Number(project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
-                    const rest = Number(project.cost - project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
-                    const relatives = (project.users || '').split('|').filter(Boolean)
-                    return <tr key={`project-${project.id}`}>
-                      <td valign='middle'>{project.type.name}</td>
-                      <td valign='middle'>
-                        <div className='avatar-group m-0'>
-                          {
-                            relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
-                              const user = await UsersByProjectsRest.getUser(relative_id)
-                              const userDate = moment(user.created_at)
-                              const now = moment()
-                              const diffHours = now.diff(userDate, 'hours')
-                              const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
+            <>
+              <TippyButton title='Cerrar tabla' className='btn btn-xs btn-soft-danger waves-effect mb-1' onClick={() => component.collapseAll(-1)}>
+                <i className='fa fa-times'></i>
+              </TippyButton>
+              <table className='table table-dark table-sm table-bordered mb-0' style={{ width: '100%' }}>
+                <thead>
+                  <tr>
+                    <th scope='col'>Tipo</th>
+                    <th scope='col'>Asignados</th>
+                    <th scope='col'>Costo</th>
+                    <th scope='col'>Pagos</th>
+                    <th scope='col'>Fecha de inicio</th>
+                    <th scope='col'>Fecha de finalización</th>
+                    <th scope='col'>Estado del proyecto</th>
+                    <th scope='col'>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    dataSource.map(project => {
+                      const percent = ((project.total_payments / project.cost) * 100).toFixed(2)
+                      const payments = Number(project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                      const rest = Number(project.cost - project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                      const relatives = (project.users || '').split('|').filter(Boolean)
+                      return <tr key={`project-${project.id}`}>
+                        <td valign='middle'>{project.type.name}</td>
+                        <td valign='middle'>
+                          <div className='avatar-group m-0'>
+                            {
+                              relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
+                                const user = await UsersByProjectsRest.getUser(relative_id)
+                                const userDate = moment(user.created_at)
+                                const now = moment()
+                                const diffHours = now.diff(userDate, 'hours')
+                                const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
 
-                              $(instance.popper).find('.tippy-content').addClass('p-0')
-                              instance.setContent(renderToString(<div className="card mb-0" style={{
-                                boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
-                              }}>
-                                <div className="card-body widget-user p-2">
-                                  <div className="d-flex align-items-center">
-                                    <div className="avatar-lg me-3 flex-shrink-0">
-                                      <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
-                                    </div>
-                                    <div className="flex-grow-1 overflow-hidden">
-                                      <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
-                                      <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
-                                      <small className='text-muted'>Asignado: <b>{time}</b></small>
+                                $(instance.popper).find('.tippy-content').addClass('p-0')
+                                instance.setContent(renderToString(<div className="card mb-0" style={{
+                                  boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
+                                }}>
+                                  <div className="card-body widget-user p-2">
+                                    <div className="d-flex align-items-center">
+                                      <div className="avatar-lg me-3 flex-shrink-0">
+                                        <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
+                                      </div>
+                                      <div className="flex-grow-1 overflow-hidden">
+                                        <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
+                                        <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
+                                        <small className='text-muted'>Asignado: <b>{time}</b></small>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>))
-                            }}>
-                              <img
-                                className='avatar-group-item avatar-xs rounded-circle mb-0'
-                                src={`/api/profile/thumbnail/${relative_id}`}
-                                style={{ backdropFilter: 'blur(40px)' }}
-                              />
-                            </Tippy>)
-                          }
-                        </div>
-                      </td>
-                      <td valign='middle'>{`S/. ${Number2Currency(project.cost)}`}</td>
-                      <td valign='middle'>
-                        <p className='mb-0 d-flex justify-content-between'>
-                          <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
-                          <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
-                        </p>
-                        <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
-                          width: '200px'
-                        }}>
-                          <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                                </div>))
+                              }}>
+                                <img
+                                  className='avatar-group-item avatar-xs rounded-circle mb-0'
+                                  src={`/api/profile/thumbnail/${relative_id}`}
+                                  style={{ backdropFilter: 'blur(40px)' }}
+                                />
+                              </Tippy>)
+                            }
                           </div>
-                        </div>
-                      </td>
-                      <td valign='middle'>{moment(project.starts_at).format('LL')}</td>
-                      <td valign='middle'>{moment(project.ends_at).format('LL')}</td>
-                      <td valign='middle'>
-                        <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
-                          $(gridRef.current).dxDataGrid('instance').refresh()
-                        }} />
-                      </td>
-                      <td>
-                        {
-                          can('projects', 'root', 'all', 'assignUsers') && <TippyButton className='btn btn-xs btn-soft-info me-1'
-                            title='Asignar usuarios'
-                            icon='fa fa-user-plus'
-                            onClick={() => setProject2Assign(project)}
-                          >
-                            <i className='fa fa-user-plus'></i>
-                          </TippyButton>
-                        }
-                        {
-                          can('projects', 'root', 'all', 'addpayment') && <TippyButton className='btn btn-xs btn-soft-success'
-                            title='Ver/Agregar pagos'
-                            icon='fas fa-money-check-alt'
-                            onClick={() => setProjectLoaded(project)}
-                          >
-                            <i className='fas fa-money-check-alt'></i>
-                          </TippyButton>
-                        }
-                      </td>
-                    </tr>
-                  })
-                }
-              </tbody>
-            </table>
+                        </td>
+                        <td valign='middle'>{`S/. ${Number2Currency(project.cost)}`}</td>
+                        <td valign='middle'>
+                          <p className='mb-0 d-flex justify-content-between'>
+                            <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
+                            <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
+                          </p>
+                          <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
+                            width: '200px'
+                          }}>
+                            <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                            </div>
+                          </div>
+                        </td>
+                        <td valign='middle'>{moment(project.starts_at).format('LL')}</td>
+                        <td valign='middle'>{moment(project.ends_at).format('LL')}</td>
+                        <td valign='middle'>
+                          <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
+                            $(gridRef.current).dxDataGrid('instance').refresh()
+                          }} />
+                        </td>
+                        <td>
+                          {
+                            can('projects', 'root', 'all', 'assignUsers') && <TippyButton className='btn btn-xs btn-soft-info me-1'
+                              title='Asignar usuarios'
+                              icon='fa fa-user-plus'
+                              onClick={() => setProject2Assign(project)}
+                            >
+                              <i className='fa fa-user-plus'></i>
+                            </TippyButton>
+                          }
+                          {
+                            can('projects', 'root', 'all', 'addpayment') && <TippyButton className='btn btn-xs btn-soft-success'
+                              title='Ver/Agregar pagos'
+                              icon='fas fa-money-check-alt'
+                              onClick={() => setProjectLoaded(project)}
+                            >
+                              <i className='fas fa-money-check-alt'></i>
+                            </TippyButton>
+                          }
+                        </td>
+                      </tr>
+                    })
+                  }
+                </tbody>
+              </table>
+            </>
           ]))
 
           // const dataGrid = $('<div id="projects-grid" style="height: 320px">').appendTo(container).dxDataGrid({
