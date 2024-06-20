@@ -276,12 +276,12 @@ const Clients = ({ statuses, can }) => {
               <thead>
                 <tr>
                   <th scope='col'>Tipo</th>
+                  <th scope='col'>Asignados</th>
                   <th scope='col'>Costo</th>
                   <th scope='col'>Pagos</th>
                   <th scope='col'>Fecha de inicio</th>
                   <th scope='col'>Fecha de finalización</th>
                   <th scope='col'>Estado del proyecto</th>
-                  <th scope='col'>Asignados</th>
                   <th scope='col'>Acciones</th>
                 </tr>
               </thead>
@@ -294,26 +294,6 @@ const Clients = ({ statuses, can }) => {
                     const relatives = (project.users || '').split('|').filter(Boolean)
                     return <tr key={`project-${project.id}`}>
                       <td valign='middle'>{project.type.name}</td>
-                      <td valign='middle'>{`S/. ${Number2Currency(project.cost)}`}</td>
-                      <td valign='middle'>
-                        <p className='mb-0 d-flex justify-content-between'>
-                          <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
-                          <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
-                        </p>
-                        <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
-                          width: '200px'
-                        }}>
-                          <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
-                          </div>
-                        </div>
-                      </td>
-                      <td valign='middle'>{moment(project.starts_at).format('LL')}</td>
-                      <td valign='middle'>{moment(project.ends_at).format('LL')}</td>
-                      <td valign='middle'>
-                        <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
-                          $(gridRef.current).dxDataGrid('instance').refresh()
-                        }} />
-                      </td>
                       <td valign='middle'>
                         <div className='avatar-group m-0'>
                           {
@@ -350,6 +330,26 @@ const Clients = ({ statuses, can }) => {
                             </Tippy>)
                           }
                         </div>
+                      </td>
+                      <td valign='middle'>{`S/. ${Number2Currency(project.cost)}`}</td>
+                      <td valign='middle'>
+                        <p className='mb-0 d-flex justify-content-between'>
+                          <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
+                          <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
+                        </p>
+                        <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
+                          width: '200px'
+                        }}>
+                          <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                          </div>
+                        </div>
+                      </td>
+                      <td valign='middle'>{moment(project.starts_at).format('LL')}</td>
+                      <td valign='middle'>{moment(project.ends_at).format('LL')}</td>
+                      <td valign='middle'>
+                        <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
+                          $(gridRef.current).dxDataGrid('instance').refresh()
+                        }} />
                       </td>
                       <td>
                         {
