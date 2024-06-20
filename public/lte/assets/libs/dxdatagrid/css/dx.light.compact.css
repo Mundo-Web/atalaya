@@ -9612,7 +9612,7 @@
 }
 .dx-toolbar {
   width: 100%;
-  background-color: #fff;
+  background-color: transparent;
   color: #333;
   padding: 0;
   overflow: visible;
@@ -13297,6 +13297,7 @@
 }
 .dx-datagrid-borders > .dx-datagrid-filter-panel,
 .dx-datagrid-borders > .dx-datagrid-headers {
+  background-color: #fff;
   border-top: 1px solid #ddd;
 }
 .dx-datagrid-borders > .dx-datagrid-filter-panel {
@@ -13672,7 +13673,7 @@
 }
 .dx-datagrid {
   color: #333;
-  background-color: #fff;
+  background-color: transparent;
   line-height: inherit;
 }
 .dx-datagrid .dx-row-alt {
@@ -14064,6 +14065,7 @@
 .dx-datagrid-headers + .dx-datagrid-rowsview,
 .dx-datagrid-rowsview.dx-datagrid-after-headers {
   border-top: 1px solid #ddd;
+  background-color: #fff;
 }
 .dx-datagrid-rowsview .dx-row {
   border-top: 1px solid transparent;

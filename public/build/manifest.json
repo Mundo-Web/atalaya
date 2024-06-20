@@ -13,6 +13,21 @@
       "assets/Adminto-BfiZgK1t.css"
     ]
   },
+  "_AssignUsersModal-5ued5dfw.js": {
+    "file": "assets/AssignUsersModal-5ued5dfw.js",
+    "name": "AssignUsersModal",
+    "imports": [
+      "_CreateReactScript-BZNFBiYC.js",
+      "_Table-7H_SmTdZ.js",
+      "_InputFormGroup-BUOjBXeO.js",
+      "_Adminto-98sYPb9M.js",
+      "_TippyButton-CmK-eco3.js",
+      "_Dropdown-Bjfbcv4z.js",
+      "_DropdownItem-mg3Fv28F.js",
+      "_Number2Currency-BMjtDIra.js",
+      "_SetSelectValue-TcZeamg_.js"
+    ]
+  },
   "_ClientsRest-BzwWA7Kj.js": {
     "file": "assets/ClientsRest-BzwWA7Kj.js",
     "name": "ClientsRest",
@@ -53,9 +68,9 @@
       "_CreateReactScript-BZNFBiYC.js"
     ]
   },
-  "_DxBox-DWq_Qtml.js": {
-    "file": "assets/DxBox-DWq_Qtml.js",
-    "name": "DxBox",
+  "_DxButton-CLrSHfzp.js": {
+    "file": "assets/DxButton-CLrSHfzp.js",
+    "name": "DxButton",
     "imports": [
       "_CreateReactScript-BZNFBiYC.js"
     ]
@@ -71,9 +86,12 @@
     "file": "assets/JSEncrypt-D3I3x59l.js",
     "name": "JSEncrypt"
   },
-  "_Number2Currency-e57Tgsuk.js": {
-    "file": "assets/Number2Currency-e57Tgsuk.js",
-    "name": "Number2Currency"
+  "_Number2Currency-BMjtDIra.js": {
+    "file": "assets/Number2Currency-BMjtDIra.js",
+    "name": "Number2Currency",
+    "imports": [
+      "_CreateReactScript-BZNFBiYC.js"
+    ]
   },
   "_PasswordFormGroup-zFVO4Fqi.js": {
     "file": "assets/PasswordFormGroup-zFVO4Fqi.js",
@@ -85,27 +103,6 @@
   "_PermissionsRest-BHvc_BPG.js": {
     "file": "assets/PermissionsRest-BHvc_BPG.js",
     "name": "PermissionsRest",
-    "imports": [
-      "_CreateReactScript-BZNFBiYC.js"
-    ]
-  },
-  "_ProjectStatusDropdown-MSZM4J3v.js": {
-    "file": "assets/ProjectStatusDropdown-MSZM4J3v.js",
-    "name": "ProjectStatusDropdown",
-    "imports": [
-      "_CreateReactScript-BZNFBiYC.js",
-      "_Table-7H_SmTdZ.js",
-      "_InputFormGroup-BUOjBXeO.js",
-      "_Adminto-98sYPb9M.js",
-      "_TippyButton-CmK-eco3.js",
-      "_Dropdown-Bjfbcv4z.js",
-      "_DropdownItem-mg3Fv28F.js",
-      "_ProjectsRest-Ct6mlSHF.js"
-    ]
-  },
-  "_ProjectsRest-Ct6mlSHF.js": {
-    "file": "assets/ProjectsRest-Ct6mlSHF.js",
-    "name": "ProjectsRest",
     "imports": [
       "_CreateReactScript-BZNFBiYC.js"
     ]
@@ -160,7 +157,7 @@
     ]
   },
   "resources/js/Clients.jsx": {
-    "file": "assets/Clients-m6SaGrxL.js",
+    "file": "assets/Clients-hFfh8JHh.js",
     "name": "Clients",
     "src": "resources/js/Clients.jsx",
     "isEntry": true,
@@ -168,12 +165,13 @@
       "_Adminto-98sYPb9M.js",
       "_CreateReactScript-BZNFBiYC.js",
       "_ClientsRest-BzwWA7Kj.js",
-      "_ProjectStatusDropdown-MSZM4J3v.js",
+      "_AssignUsersModal-5ued5dfw.js",
       "_Table-7H_SmTdZ.js",
-      "_ProjectsRest-Ct6mlSHF.js",
+      "_Number2Currency-BMjtDIra.js",
       "_InputFormGroup-BUOjBXeO.js",
       "_TextareaFormGroup-Ch_FAxDs.js",
       "_TippyButton-CmK-eco3.js",
+      "_DxButton-CLrSHfzp.js",
       "_SetSelectValue-TcZeamg_.js",
       "_DropdownItem-mg3Fv28F.js",
       "_DropdownEnd-BGPgPEIS.js",
@@ -181,7 +179,7 @@
     ]
   },
   "resources/js/Home.jsx": {
-    "file": "assets/Home-B8kP0WuU.js",
+    "file": "assets/Home--hgE9e7S.js",
     "name": "Home",
     "src": "resources/js/Home.jsx",
     "isEntry": true,
@@ -190,8 +188,7 @@
       "_Adminto-98sYPb9M.js",
       "_DropdownEnd-BGPgPEIS.js",
       "_DropdownItem-mg3Fv28F.js",
-      "_ProjectsRest-Ct6mlSHF.js",
-      "_Number2Currency-e57Tgsuk.js"
+      "_Number2Currency-BMjtDIra.js"
     ]
   },
   "resources/js/Leads.jsx": {
@@ -253,19 +250,18 @@
     ]
   },
   "resources/js/Projects.jsx": {
-    "file": "assets/Projects-DDtWJd1v.js",
+    "file": "assets/Projects-CTylVZRw.js",
     "name": "Projects",
     "src": "resources/js/Projects.jsx",
     "isEntry": true,
     "imports": [
       "_CreateReactScript-BZNFBiYC.js",
       "_Adminto-98sYPb9M.js",
-      "_ProjectStatusDropdown-MSZM4J3v.js",
-      "_Number2Currency-e57Tgsuk.js",
+      "_AssignUsersModal-5ued5dfw.js",
+      "_Number2Currency-BMjtDIra.js",
       "_Table-7H_SmTdZ.js",
       "_SetSelectValue-TcZeamg_.js",
-      "_ProjectsRest-Ct6mlSHF.js",
-      "_DxBox-DWq_Qtml.js",
+      "_DxButton-CLrSHfzp.js",
       "_InputFormGroup-BUOjBXeO.js",
       "_TextareaFormGroup-Ch_FAxDs.js",
       "_TippyButton-CmK-eco3.js",
@@ -347,7 +343,7 @@
     ]
   },
   "resources/js/Users.jsx": {
-    "file": "assets/Users-BgQaOHdU.js",
+    "file": "assets/Users-CsLSG1oK.js",
     "name": "Users",
     "src": "resources/js/Users.jsx",
     "isEntry": true,
@@ -360,7 +356,7 @@
       "_Adminto-98sYPb9M.js",
       "_InputFormGroup-BUOjBXeO.js",
       "_PasswordFormGroup-zFVO4Fqi.js",
-      "_DxBox-DWq_Qtml.js"
+      "_DxButton-CLrSHfzp.js"
     ]
   }
 }

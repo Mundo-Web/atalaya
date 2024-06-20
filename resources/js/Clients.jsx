@@ -15,6 +15,10 @@ import Table from './components/Table.jsx'
 import InputFormGroup from './components/form/InputFormGroup.jsx'
 import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import TippyButton from './components/form/TippyButton.jsx'
+import Number2Currency from './Utils/Number2Currency.jsx'
+import DxBox from './components/dx/DxBox.jsx'
+import DxButton from './components/dx/DxButton.jsx'
+import AssignUsersModal from './Reutilizables/Projects/AssignUsersModal.jsx'
 
 const Clients = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -35,6 +39,7 @@ const Clients = ({ statuses, can }) => {
 
   const [isEditing, setIsEditing] = useState(false)
   const [projectLoaded, setProjectLoaded] = useState({})
+  const [project2Assign, setProject2Assign] = useState({})
   const [projectsGrid, setProjectsGrid] = useState({})
   const [clientLoaded, setClientLoaded] = useState({})
 
@@ -256,6 +261,7 @@ const Clients = ({ statuses, can }) => {
         template: async (container, { data: client, component }) => {
           container.css('padding', '10px')
           container.css('overflow', 'visible')
+          container.css('background-color', '#323a46')
 
           let { data: dataSource } = await ProjectsRest.paginate({
             filter: ['client_id', '=', client.id],
@@ -283,33 +289,58 @@ const Clients = ({ statuses, can }) => {
                 dataField: 'id',
                 caption: 'ID',
                 dataType: 'number',
-                sortOrder: 'asc'
+                sortOrder: 'asc',
+                visible: false
               },
               {
                 dataField: 'type.name',
-                caption: 'Tipo'
+                caption: 'Tipo',
+                // fixed: true,
+                // fixedPosition: 'left'
               },
               {
                 dataField: 'name',
-                caption: 'Proyecto'
+                caption: 'Proyecto',
+                visible: false
               },
               {
                 dataField: 'cost',
                 caption: 'Costo',
                 dataType: 'number',
-                width: 150,
+                cellTemplate: (container, { data }) => {
+                  container.text(`S/. ${Number2Currency(data.cost)}`)
+                }
+              },
+              {
+                dataField: 'remaining_amount',
+                caption: 'Pagos',
+                dataType: 'number',
                 cellTemplate: (container, { data }) => {
                   const percent = ((data.total_payments / data.cost) * 100).toFixed(2)
-                  ReactAppend(container, <>
-                    <p className='mb-1 d-flex justify-content-between'>
-                      <span>S/.{Number(data.total_payments).toFixed(2)}</span>
-                      <b className='float-end'>S/.{Number(data.cost).toFixed(2)}</b>
-                    </p>
-                    <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0'>
-                      <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                  const payments = Number(data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                  const rest = Number(data.cost - data.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+                  container.append(DxBox([
+                    <>
+                      <p className='mb-0 d-flex justify-content-between'>
+                        <b className='text-success'><i className='fa fa-arrow-circle-up'></i> S/. {payments}</b>
+                        <b className='float-end text-danger'><i className='fa fa-arrow-circle-down'></i> S/. {rest}</b>
+                      </p>
+                      <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
+                        width: '200px'
+                      }}>
+                        <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={data.total_payments} aria-valuemin='0' aria-valuemax={data.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                        </div>
                       </div>
-                    </div>
-                  </>)
+                    </>
+                  ], false))
+                }
+              },
+              {
+                dataField: 'starts_at',
+                caption: 'Fecha de inicio',
+                dataType: 'date',
+                cellTemplate: (container, { data }) => {
+                  container.text(moment(data.starts_at).format('LL'))
                 }
               },
               {
@@ -326,19 +357,66 @@ const Clients = ({ statuses, can }) => {
                 dataType: 'string',
                 cellTemplate: (container, { data }) => {
                   container.attr('style', 'overflow: visible')
-                  ReactAppend(container, <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={async () => {
-                    const { data: dataSource } = await ProjectsRest.paginate({
-                      filter: ['client_id', '=', client.id],
-                      isLoadingAll: true
-                    })
-                    $('#projects-grid').dxDataGrid('instance').option('dataSource', dataSource)
-                  }} />)
+                  container.append(DxBox([
+                    {
+                      height: '0',
+                      children: <ProjectStatusDropdown can={can} statuses={statuses} data={data} onChange={() => {
+                        $(gridRef.current).dxDataGrid('instance').refresh()
+                      }} />
+                    }
+                  ]))
                 }
               } : null,
+              {
+                dataField: 'users',
+                caption: 'Asignados',
+                dataType: 'string',
+                cellTemplate: (container, { data }) => {
+                  const relatives = (data.users || '').split('|').filter(Boolean)
+                  container.append(DxBox([
+                    <div className='avatar-group m-0'>
+                      {
+                        relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
+                          const user = await UsersByProjectsRest.getUser(relative_id)
+                          const userDate = moment(user.created_at)
+                          const now = moment()
+                          const diffHours = now.diff(userDate, 'hours')
+                          const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
+
+                          $(instance.popper).find('.tippy-content').addClass('p-0')
+                          instance.setContent(renderToString(<div className="card mb-0" style={{
+                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.25)'
+                          }}>
+                            <div className="card-body widget-user p-2">
+                              <div className="d-flex align-items-center">
+                                <div className="avatar-lg me-3 flex-shrink-0">
+                                  <img src={`/api/profile/thumbnail/${relative_id}`} className="img-fluid rounded-circle" alt="user" />
+                                </div>
+                                <div className="flex-grow-1 overflow-hidden">
+                                  <h5 className="text-blue mt-0 mb-1"> {user.name} {user.lastname}</h5>
+                                  <p className="text-dark mb-1 font-13 text-truncate">{user.email}</p>
+                                  <small className='text-muted'>Asignado: <b>{time}</b></small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>))
+                        }}>
+                          <img
+                            className='avatar-group-item avatar-xs rounded-circle mb-0'
+                            src={`/api/profile/thumbnail/${relative_id}`}
+                            style={{ backdropFilter: 'blur(40px)' }}
+                          />
+                        </Tippy>)
+                      }
+                    </div>
+                  ]))
+                }
+              },
               {
                 dataField: 'status',
                 caption: 'Estado',
                 dataType: 'boolean',
+                visible: false,
                 cellTemplate: (container, { data }) => {
                   switch (data.status) {
                     case 1:
@@ -356,11 +434,19 @@ const Clients = ({ statuses, can }) => {
               {
                 caption: 'Acciones',
                 cellTemplate: (container, { data }) => {
-                  container.attr('style', 'display: flex; gap: 4px; overflow: unset')
+                  can('projects', 'root', 'all', 'assignUsers') && container.append(DxButton({
+                    className: 'btn btn-xs btn-soft-info',
+                    title: 'Asignar usuarios',
+                    icon: 'fa fa-user-plus',
+                    onClick: () => setProject2Assign(data)
+                  }))
 
-                  can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setProjectLoaded(data)}>
-                    <i className='fas fa-money-check-alt'></i>
-                  </TippyButton>)
+                  can('projects', 'root', 'all', 'addpayment') && container.append(DxButton({
+                    className: 'btn btn-xs btn-soft-success',
+                    title: 'Ver/Agregar pagos',
+                    icon: 'fas fa-money-check-alt',
+                    onClick: () => setProjectLoaded(data)
+                  }))
                 },
                 allowFiltering: false,
                 allowExporting: false
@@ -424,6 +510,8 @@ const Clients = ({ statuses, can }) => {
     <PaymentModal can={can} dataLoaded={projectLoaded} setDataLoaded={setProjectLoaded} grid2refresh={projectsGrid} />
 
     <ClientNotesModal can={can} client={clientLoaded} setClient={setClientLoaded} grid2refresh={gridRef} page='clients' />
+
+    <AssignUsersModal dataLoaded={project2Assign} setDataLoaded={setProject2Assign} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
   </>
   )
 };
