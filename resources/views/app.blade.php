@@ -21,9 +21,9 @@
     <link href="/lte/assets/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
 
     {{-- DxDataGrid Styles --}}
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.light.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c425"
       rel="stylesheet" type="text/css" id="dg-default-stylesheet" />
-    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c426"
+    <link href="/lte/assets/libs/dxdatagrid/css/dx.dark.compact.css?v=06d3ebc8-645c-4d80-a600-c9652743c425"
       rel="stylesheet" type="text/css" id="dg-dark-stylesheet" disabled="disabled" />
 
     {{-- Bootstrap Styles --}}
@@ -84,7 +84,7 @@
   @else
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="/assets/js/yeti.js?v=06d3ebc8-645c-4d80-a600-c9652743c426"></script>
+    <script src="/assets/js/yeti.js?v=06d3ebc8-645c-4d80-a600-c9652743c425"></script>
   @endif
 </body>
 
