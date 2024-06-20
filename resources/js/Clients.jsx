@@ -315,8 +315,8 @@ const Clients = ({ statuses, can }) => {
                             <span>{moment(project.starts_at).format('DD MMM YYYY')}</span>
                             <span className='float-end'>{moment(project.ends_at).format('DD MMM YYYY')}</span>
                           </p>
-                          <div className="progress progress-bar-alt-primary mb-0 mt-0">
-                            <div className="progress-bar  progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
+                          <div className="progress progress-bar-alt-primary progress-xl mb-0 mt-0">
+                            <div className="progress-bar progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
                           </div>
                         </div>
                       }

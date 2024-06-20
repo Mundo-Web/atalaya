@@ -48,6 +48,10 @@
     .tippy-tooltip {
       padding: 0;
     }
+
+    .dx-datagrid-content .dx-datagrid-table .dx-row > td {
+      vertical-align: middle;
+    }
   </style>
 </head>
 
