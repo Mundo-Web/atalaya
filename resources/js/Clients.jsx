@@ -284,8 +284,7 @@ const Clients = ({ statuses, can }) => {
                     <th scope='col'>Costo</th>
                     <th scope='col'>Pagos</th>
                     <th scope='col'>Fecha de inicio</th>
-                    <th scope='col'>Fecha de finalización</th>
-                    <th scope='col'>Estado del proyecto</th>
+                    <th scope='col'>Fecha de desarrollo</th>
                     <th scope='col'>Acciones</th>
                   </tr>
                 </thead>
@@ -296,6 +295,32 @@ const Clients = ({ statuses, can }) => {
                       const payments = Number(project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
                       const rest = Number(project.cost - project.total_payments).toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 })
                       const relatives = (project.users || '').split('|').filter(Boolean)
+
+                      const startDate = moment(project.starts_at);
+                      const endDate = moment(project.ends_at);
+                      const currentDate = moment();
+
+                      let dateElement = <></>
+                      if (currentDate.isBefore(startDate)) {
+                        dateElement = <i className='text-primary'>El proyecto aún no comienza</i>
+                      } else if (currentDate.isAfter(endDate)) {
+                        dateElement = <i className='text-danger'>El proyecto ya terminó</i>
+                      } else {
+                        const totalDuration = endDate.diff(startDate);
+                        const elapsedDuration = currentDate.diff(startDate);
+                        const percentageElapsed = (elapsedDuration / totalDuration) * 100;
+
+                        dateElement = <div style={{width: '200px'}}>
+                          <p className='mb-0 d-flex justify-content-between'>
+                            <span>{moment(project.starts_at).format('DD MMMM')}</span>
+                            <span className='float-end text-danger'>{moment(project.ends_at).format('DD MMMM')}</span>
+                          </p>
+                          <div className="progress progress-bar-alt-success mb-0 mt-0">
+                            <div className="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
+                          </div>
+                        </div>
+                      }
+
                       return <tr key={`project-${project.id}`}>
                         <td valign='middle'>{project.type.name}</td>
                         <td valign='middle'>
@@ -344,12 +369,13 @@ const Clients = ({ statuses, can }) => {
                           <div className='progress progress-bar-alt-primary progress-sm mt-0 mb-0' style={{
                             width: '200px'
                           }}>
-                            <div className='progress-bar bg-primary progress-animated wow animated animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
+                            <div className='progress-bar bg-primary progress-animated wow animated' role='progressbar' aria-valuenow={project.total_payments} aria-valuemin='0' aria-valuemax={project.cost} style={{ width: `${percent}%`, visibility: 'visible', animationName: 'animationProgress' }}>
                             </div>
                           </div>
                         </td>
-                        <td valign='middle'>{moment(project.starts_at).format('LL')}</td>
-                        <td valign='middle'>{moment(project.ends_at).format('LL')}</td>
+                        <td valign='middle'>
+                          {dateElement}
+                        </td>
                         <td valign='middle'>
                           <ProjectStatusDropdown can={can} statuses={statuses} data={project} onChange={() => {
                             $(gridRef.current).dxDataGrid('instance').refresh()

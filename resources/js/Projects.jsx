@@ -231,17 +231,46 @@ const Projects = ({ statuses, can }) => {
           caption: 'Fecha de inicio',
           dataType: 'date',
           cellTemplate: (container, { data }) => {
-            container.text(moment(data.starts_at).format('LL'))
+            // container.text(moment(data.starts_at).format('LL'))
+            const startDate = moment(data.starts_at);
+            const endDate = moment(data.ends_at);
+            const currentDate = moment();
+
+            let dateElement = <></>
+            if (currentDate.isBefore(startDate)) {
+              dateElement = <i className='text-primary'>El proyecto aún no comienza</i>
+            } else if (currentDate.isAfter(endDate)) {
+              dateElement = <i className='text-danger'>El proyecto ya terminó</i>
+            } else {
+              const totalDuration = endDate.diff(startDate);
+              const elapsedDuration = currentDate.diff(startDate);
+              const percentageElapsed = (elapsedDuration / totalDuration) * 100;
+
+              dateElement = <div style={{ width: '200px' }}>
+                <p className='mb-0 d-flex justify-content-between'>
+                  <span>{moment(data.starts_at).format('DD MMMM')}</span>
+                  <span className='float-end text-danger'>{moment(data.ends_at).format('DD MMMM')}</span>
+                </p>
+                <div className="progress progress-bar-alt-success mb-0 mt-0">
+                  <div className="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
+                </div>
+              </div>
+            }
+
+            container.append(DxBox([{
+              width: '200px',
+              children: dateElement
+            }]))
           }
         },
-        {
-          dataField: 'ends_at',
-          caption: 'Fecha de finalización',
-          dataType: 'date',
-          cellTemplate: (container, { data }) => {
-            container.text(moment(data.ends_at).format('LL'))
-          }
-        },
+        // {
+        //   dataField: 'ends_at',
+        //   caption: 'Fecha de finalización',
+        //   dataType: 'date',
+        //   cellTemplate: (container, { data }) => {
+        //     container.text(moment(data.ends_at).format('LL'))
+        //   }
+        // },
         can('projects', 'root', 'all', 'changestatus') ? {
           dataField: 'project_status.name',
           caption: 'Estado del proyecto',
