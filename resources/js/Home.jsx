@@ -294,7 +294,8 @@ const Home = () => {
               <div className='widget-box-2'>
                 <Tippy content={<>
                   Deuda pagada al {Number(totalRemaining / totalCost * 100).toFixed(2)}%
-                  <p className='mb-0'><b>Deuda total</b>: S/. {Number2Currency(totalRemaining)}</p>
+                  <p className='mb-0'><b>Deuda pagada</b>: S/. {Number2Currency(totalRemaining)}</p>
+                  <p className='mb-0'><b>Deuda restante</b>: S/. {Number2Currency(totalCost - totalRemaining)}</p>
                   <p className='mb-0'><b>Costo total</b>: S/. {Number2Currency(totalCost)}</p>
                   </>} arrow={true} allowHTML={true}>
                   <div className="float-start" dir="ltr">
