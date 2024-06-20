@@ -10,7 +10,7 @@ const ProjectStatusDropdown = ({ statuses, data, onChange }) => {
     onChange()
   }
   return <>
-    <Dropdown className='btn btn-xs btn-white rounded-pill' title={data.project_status.name} tippy='Actualizar estado' icon={{ icon: 'fa fa-circle', color: data.project_status.color }}>
+    <Dropdown className='btn btn-xs btn-light rounded-pill' title={data.project_status.name} tippy='Actualizar estado' icon={{ icon: 'fa fa-circle', color: data.project_status.color }}>
       {statuses.map(({ id, name, color }) => {
         return <DropdownItem key={id} onClick={() => onProjectStatusClicked(data.id, id)}>
           <i className='fa fa-circle' style={{ color }}></i> {name}
