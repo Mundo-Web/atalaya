@@ -252,7 +252,7 @@ const Projects = ({ statuses, can }) => {
                   <span className='float-end text-danger'>{moment(data.ends_at).format('DD MMMM')}</span>
                 </p>
                 <div className="progress progress-bar-alt-success mb-0 mt-0">
-                  <div className="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
+                  <div className="progress-bar  progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
                 </div>
               </div>
             }
