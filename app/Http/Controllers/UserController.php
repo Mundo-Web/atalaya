@@ -6,6 +6,7 @@ use App\Http\Classes\dxResponse;
 use App\Models\dxDataGrid;
 use App\Models\ModelHasRoles;
 use App\Models\User;
+use App\Models\UserView;
 use Exception;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
@@ -20,14 +21,14 @@ class UserController extends Controller
     {
         $response =  new dxResponse();
         try {
-            $instance = User::select([
-                'id', 'name', 'lastname', 'relative_id', 'email', 'status'
+            $instance = UserView::select([
+                'id', 'name', 'lastname', 'fullname', 'relative_id', 'email', 'status'
             ]);
 
             if ($request->group != null) {
                 [$grouping] = $request->group;
                 $selector = \str_replace('.', '__', $grouping['selector']);
-                $instance = User::select([
+                $instance = UserView::select([
                     "{$selector} AS key"
                 ])
                     ->groupBy($selector);

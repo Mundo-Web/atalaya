@@ -21,9 +21,8 @@ import TextareaFormGroup from './components/form/TextareaFormGroup.jsx'
 import DxBox from './components/dx/DxBox.jsx'
 import Tippy from '@tippyjs/react'
 import { renderToString } from 'react-dom/server'
-import UsersRest from './actions/UsersRest.js'
-import ProfileRest from './actions/ProfileRest.js'
 import UsersByProjectsRest from './actions/UsersByProjectsRest.js'
+import AssignUsersModal from './Reutilizables/Projects/AssignUsersModal.jsx'
 
 const Projects = ({ statuses, can }) => {
   const gridRef = useRef()
@@ -40,13 +39,9 @@ const Projects = ({ statuses, can }) => {
   const startsAtRef = useRef()
   const endsAtRef = useRef()
 
-  const assignModalRef = useRef()
-  const projectToAssignRef = useRef()
-  const assignIdRef = useRef()
-  const assignUsersRef = useRef()
-
   const [isEditing, setIsEditing] = useState(false)
   const [dataLoaded, setDataLoaded] = useState({})
+  const [project2Assign, setProject2Assign] = useState({})
 
   const onModalOpen = (data) => {
     if (data?.id) setIsEditing(true)
@@ -107,11 +102,6 @@ const Projects = ({ statuses, can }) => {
     const result = await ProjectsRest.delete(id)
     if (!result) return
     $(gridRef.current).dxDataGrid('instance').refresh()
-  }
-
-  const onAssignClicked = async (id) => {
-    assignIdRef.current.value = id
-    $(assignModalRef.current).modal('show')
   }
 
   return (<>
@@ -234,7 +224,7 @@ const Projects = ({ statuses, can }) => {
                 {
                   relatives.map(relative_id => <Tippy key={`user-${relative_id}`} content="Cargando..." allowHTML={true} onShow={async (instance) => {
                     const user = await UsersByProjectsRest.getUser(relative_id)
-                    const userDate = moment(user.created_at).add(5, 'hours')
+                    const userDate = moment(user.created_at)
                     const now = moment()
                     const diffHours = now.diff(userDate, 'hours')
                     const time = diffHours > 12 ? userDate.format('lll') : userDate.fromNow()
@@ -307,7 +297,7 @@ const Projects = ({ statuses, can }) => {
               className: 'btn btn-xs btn-soft-info',
               title: 'Asignar usuarios',
               icon: 'fa fa-user-plus',
-              onClick: () => onAssignClicked()
+              onClick: () => setProject2Assign(data)
             }))
 
             // can('projects', 'root', 'all', 'addpayment') && ReactAppend(container, <TippyButton className='btn btn-xs btn-soft-success' title='Ver/Agregar pagos' onClick={() => setDataLoaded(data)}>
@@ -360,15 +350,7 @@ const Projects = ({ statuses, can }) => {
 
     <PaymentModal can={can} dataLoaded={dataLoaded} setDataLoaded={setDataLoaded} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
 
-    <Modal modalRef={assignModalRef} title='Asignar usuarios al proyecto' onSubmit={onModalSubmit}>
-      <div id='assign-users-container'>
-        <p>
-          Que usuarios deseas asignar al proyecto <b ref={projectToAssignRef}>X</b>
-        </p>
-        <input ref={assignIdRef} type='hidden' />
-        <SelectAPIFormGroup eRef={assignUsersRef} label='Usuarios a asignar' col='col-12' dropdownParent='#assign-users-container' searchAPI='/api/users/paginate' searchBy='name' />
-      </div>
-    </Modal>
+    <AssignUsersModal dataLoaded={project2Assign} setDataLoaded={setProject2Assign} grid2refresh={$(gridRef.current).dxDataGrid('instance')} />
   </>
   )
 };

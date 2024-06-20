@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserByProject;
-use App\Http\Requests\StoreUserByProjectRequest;
-use App\Http\Requests\UpdateUserByProjectRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Support\Facades\DB;
 use SoDe\Extend\Response;
 
 class UserByProjectController extends Controller
@@ -94,6 +93,32 @@ class UserByProjectController extends Controller
         } catch (\Throwable $th) {
             $response->status = 400;
             $response->message = $th->getMessage();
+        } finally {
+            return response(
+                $response->toArray(),
+                $response->status
+            );
+        }
+    }
+
+    public function byProject(Request $request, $project_id): HttpResponse|ResponseFactory
+    {
+        $response =  new Response();
+        try {
+            $users = UserByProject::select([
+                'users.id',
+                DB::raw('CONCAT(users.name, " ", users.lastname) as fullname')
+            ])
+                ->join('users', 'users.id', '=', 'users_by_projects.user_id')
+                ->where('project_id', $project_id)
+                ->get();
+
+            $response->status = 200;
+            $response->message = 'Operación correcta';
+            $response->data = $users;
+        } catch (\Throwable $th) {
+            $response->status = 400;
+            $response->message = $th->getMessage() . ' Ln.' . $th->getLine();
         } finally {
             return response(
                 $response->toArray(),

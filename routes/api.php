@@ -131,4 +131,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/remainings-history/{month}', [RemainingHistoryController::class, 'get']);
 
     Route::get('/users-by-projects/{relative_id}', [UserByProjectController::class, 'getUser']);
+    Route::get('/users-by-projects/project/{project}', [UserByProjectController::class, 'byProject']);
+    Route::patch('/users-by-projects/project', [UserByProjectController::class, 'massiveByProject']);
 });
