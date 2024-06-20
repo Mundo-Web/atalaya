@@ -228,7 +228,7 @@ const Projects = ({ statuses, can }) => {
         },
         {
           dataField: 'starts_at',
-          caption: 'Fecha de inicio',
+          caption: 'Fecha de desarrollo',
           dataType: 'date',
           cellTemplate: (container, { data }) => {
             // container.text(moment(data.starts_at).format('LL'))
