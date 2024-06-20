@@ -238,9 +238,9 @@ const Projects = ({ statuses, can }) => {
 
             let dateElement = <></>
             if (currentDate.isBefore(startDate)) {
-              dateElement = <i className='text-primary'>El proyecto aún no comienza</i>
+              dateElement = <i className='text-muted'>El proyecto aún no comienza</i>
             } else if (currentDate.isAfter(endDate)) {
-              dateElement = <i className='text-danger'>El proyecto ya terminó</i>
+              dateElement = <i className='text-muted'>El proyecto ya terminó</i>
             } else {
               const totalDuration = endDate.diff(startDate);
               const elapsedDuration = currentDate.diff(startDate);
@@ -248,10 +248,10 @@ const Projects = ({ statuses, can }) => {
 
               dateElement = <div style={{ width: '200px' }}>
                 <p className='mb-0 d-flex justify-content-between'>
-                  <span>{moment(data.starts_at).format('DD MMMM')}</span>
-                  <span className='float-end text-danger'>{moment(data.ends_at).format('DD MMMM')}</span>
+                  <span>{moment(data.starts_at).format('DD MMM YYYY')}</span>
+                  <span className='float-end'>{moment(data.ends_at).format('DD MMM YYYY')}</span>
                 </p>
-                <div className="progress progress-bar-alt-success mb-0 mt-0">
+                <div className="progress progress-bar-alt-primary mb-0 mt-0">
                   <div className="progress-bar  progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
                 </div>
               </div>
@@ -259,6 +259,7 @@ const Projects = ({ statuses, can }) => {
 
             container.append(DxBox([{
               width: '200px',
+              height: '28px',
               children: dateElement
             }]))
           }

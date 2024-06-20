@@ -283,8 +283,8 @@ const Clients = ({ statuses, can }) => {
                     <th scope='col'>Asignados</th>
                     <th scope='col'>Costo</th>
                     <th scope='col'>Pagos</th>
-                    <th scope='col'>Fecha de inicio</th>
                     <th scope='col'>Fecha de desarrollo</th>
+                    <th scope='col'>Estado del proyecto</th>
                     <th scope='col'>Acciones</th>
                   </tr>
                 </thead>
@@ -302,21 +302,21 @@ const Clients = ({ statuses, can }) => {
 
                       let dateElement = <></>
                       if (currentDate.isBefore(startDate)) {
-                        dateElement = <i className='text-primary'>El proyecto aún no comienza</i>
+                        dateElement = <i className='text-muted'>El proyecto aún no comienza</i>
                       } else if (currentDate.isAfter(endDate)) {
-                        dateElement = <i className='text-danger'>El proyecto ya terminó</i>
+                        dateElement = <i className='text-muted'>El proyecto ya terminó</i>
                       } else {
                         const totalDuration = endDate.diff(startDate);
                         const elapsedDuration = currentDate.diff(startDate);
                         const percentageElapsed = (elapsedDuration / totalDuration) * 100;
 
-                        dateElement = <div style={{width: '200px'}}>
+                        dateElement = <div style={{ width: '200px' }}>
                           <p className='mb-0 d-flex justify-content-between'>
-                            <span>{moment(project.starts_at).format('DD MMMM')}</span>
-                            <span className='float-end text-danger'>{moment(project.ends_at).format('DD MMMM')}</span>
+                            <span>{moment(project.starts_at).format('DD MMM YYYY')}</span>
+                            <span className='float-end'>{moment(project.ends_at).format('DD MMM YYYY')}</span>
                           </p>
                           <div className="progress progress-bar-alt-primary mb-0 mt-0">
-                            <div className="progress-bar  progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
+                            <div className="progress-bar  progress-bar-primary progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percentageElapsed}%` }}>{percentageElapsed.toFixed(2)}%</div>
                           </div>
                         </div>
                       }
