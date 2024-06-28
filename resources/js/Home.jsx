@@ -159,8 +159,8 @@ const Home = () => {
       ignoreData: true,
       filter: [
         ['status', '=', '1'], 'and',
-        ['ends_at', '>=', moment().format('YYYY-MM-[01]')], 'and',
-        ['ends_at', '<', moment().add(1, 'month').format('YYYY-MM-[01]')]
+        ['starts_at', '>=', moment().format('YYYY-MM-[01]')], 'and',
+        ['starts_at', '<', moment().add(1, 'month').format('YYYY-MM-[01]')]
       ]
     })
       .then(({ totalCount }) => {
