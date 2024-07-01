@@ -52,7 +52,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus, WA_URL, APP_URL }) =
             eventSource.close()
             setTimeout(() => {
               setStatus('verifying')
-            }, 2500)
+            }, 5000)
             break
           default:
             eventSource.close()
@@ -65,7 +65,7 @@ const WhatsAppModal = ({ status: whatsappStatus, setStatus, WA_URL, APP_URL }) =
         eventSource.close()
         setTimeout(() => {
           setStatus('verifying')
-        }, 2500)
+        }, 5000)
       }
     }
   }, [whatsappStatus])
