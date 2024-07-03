@@ -69,7 +69,7 @@ const Settings = ({ can }) => {
   }
 
   return (<>
-    <Table gridRef={gridRef} title='Estados' rest={SettingsRest}
+    <Table gridRef={gridRef} title='Configuracion' rest={SettingsRest}
       toolBar={(container) => {
         container.unshift({
           widget: 'dxButton', location: 'after',
@@ -133,7 +133,7 @@ const Settings = ({ can }) => {
 CreateReactScript((el, properties) => {
   if (!properties.can('settings', 'root', 'all', 'list')) return location.href = '/';
   createRoot(el).render(
-    <Adminto {...properties} title='Estados'>
+    <Adminto {...properties} title='Constantes de configuracion'>
       <Settings {...properties} />
     </Adminto>
   );
