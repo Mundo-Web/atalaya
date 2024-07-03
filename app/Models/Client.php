@@ -23,6 +23,7 @@ class Client extends Model
         'sector',
         'description',
         'contact_name',
+        'country_prefix',
         'contact_phone',
         'contact_email',
         'contact_address',
