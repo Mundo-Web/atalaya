@@ -31,12 +31,11 @@ Route::get(
         ])
 )->name('login');
 
+Route::get('/', function (Request $request) {
+    return redirect('/login');
+});
+
 Route::middleware('auth')->group(function () {
-    Route::get('/', function (Request $request) {
-        return redirect(
-            session('url.intended', RouteServiceProvider::HOME),
-        );
-    });
 
     foreach (Router::components as $path => $page) {
         if (isset($page['adminto-instance']) && $page['adminto-instance']) {
