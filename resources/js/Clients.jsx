@@ -21,7 +21,7 @@ import AssignUsersModal from './Reutilizables/Projects/AssignUsersModal.jsx'
 import DateRange from './Reutilizables/Projects/DateRange.jsx'
 import Assigneds from './Reutilizables/Projects/Assigneds.jsx'
 
-const Clients = ({ statuses, can }) => {
+const Clients = ({ statuses, session, can }) => {
   const gridRef = useRef()
   const modalRef = useRef()
 
