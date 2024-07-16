@@ -13,8 +13,9 @@ use Illuminate\Http\Response as HttpResponse;
 use SoDe\Extend\JSON;
 use SoDe\Extend\Response;
 
-class TypeController extends Controller
+class TypeController extends BasicController
 {
+    public $model = Type::class;
     public function paginate(Request $request): HttpResponse|ResponseFactory
     {
         $response =  new dxResponse();

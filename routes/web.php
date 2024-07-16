@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -61,7 +60,7 @@ Route::middleware('auth')->group(function () {
                         $properties[$key] = $query->get();
                     }
                 }
-                return Inertia::render($page['component'], $properties);
+                return Inertia::render($page['component'], $properties)->rootView('admin');
             })->name($path);
         }
     }
